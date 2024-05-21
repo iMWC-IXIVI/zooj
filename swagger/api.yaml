@@ -1,0 +1,194 @@
+---
+openapi: "3.0.0"
+info:
+  title: API
+  version: v1
+tags:
+  - name: Пользователи
+    description: Логин и регистрация
+paths:
+  "/api/users/register":
+    post:
+      tags:
+        - Пользователи
+      summary: Регистрация пользователя
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  example: some@email.com
+                password:
+                  type: string
+                  example: somepassword
+                password_confirmation:
+                  type: string
+                  example: somepassword
+                first_name:
+                  type: string
+                  example: Иван
+                last_name:
+                  type: string
+                  example: Иванов
+      responses:
+        '200':
+          description: Успешная регистрация
+          content:
+            application/json:
+              schema:
+                properties:
+                  user:
+                    $ref: "#/components/schemas/User"
+                  token:
+                    type: string
+        '400':
+          description: Регистрация не удалась
+          content:
+            application/json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Error"
+  "/api/users/login":
+    post:
+      tags:
+        - Пользователи
+      summary: Логин пользователя
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  example: some@email.com
+                password:
+                  type: string
+                  example: somepass
+      responses:
+        '200':
+          description: Успешный логин
+          content:
+            application/json:
+              schema:
+                properties:
+                  token:
+                    type: string
+                    example: someverylongstringtoken
+        '401':
+          description: Не удалось войти
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: Неверные логин или пароль
+  "/api/users/logout":
+    get:
+      tags:
+        - Пользователи
+      summary: Выход из учетной записи
+      responses:
+        '200':
+          description: успешный выход
+        '400':
+          description: пользователь не залогинен, ошибка
+
+  "/api/catalog/dishes":
+    get:
+      tags:
+        - Каталог блюд
+      summary: Список блюд
+      responses:
+        '200':
+          description: Возвращает список блюд
+          content:
+            application/json:
+              schema:
+                properties:
+                  dishes:
+                    $ref: "#/components/schemas/Dish"
+servers:
+- url: https://localhost
+  variables:
+    defaultHost:
+      default: localhost
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          example: some@email.com
+        first_name:
+          type: string
+          example: Иван
+        last_name:
+          type: string
+          example: Иванов
+    Dish:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Название блюда
+        image:
+          type: string
+          description: ссылка на картинку блюда
+        components:
+          type: array
+          items:
+            $ref: "#/components/schemas/Component"
+    Component:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Морковка
+        qty:
+          type: number
+          description: требуемое колличество продукта
+          example: 0.5
+        qty_type:
+          type: string
+          description: Единицы измерения
+          enum:
+            - кг
+            - мл
+            - л
+            - шт
+        product:
+          $ref: "#/components/schemas/Product"
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Название проудкта
+        pack_qty:
+          type: number
+          description: колличество продукта в упаковке
+        qty_type:
+          type: string
+          description: Единицы измерения
+          enum:
+            - кг
+            - мл
+            - л
+            - шт
+
+    Error:
+      type: object
+      properties:
+        field:
+          type: string
+          example: email
+        message:
+          type: string
+          example: Почта уже используется

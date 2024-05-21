@@ -1,0 +1,59 @@
+version: '3.7'
+
+services:
+  core-app:
+    build: ./core
+    container_name: "core-app"
+    command:
+      sh -c "./build/cmd"
+    ports:
+      - 8080:8080
+    networks:
+      - dev
+    depends_on:
+      - redis
+      - core-db
+    stdin_open: true
+    tty: true
+    links:
+      - core-db
+    environment:
+      - DATABASE_URL=postgres://core:core@core-db:5432/core
+
+  frontend:
+    build: ./front
+    container_name: "frontend-dev"
+    # volumes:
+    #   - ./front:/app
+    networks:
+      - dev
+    ports:
+      - '80:80'
+    stdin_open: true
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - "core-app"
+
+  core-db:
+    image: postgres:13.2-alpine
+    container_name: "core-db"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dev
+    environment:
+      - POSTGRES_USER=core
+      - POSTGRES_PASSWORD=core
+      - POSTGRES_DB=core
+  redis:
+    image: 'redislabs/redismod'
+    ports:
+      - '6379:6379'
+
+volumes:
+  postgres_data:
+  node-modules:
+
+networks:
+  dev:
