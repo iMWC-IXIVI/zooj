@@ -18,3 +18,8 @@ docker compose up --build
 ```
 {"message":"hello"}
 ```
+Во время первого запуска возможна ошибка с запуском django приложения, перезагрузка контейнера решает проблему
+* заходим на http://localhost:8000/api/django-test/?format=json - покажет заглушку - json c
+```
+{"Method GET":"Hello from GET"}
+```

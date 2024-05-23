@@ -51,6 +51,31 @@ services:
     ports:
       - '6379:6379'
 
+  django-core:
+    build:
+      context: ./django_core
+    container_name: django-core
+    ports:
+      - "8000:8000"
+    depends_on:
+      - django-postgres
+    env_file:
+      - django_core/.env.docker
+
+  django-postgres:
+      image: postgres:13.2-alpine
+      container_name: django-postgres
+      environment:
+        POSTGRES_USER: django
+        POSTGRES_PASSWORD: django
+        POSTGRES_DB: django
+      command:
+        - "postgres"
+        - "-c"
+        - "port=6000"
+      ports:
+        - "6000:6000"
+
 volumes:
   postgres_data:
   node-modules:
