@@ -7,7 +7,7 @@ services:
     command:
       sh -c "goose -dir ./db postgres \"user=core password=core host=core-db sslmode=disable dbname=core\" up && ./build/cmd"
     ports:
-      - 8080:8080
+      - '8080:8080'
     networks:
       - dev
     depends_on:
@@ -28,7 +28,7 @@ services:
     networks:
       - dev
     ports:
-      - '80:80'
+      - '8081:80'
     stdin_open: true
     environment:
       - NODE_ENV=development
@@ -60,8 +60,9 @@ services:
       - "8000:8000"
     depends_on:
       - django-postgres
+    restart: always
     env_file:
-      - django_core/.env.docker
+      - ./django_core/.env.docker
     networks:
       - dev
 
