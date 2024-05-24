@@ -34,6 +34,7 @@ services:
       - NODE_ENV=development
     depends_on:
       - "core-app"
+      - "django-core"
 
   core-db:
     image: postgres:13.2-alpine
@@ -61,6 +62,9 @@ services:
       - django-postgres
     env_file:
       - django_core/.env.docker
+    networks:
+      - dev
+    restart: always
 
   django-postgres:
       image: postgres:13.2-alpine
@@ -75,6 +79,8 @@ services:
         - "port=6000"
       ports:
         - "6000:6000"
+      networks:
+        - dev
 
 volumes:
   postgres_data:
