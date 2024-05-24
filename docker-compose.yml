@@ -64,7 +64,6 @@ services:
       - django_core/.env.docker
     networks:
       - dev
-    restart: always
 
   django-postgres:
       image: postgres:13.2-alpine
@@ -73,12 +72,8 @@ services:
         POSTGRES_USER: django
         POSTGRES_PASSWORD: django
         POSTGRES_DB: django
-      command:
-        - "postgres"
-        - "-c"
-        - "port=6000"
       ports:
-        - "6000:6000"
+        - "5432:5432"
       networks:
         - dev
 
