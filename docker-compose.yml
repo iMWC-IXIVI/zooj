@@ -5,7 +5,7 @@ services:
     build: ./core
     container_name: "core-app"
     command:
-      sh -c "./build/cmd"
+      sh -c "goose -dir ./db postgres \"user=core password=core host=core-db sslmode=disable dbname=core\" up && ./build/cmd"
     ports:
       - 8080:8080
     networks:
