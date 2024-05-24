@@ -1,1 +1,7 @@
 .DS_Store
+
+#Django ignore
+venv
+django_core/.env
+django_core/.idea
+django_core/**/__pycache__/
