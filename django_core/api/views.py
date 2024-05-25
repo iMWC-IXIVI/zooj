@@ -1,11 +1,7 @@
-from rest_framework import views, response
-
-from django.contrib.auth.models import User
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-
+from rest_framework import views, response, status
+from .models import CustomUser
 from .serializers import UserSerializer
-
+from django.core.mail import EmailMultiAlternatives
 
 class TestView(views.APIView):
     def get(self, request, *args, **kwargs):
@@ -26,4 +22,6 @@ class RegistrationsAPIView(views.APIView):
         serializer = UserSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        msg = EmailMultiAlternatives(to=['esmira.mak@yandex.ru'])
+        msg.send()
         return response.Response({'Данные сохранены', 'Успешно'}, status=status.HTTP_200_OK)

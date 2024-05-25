@@ -50,3 +50,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         if self.username:
             return self.username
         return self.email
+
+
+class RegistrToken(models.Model):
+    token = models.CharField(max_length=50)
+    username = models.CharField(max_length=255)
+    # TODO: прописать поля в бд
+
+
