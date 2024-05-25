@@ -4,10 +4,11 @@ services:
   core-app:
     build: ./core
     container_name: "core-app"
+    restart: always
     command:
       sh -c "goose -dir ./db postgres \"user=core password=core host=core-db sslmode=disable dbname=core\" up && ./build/cmd"
     ports:
-      - 8080:8080
+      - '8080:8080'
     networks:
       - dev
     depends_on:
@@ -23,6 +24,7 @@ services:
   frontend:
     build: ./front
     container_name: "frontend-dev"
+    restart: always
     # volumes:
     #   - ./front:/app
     networks:
