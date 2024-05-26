@@ -32,7 +32,7 @@ class RegistrationAPIView(views.APIView):
                                     phone=request.data['phone'])
         html_content = f"""<h1>Здравствуйте!</h1>
         <p><a href='http://localhost:8000/api/{token}/'>Ссылка </a> для подтверждения регистрации </p>"""
-        msg = EmailMultiAlternatives(to=['esmira.mak@yandex.ru'], )
+        msg = EmailMultiAlternatives(to=['v.andrei_dmitrievich@mail.ru', ])
         msg.attach_alternative(html_content, 'text/html')
         msg.send()
 
