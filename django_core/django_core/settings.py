@@ -111,7 +111,7 @@ AUTH_USER_MODEL = 'api.CustomUser'
        'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }'''
-'''
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
@@ -121,4 +121,4 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-SERVER_EMAIL = EMAIL_HOST_USER'''
+SERVER_EMAIL = EMAIL_HOST_USER
