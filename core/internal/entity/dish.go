@@ -1,37 +1,37 @@
 package entity
 
 type Ingredient struct {
-	ID     int    `json:"id"`
-	DishID int    `json:"dish_id"`
+	ID     int    `json:"-"`
+	DishID int    `json:"-"`
 	Number int    `json:"number"`
 	Title  string `json:"title"`
 	Weight int    `json:"weight"`
 }
 
 type Category struct {
-	ID    int
-	Title string
+	ID    int    `json:"id"`
+	Title string `json:"title"`
 }
 
 type Tag struct {
-	ID    int
-	Title string
+	ID    int    `json:"id"`
+	Title string `json:"title"`
 }
 
 type Step struct {
-	ID          int
-	DishID      int
-	Number      int
-	Description string
+	ID          int    `json:"-"`
+	DishID      int    `json:"-"`
+	Number      int    `json:"number"`
+	Description string `json:"description"`
 }
 
 type Dish struct {
 	ID          int          `json:"id"`
 	Title       string       `json:"title"`
 	Kcal        int          `json:"kcal"`
-	Proteins    int          `json:"properties"`
-	Fats        int          `json:"fats"`
-	Carbos      int          `json:"carbos"`
+	Proteins    float32      `json:"properties"`
+	Fats        float32      `json:"fats"`
+	Carbos      float32      `json:"carbos"`
 	Ingredients []Ingredient `json:"ingredients"`
 	Steps       []Step       `json:"steps"`
 	Categories  []Category   `json:"categories"`

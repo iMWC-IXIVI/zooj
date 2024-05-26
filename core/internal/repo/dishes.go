@@ -3,8 +3,7 @@ package repo
 import (
 	"context"
 	"goauth/internal/entity"
-	"strconv"
-	"strings"
+	"log"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -25,10 +24,11 @@ func (r *Repo) GetDishes() ([]entity.Dish, error) {
 	sql := "select id, title, kcal, proteins, fats, carbos from dishes"
 	rows, err := r.db.Query(context.Background(), sql)
 	if err != nil {
+		log.Printf("failed select dishes with %v\n", err)
 		return make([]entity.Dish, 0), err
 	}
 
-	dishIDs := make([]string, 0)
+	dishIDs := make([]int, 0)
 	for rows.Next() {
 		dish := entity.Dish{
 			Ingredients: make([]entity.Ingredient, 0),
@@ -36,16 +36,19 @@ func (r *Repo) GetDishes() ([]entity.Dish, error) {
 		}
 		err := rows.Scan(&dish.ID, &dish.Title, &dish.Kcal, &dish.Proteins, &dish.Fats, &dish.Carbos)
 		if err != nil {
+			log.Printf("failed to scan dishes with %v\n", err)
 			return make([]entity.Dish, 0), err
 		}
 
 		dishes = append(dishes, dish)
-		dishIDs = append(dishIDs, strconv.Itoa(dish.ID))
+		dishIDs = append(dishIDs, dish.ID)
 	}
 
-	sql = "select id, dish_id, number, title, weight from ingredients where dish_id in ($1)"
-	rows, err = r.db.Query(context.Background(), sql, strings.Join(dishIDs, ","))
+	sql = "select id, dish_id, number, title, weight from ingredients where dish_id = any ($1);"
+
+	rows, err = r.db.Query(context.Background(), sql, dishIDs)
 	if err != nil {
+		log.Printf("failed to select ingredients with %v\n", err)
 		return make([]entity.Dish, 0), err
 	}
 
@@ -54,6 +57,7 @@ func (r *Repo) GetDishes() ([]entity.Dish, error) {
 		ing := entity.Ingredient{}
 		err := rows.Scan(&ing.ID, &ing.DishID, &ing.Number, &ing.Title, &ing.Weight)
 		if err != nil {
+			log.Printf("failed to scan ingredients with %v\n", err)
 			return make([]entity.Dish, 0), err
 		}
 
@@ -68,6 +72,31 @@ func (r *Repo) GetDishes() ([]entity.Dish, error) {
 		}
 	}
 
-	return dishes, nil
+	sql = "select id, dish_id, number, description from steps where dish_id = any($1)"
+	rows, err = r.db.Query(context.Background(), sql, dishIDs)
+	if err != nil {
+		log.Printf("failed to select steps with %v\n", err)
+		return make([]entity.Dish, 0), err
+	}
 
+	steps := make([]entity.Step, 0)
+	for rows.Next() {
+		st := entity.Step{}
+		err := rows.Scan(&st.ID, &st.DishID, &st.Number, &st.Description)
+		if err != nil {
+			log.Printf("failed to scan steps with %v\n", err)
+			return make([]entity.Dish, 0), err
+		}
+
+		steps = append(steps, st)
+	}
+
+	for index, dish := range dishes {
+		for _, step := range steps {
+			if step.DishID == dish.ID {
+				dishes[index].Steps = append(dishes[index].Steps, step)
+			}
+		}
+	}
+	return dishes, nil
 }
