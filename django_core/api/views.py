@@ -13,12 +13,6 @@ class TestView(views.APIView):
 class RegistrationAPIView(views.APIView):
 
     def post(self, request):
-        token = f'{registration_token()}'
-        RegistrToken.objects.create(token=token,
-                                    username=request.data['username'],
-                                    email=request.data['email'],
-                                    password=request.data['password'],
-                                    phone=request.data['phone'])
 
         data = request.data
         if not (data.get('username') and data.get('password') and data.get('password_confirmation') and data.get(
@@ -29,6 +23,13 @@ class RegistrationAPIView(views.APIView):
             del data['password_confirmation']
         else:
             return response.Response({'Ошибка': 'Пароли не совпадают'}, status=status.HTTP_400_BAD_REQUEST)
+        # TODO: смс по почте
+        # token = f'{registration_token()}'
+        # RegistrToken.objects.create(token=token,
+        #                             username=request.data['username'],
+        #                             email=request.data['email'],
+        #                             password=request.data['password'],
+        #                             phone=request.data['phone'])
         # html_content = f"""<h1>Здравствуйте!</h1>
         # <p><a href='http://localhost/{token}/'>Ссылка </a> для подтверждения регистрации </p>"""
         # msg = EmailMultiAlternatives(to=['esmira.mak@yandex.ru'], )
