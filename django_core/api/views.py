@@ -10,7 +10,7 @@ class TestView(views.APIView):
         return response.Response({'Method GET': 'Hello from GET'})
 
 
-class RegistrationsAPIView(views.APIView):
+class RegistrationAPIView(views.APIView):
 
     def post(self, request):
         token = f'{registration_token()}'
@@ -29,11 +29,11 @@ class RegistrationsAPIView(views.APIView):
             del data['password_confirmation']
         else:
             return response.Response({'Ошибка': 'Пароли не совпадают'}, status=status.HTTP_400_BAD_REQUEST)
-        html_content = f"""<h1>Здравствуйте!</h1>
-        <p><a href='http://localhost/{token}/'>Ссылка </a> для подтверждения регистрации </p>"""
-        msg = EmailMultiAlternatives(to=['esmira.mak@yandex.ru'], )
-        msg.attach_alternative(html_content, 'text/html')
-        msg.send()
+        # html_content = f"""<h1>Здравствуйте!</h1>
+        # <p><a href='http://localhost/{token}/'>Ссылка </a> для подтверждения регистрации </p>"""
+        # msg = EmailMultiAlternatives(to=['esmira.mak@yandex.ru'], )
+        # msg.attach_alternative(html_content, 'text/html')
+        # msg.send()
         serializer = UserSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
