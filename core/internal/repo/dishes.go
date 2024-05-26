@@ -18,11 +18,13 @@ func NewRepo(db *pgxpool.Pool) *Repo {
 	}
 }
 
-func (r *Repo) GetDishes() ([]entity.Dish, error) {
+func (r *Repo) GetDishes(page int, pageSize int) ([]entity.Dish, error) {
 	dishes := make([]entity.Dish, 0)
 
-	sql := "select id, title, kcal, proteins, fats, carbos from dishes"
-	rows, err := r.db.Query(context.Background(), sql)
+	offset := (page - 1) * pageSize
+
+	sql := "select id, title, kcal, proteins, fats, carbos from dishes LIMIT $1 OFFSET $2"
+	rows, err := r.db.Query(context.Background(), sql, pageSize, offset)
 	if err != nil {
 		log.Printf("failed select dishes with %v\n", err)
 		return make([]entity.Dish, 0), err

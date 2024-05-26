@@ -4,6 +4,7 @@ services:
   core-app:
     build: ./core
     container_name: "core-app"
+    restart: always
     command:
       sh -c "goose -dir ./db postgres \"user=core password=core host=core-db sslmode=disable dbname=core\" up && ./build/cmd"
     ports:
@@ -29,6 +30,7 @@ services:
       - dev
     ports:
       - '80:80'
+    restart: always
     stdin_open: true
     environment:
       - NODE_ENV=development
@@ -56,6 +58,7 @@ services:
     build:
       context: ./django_core
     container_name: django-core
+    restart: always
     ports:
       - "8000:8000"
     depends_on:
