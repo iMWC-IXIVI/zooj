@@ -31,7 +31,6 @@ services:
       - dev
     ports:
       - '80:80'
-    restart: always
     stdin_open: true
     environment:
       - NODE_ENV=development
