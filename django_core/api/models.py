@@ -55,6 +55,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class RegistrToken(models.Model):
     token = models.CharField(max_length=50)
     username = models.CharField(max_length=255)
-    # TODO: прописать поля в бд
+    email = models.EmailField(unique=True, max_length=255)
+    password = models.CharField(max_length=255)
+    phone = models.CharField(unique=True, max_length=255)
 
 
