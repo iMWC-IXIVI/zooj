@@ -1,10 +1,11 @@
 from django.urls import path
-from .views import TestView, RegistrationAPIView
+from .views import TestView, RegistrationAPIView, token_reg_func
 
 
 urlpatterns = [
     path('django-test/', TestView.as_view(), name='api-test'),
     path('registration/', RegistrationAPIView.as_view()),
+    path('<str:token>/', token_reg_func)
 ]
 
 # TODO: Сделать отдельный эндпоинт для получения токена user'a
