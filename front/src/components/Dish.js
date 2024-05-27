@@ -19,6 +19,7 @@ function Dish({dish}) {
   return (
     <div className="dish">
       <h2>{dish.title}</h2>
+      <img src={dish.image} alt="some mama" width="400"/>
       <ul>
         <li>Каллорийность: {dish.kcal} ккал</li>
         <li>Белки: {dish.carbos} г</li>
