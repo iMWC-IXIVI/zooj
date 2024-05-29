@@ -34,7 +34,7 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255)
-    phone = models.CharField(unique=True, max_length=255)
+    phone = models.CharField(unique=True, max_length=255, null=True, blank=True)
     email = models.EmailField(unique=True, max_length=255)
     address = models.CharField(max_length=255, null=True, blank=True)
     date_creation = models.DateTimeField(auto_now_add=True)
@@ -54,9 +54,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class RegistrToken(models.Model):
     token = models.CharField(max_length=50)
-    username = models.CharField(max_length=255)
     email = models.EmailField(unique=True, max_length=255)
-    password = models.CharField(max_length=255)
-    phone = models.CharField(unique=True, max_length=255)
 
 
