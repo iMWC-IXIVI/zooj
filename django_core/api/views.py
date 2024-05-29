@@ -10,48 +10,33 @@ class TestView(views.APIView):
         return response.Response({'Method GET': 'Hello from GET'})
 
 
-class RegistrationAPIView(views.APIView):
-
+class LoginViewAPI(views.APIView):
     def post(self, request):
+        email = request.data['email']
 
-        data = request.data
-        if not (data.get('username') and data.get('password') and data.get('password_confirmation') and data.get(
-                'email') and data.get('phone')):
-            return response.Response({'Ошибка', 'все поля обязательны к заполнению'},
-                                     status=status.HTTP_400_BAD_REQUEST)
-        if data.get('password') == data.get('password_confirmation'):
-            del data['password_confirmation']
-        else:
-            return response.Response({'Ошибка': 'Пароли не совпадают'}, status=status.HTTP_400_BAD_REQUEST)
-
-        token = f'{registration_token()}'
-        RegistrToken.objects.create(token=token,
-                                    username=request.data['username'],
-                                    email=request.data['email'],
-                                    password=request.data['password'],
-                                    phone=request.data['phone'])
+        token = f'''{registration_token()}'''
+        RegistrToken.objects.create(
+            token=token,
+            email=request.data['email']
+        )
         html_content = f"""<h1>Здравствуйте!</h1>
-        <p><a href='http://localhost:8000/api/{token}/'>Ссылка </a> для подтверждения регистрации </p>"""
-        msg = EmailMultiAlternatives(to=['v.andrei_dmitrievich@mail.ru', ])
+                <p>Ваш код для авторизации: {token}</p>"""
+        msg = EmailMultiAlternatives(to=[request.data['email'], ])
         msg.attach_alternative(html_content, 'text/html')
         msg.send()
+        return response.Response({"Код отправлен": "Успешно"})
 
-        return response.Response({'Данные сохранены', 'Успешно'}, status=status.HTTP_200_OK)
 
+class ConfirmationViewAPI(views.APIView):
+    def post(self, request):
+        token = request.data['token']
+        if RegistrToken.objects.filter(token=token):
+            token = RegistrToken.objects.get(token=token)
+            if CustomUser.objects.filter(email=token.email):
+                user = CustomUser.objects.filter(email=token.email)
+            else:
+                user = CustomUser.objects.create_user(email=token.email)
+        else:
+            return response.Response({"4-х значный код введен неверно": "Ошибка"})
 
-@decorators.api_view()
-def token_reg_func(request, **kwargs):
-    token = kwargs['token']
-
-    try:
-        data = RegistrToken.objects.get(token=token)
-    except:
-        return response.Response({'Ошибка': 'токен'})
-
-    CustomUser.objects.create_user(username=data.username,
-                                   email=data.email,
-                                   password=data.password,
-                                   phone=data.phone)
-    data.delete()
-
-    return response.Response({'Токен': 'OK'})
+        return response.Response({"Данные введены": "корректно"})
