@@ -27,6 +27,7 @@ class CustomUserManager(BaseUserManager):
         user = self.create_user(username=username, email=email, password=password, phone=phone)
 
         user.is_superuser = True
+        user.is_staff = True
         user.save(using=self._db)
 
         return user
@@ -40,7 +41,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     date_creation = models.DateTimeField(auto_now_add=True)
     date_update = models.DateTimeField(null=True, blank=True)
 
-    REQUIRED_FIELDS = ['username', ]
+    is_staff = models.BooleanField(default=False)
+
+    REQUIRED_FIELDS = ['username', 'phone']
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'email'
 

@@ -1,0 +1,24 @@
+// Information (Анкета)
+
+{
+  "user": "<id>",
+  "gender": "<string>",
+  "age": "<pos_int>",
+  "weight": "<pos_int>",
+  "height": "<pos_int>",
+  "activity": "<string>",
+  "target": "<string>",
+  "allergen": "<string>"
+}
+
+// data example
+
+{
+  "gender": "М",
+  "age": "30",
+  "weight": "70",
+  "height": "180",
+  "activity": "Минимальная",
+  "target": "Похудеть",
+  "allergen": "Какие-нибудь"
+}
