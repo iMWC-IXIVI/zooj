@@ -22,4 +22,4 @@ class InformationSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         instance.age = validated_data.get('age', instance.age)
-        instance.
+        ...
