@@ -1,8 +1,8 @@
 import React from "react";
 
-function Header() {
+function Header({className}) {
   return (
-    <header>
+    <header className={className}>
       <div>
         logo
         <nav>
