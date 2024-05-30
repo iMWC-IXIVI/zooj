@@ -69,16 +69,14 @@ services:
       - dev
 
   django-postgres:
-      image: postgres:13.2-alpine
-      container_name: django-postgres
-      environment:
-        POSTGRES_USER: django
-        POSTGRES_PASSWORD: django
-        POSTGRES_DB: django
-      ports:
-        - "5432:5432"
-      networks:
-        - dev
+    image: postgres:13.2-alpine
+    container_name: django-postgres
+    environment:
+      - POSTGRES_USER=django
+      - POSTGRES_PASSWORD=django
+      - POSTGRES_DB=django
+    networks:
+      - dev
 
 volumes:
   postgres_data:
