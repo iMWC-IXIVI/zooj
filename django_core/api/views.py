@@ -3,6 +3,8 @@ from .models import CustomUser, RegistrToken
 from .serializers import UserSerializer
 from django.core.mail import EmailMultiAlternatives
 from .utils import registration_token
+import jwt
+from django.conf import settings
 
 
 class TestView(views.APIView):
@@ -34,6 +36,11 @@ class ConfirmationViewAPI(views.APIView):
             token = RegistrToken.objects.get(token=token)
             if CustomUser.objects.filter(email=token.email):
                 user = CustomUser.objects.filter(email=token.email)
+                token = jwt.encode(
+                    {"email": request.user.email}
+                )
+
+
             else:
                 user = CustomUser.objects.create_user(email=token.email)
         else:
