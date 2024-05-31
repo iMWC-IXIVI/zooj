@@ -3,13 +3,16 @@ from rest_framework import views, response, status
 from .serializers import InformationSerializer
 from .models import Information
 
+from api.models import CustomUser
+from api.serializers import UserSerializer
+
 
 class InformationView(views.APIView):
     def post(self, request):
 
         request.data['user'] = request.user.pk
         request.data['calorie'] = calorie = self.get_calorie()
-        request.data['squirrels'] = self.get_squirrels(calorie)
+        request.data['protein'] = self.get_protein(calorie)
         request.data['fats'] = self.get_fats(calorie)
         request.data['carbohydrates'] = self.get_carbohydrates(calorie)
 
@@ -24,7 +27,7 @@ class InformationView(views.APIView):
     def put(self, request, *args, **kwargs):
 
         request.data['calorie'] = calorie = self.get_calorie()
-        request.data['squirrels'] = self.get_squirrels(calorie)
+        request.data['protein'] = self.get_protein(calorie)
         request.data['fats'] = self.get_fats(calorie)
         request.data['carbohydrates'] = self.get_carbohydrates(calorie)
 
@@ -79,7 +82,7 @@ class InformationView(views.APIView):
         return activity_data[activity]
 
     @staticmethod
-    def get_squirrels(data):
+    def get_protein(data):
         return round((data * 0.3) / 4, 2)
 
     @staticmethod
@@ -89,3 +92,14 @@ class InformationView(views.APIView):
     @staticmethod
     def get_carbohydrates(data):
         return round((data * 0.4) / 4, 2)
+
+
+class GetDataView(views.APIView):
+    def get(self, request):
+        user_data = CustomUser.objects.filter().first()
+        user_serializer = UserSerializer(user_data).data
+
+        information_data = Information.objects.filter().first()
+        information_serializer = InformationSerializer(information_data).data
+        information_serializer['user'] = user_serializer
+        return response.Response({'Data': information_serializer})

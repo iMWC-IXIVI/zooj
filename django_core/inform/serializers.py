@@ -4,7 +4,6 @@ from .models import Information
 
 
 class InformationSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
 
     user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
 
@@ -14,7 +13,7 @@ class InformationSerializer(serializers.Serializer):
     height = serializers.IntegerField()
     activity = serializers.CharField()
     calorie = serializers.FloatField()
-    squirrels = serializers.FloatField()
+    protein = serializers.FloatField()
     fats = serializers.FloatField()
     carbohydrates = serializers.FloatField()
     target = serializers.CharField()
@@ -31,7 +30,7 @@ class InformationSerializer(serializers.Serializer):
         instance.calorie = validated_data.get('calorie', instance.calorie)
         instance.target = validated_data.get('target', instance.target)
         instance.allergen = validated_data.get('allergen', instance.allergen)
-        instance.squirrels = validated_data.get('squirrels', instance.squirrels)
+        instance.protein = validated_data.get('squirrels', instance.squirrels)
         instance.fats = validated_data.get('fats', instance.fats)
         instance.carbohydrates = validated_data.get('carbohydrates', instance.carbohydrates)
 

@@ -12,7 +12,7 @@ class Information(models.Model):
     activity = models.CharField()
     calorie = models.FloatField(blank=True, null=True)
     target = models.CharField()
-    squirrels = models.FloatField()
+    protein = models.FloatField()
     fats = models.FloatField()
     carbohydrates = models.FloatField()
     allergen = models.CharField()
