@@ -9,9 +9,7 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECRET_KEY = os.getenv('SECRET_KEY')
-
-SECRET_KEY = "zooj"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG')  # TODO:Поменять во время деплоя
 
@@ -35,7 +33,7 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'inform.apps.InformConfig',
 
-    'rest_framework_simplejwt'
+    # 'rest_framework_simplejwt'
 ]
 
 MIDDLEWARE = [
