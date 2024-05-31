@@ -9,7 +9,8 @@ from django.conf import settings
 
 class TestView(views.APIView):
     def get(self, request, *args, **kwargs):
-        return response.Response({'Method GET': f'Hello from GET GET {UserSerializer(CustomUser.objects.filter().first()).data}'})
+        return response.Response(
+            {'Method GET': f'Hello from GET GET {UserSerializer(CustomUser.objects.filter().first()).data}'})
 
 
 class LoginViewAPI(views.APIView):
@@ -37,10 +38,10 @@ class ConfirmationViewAPI(views.APIView):
             if CustomUser.objects.filter(email=token.email):
                 user = CustomUser.objects.filter(email=token.email)
                 token = jwt.encode(
-                    {"email": request.user.email}
+                    {"email": request.user.email},
+                    key=settings.SECRET_KEY,
+                    algorithm="HS256"
                 )
-
-
             else:
                 user = CustomUser.objects.create_user(email=token.email)
         else:
