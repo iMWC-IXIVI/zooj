@@ -3,28 +3,21 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, username, email, password, phone):
+    def create_user(self, email):
 
         if not email:
             return ValueError('User must have an email!!!')
 
-        if not password:
-            raise ValueError('User must have a password!!!')
-
-        if not phone:
-            raise ValueError('User must have a phone!!!')
-
         email = self.normalize_email(email)
 
-        user = self.model(username=username, email=email, phone=phone)
+        user = self.model(email=email)
 
-        user.set_password(password)
         user.save(using=self._db)
 
         return user
 
-    def create_superuser(self, username, email, password, phone):
-        user = self.create_user(username=username, email=email, password=password, phone=phone)
+    def create_superuser(self, email):
+        user = self.create_user(email=email)
 
         user.is_superuser = True
         user.is_staff = True
@@ -34,7 +27,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=255)
+    username = models.CharField(max_length=255, null=True, blank=True)
     phone = models.CharField(unique=True, max_length=255, null=True, blank=True)
     email = models.EmailField(unique=True, max_length=255)
     address = models.CharField(max_length=255, null=True, blank=True)
@@ -42,8 +35,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     date_update = models.DateTimeField(null=True, blank=True)
 
     is_staff = models.BooleanField(default=False)
+    password = None
 
-    REQUIRED_FIELDS = ['username', 'phone']
+    REQUIRED_FIELDS = []
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'email'
 

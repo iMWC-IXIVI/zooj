@@ -1,10 +1,13 @@
-from rest_framework import views, response, status, decorators
+import jwt, datetime
+
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
+
+from rest_framework import views, response, status
+
 from .models import CustomUser, RegistrToken
 from .serializers import UserSerializer
-from django.core.mail import EmailMultiAlternatives
 from .utils import registration_token
-import jwt
-from django.conf import settings
 
 
 class TestView(views.APIView):
@@ -32,19 +35,24 @@ class LoginViewAPI(views.APIView):
 
 class ConfirmationViewAPI(views.APIView):
     def post(self, request):
-        token = request.data['token']
-        if RegistrToken.objects.filter(token=token):
-            token = RegistrToken.objects.get(token=token)
-            if CustomUser.objects.filter(email=token.email):
-                user = CustomUser.objects.filter(email=token.email)
-                token = jwt.encode(
-                    {"email": request.user.email},
-                    key=settings.SECRET_KEY,
-                    algorithm="HS256"
-                )
-            else:
-                user = CustomUser.objects.create_user(email=token.email)
-        else:
-            return response.Response({"4-х значный код введен неверно": "Ошибка"})
+        code = request.data['code']
 
-        return response.Response({"Данные введены": "корректно"})
+        try:
+            data_user = RegistrToken.objects.get(token=code)
+        except:
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+
+        user = CustomUser.objects.create_user(email=data_user.email)
+        # TODO: сделать проверку на наличие пользователя в бд, удалить 4 значный код из бд
+
+        payload = {
+            "user_id": user.pk,
+            "time_life": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=60),
+            "time": datetime.datetime.now(tz=datetime.timezone.utc)
+        }
+        access_token = jwt.encode(payload=payload,
+                                  key=settings.SECRET_KEY,
+                                  algorithm="HS256")
+
+        return response.Response({"access_token": access_token})
+
