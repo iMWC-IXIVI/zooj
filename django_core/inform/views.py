@@ -9,8 +9,10 @@ from api.serializers import UserSerializer
 
 class InformationView(views.APIView):
     def post(self, request):
+        # TODO: на защите поменять!!!
+        # request.data['user'] = request.user.pk
+        request.data['user'] = 1
 
-        request.data['user'] = request.user.pk
         request.data['calorie'] = calorie = self.get_calorie()
         request.data['protein'] = self.get_protein(calorie)
         request.data['fats'] = self.get_fats(calorie)
