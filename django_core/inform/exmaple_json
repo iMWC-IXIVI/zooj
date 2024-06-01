@@ -19,6 +19,5 @@
   "weight": "70",
   "height": "180",
   "activity": "Минимальная",
-  "target": "Похудеть",
-  "allergen": "Какие-нибудь"
+  "des_weight": "Похудеть"
 }

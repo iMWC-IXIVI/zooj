@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from api.models import CustomUser
 
@@ -8,14 +10,27 @@ class Information(models.Model):
     gender = models.CharField()
     age = models.PositiveIntegerField()
     weight = models.PositiveIntegerField()
+    des_weight = models.PositiveIntegerField()
     height = models.PositiveIntegerField()
     activity = models.CharField()
     calorie = models.FloatField(blank=True, null=True)
-    target = models.CharField()
-    protein = models.FloatField()
-    fats = models.FloatField()
-    carbohydrates = models.FloatField()
-    allergen = models.CharField()
+    target = models.CharField(blank=True, null=True)
+    protein = models.FloatField(blank=True, null=True)
+    fats = models.FloatField(blank=True, null=True)
+    carbohydrates = models.FloatField(blank=True, null=True)
 
-    def __str__(self):
-        return f'{self.user} information'
+
+class AnonInformation(models.Model):
+    anonim_uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    gender = models.CharField()
+    age = models.PositiveIntegerField()
+    weight = models.PositiveIntegerField()
+    des_weight = models.PositiveIntegerField()
+    height = models.PositiveIntegerField()
+    activity = models.CharField()
+    calorie = models.FloatField(blank=True, null=True)
+    target = models.CharField(blank=True, null=True)
+    protein = models.FloatField(blank=True, null=True)
+    fats = models.FloatField(blank=True, null=True)
+    carbohydrates = models.FloatField(blank=True, null=True)
