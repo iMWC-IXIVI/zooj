@@ -1,7 +1,8 @@
-import jwt, datetime
+import jwt, datetime, json
 
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from django.http import HttpResponse, HttpRequest
 
 from rest_framework import views, response, status
 
@@ -45,14 +46,25 @@ class ConfirmationViewAPI(views.APIView):
         user = CustomUser.objects.create_user(email=data_user.email)
         # TODO: сделать проверку на наличие пользователя в бд, удалить 4 значный код из бд
 
+        time_life = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=60)
+
         payload = {
             "user_id": user.pk,
-            "time_life": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=60),
-            "time": datetime.datetime.now(tz=datetime.timezone.utc)
+            "time_life": time_life.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "time": datetime.datetime.now(tz=datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         }
         access_token = jwt.encode(payload=payload,
                                   key=settings.SECRET_KEY,
                                   algorithm="HS256")
+        response_token = HttpResponse()
+        response_token.set_cookie("token", access_token)
 
         return response.Response({"access_token": access_token})
 
+
+# class AuthorizationView(views.APIView):
+#     def post(self, request: HttpRequest):
+#         token = request.COOKIES.get('token')
+#         if token is not None:
+#             token_decode = jwt.decode(token, algorithms="utf-8")
+#             print(token_decode)
