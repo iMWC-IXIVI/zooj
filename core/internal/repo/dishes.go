@@ -31,14 +31,25 @@ func (r *Repo) GetDish(id int) (entity.Dish, error) {
 	return dish, nil
 }
 
-func (r *Repo) GetDishes(page int, pageSize int) ([]entity.Dish, error) {
+func (r *Repo) GetDishes(page int, pageSize int, categoryIDs []int) ([]entity.Dish, error) {
 	dishes := make([]entity.Dish, 0)
 
 	offset := (page - 1) * pageSize
 
-	sql := "select id, title, kcal, proteins, fats, carbos, image from dishes order by id LIMIT $1 OFFSET $2"
+	sql := "select id, title, kcal, proteins, fats, carbos, image from dishes"
+	args := []any{pageSize, offset}
+	log.Printf("MAMA categoryIDS: %v %v\n", len(categoryIDs), categoryIDs)
 
-	rows, err := r.db.Query(context.Background(), sql, pageSize, offset)
+	if len(categoryIDs) > 0 {
+		sql += " where exists (select 1 from dishes_categories where dish_id = dishes.id and category_id = any($3))"
+		args = append(args, categoryIDs)
+	}
+
+	sql += " order by id LIMIT $1 OFFSET $2"
+
+	log.Printf("SQL IS: %v\n", sql)
+
+	rows, err := r.db.Query(context.Background(), sql, args...)
 	if err != nil {
 		log.Printf("failed select dishes with %v\n", err)
 		return make([]entity.Dish, 0), err
@@ -49,6 +60,7 @@ func (r *Repo) GetDishes(page int, pageSize int) ([]entity.Dish, error) {
 		dish := entity.Dish{
 			Ingredients: make([]entity.Ingredient, 0),
 			Steps:       make([]entity.Step, 0),
+			Categories:  make([]entity.Category, 0),
 		}
 		err := rows.Scan(&dish.ID, &dish.Title, &dish.Kcal, &dish.Proteins, &dish.Fats, &dish.Carbos, &dish.Image)
 		if err != nil {
@@ -114,5 +126,33 @@ func (r *Repo) GetDishes(page int, pageSize int) ([]entity.Dish, error) {
 			}
 		}
 	}
+
+	sql = `select id, title, dish_id
+		from categories join dishes_categories on dishes_categories.category_id = categories.id
+		where dish_id  = any($1)
+		`
+
+	rows, err = r.db.Query(context.Background(), sql, dishIDs)
+	if err != nil {
+		log.Printf("failed to select categories with %v\n", err)
+		return make([]entity.Dish, 0), err
+	}
+
+	for rows.Next() {
+		category := entity.Category{}
+		var dishID int
+		err := rows.Scan(&category.ID, &category.Title, &dishID)
+		if err != nil {
+			log.Printf("failed to scan category with %v\n", err)
+			return make([]entity.Dish, 0), err
+		}
+
+		for index, dish := range dishes {
+			if dish.ID == dishID {
+				dishes[index].Categories = append(dishes[index].Categories, category)
+			}
+		}
+	}
+
 	return dishes, nil
 }
