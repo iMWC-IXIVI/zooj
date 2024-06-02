@@ -1,25 +1,73 @@
-from rest_framework import views, response, status
+from rest_framework import views, response, status, exceptions, decorators
 
-from .serializers import InformationSerializer
-from .models import Information
+from .serializers import InformationSerializer, AnonInfoSerializer
+from .models import Information, AnonInformation
 
 from api.models import CustomUser
 from api.serializers import UserSerializer
 
 
-class AnonInformation(views.APIView):
+class AnonInformationAPI(views.APIView):
     def post(self, request):
-        weight = int(request.data['weight']) * 10
-        height = int(request.data['height']) * 6.25
-        age = int(request.data['age']) * 5
+
+        serializer_response = response.Response()
+
+        weight = int(request.data['weight'])
+        des_weight = int(request.data['des_weight'])
+        height = int(request.data['height'])
+        age = int(request.data['age'])
         gender = self.get_gender(request.data['gender'])
         activity = self.get_activity(request.data['activity'])
-        calorie = (weight + height - age + gender) * activity
-        calorie = self.get_calorie(calorie)
-# TODO доделать!
+
+        calorie = (weight * 10 + height * 6.25 - age * 5 + gender) * activity
+        calorie = self.get_calorie(calorie, des_weight, weight)
+
+        request.data['calorie'] = calorie
+        request.data['protein'] = self.get_protein(calorie)
+        request.data['fats'] = self.get_fats(calorie)
+        request.data['carbohydrates'] = self.get_carbohydrates(calorie)
+
+        serializer = AnonInfoSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            raise exceptions.ValidationError(detail='Data is not valid')
+
+        serializer.save()
+
+        info = AnonInformation.objects.last()
+
+        serializer_response.set_cookie(key='anonim_uuid', value=info.anonim_uuid, httponly=True)
+
+        serializer_response.data = {
+            'message': 'success'
+        }
+        serializer_response.status_code = status.HTTP_201_CREATED
+
+        return serializer_response
+
     @staticmethod
-    def get_calorie(calorie):
-        pass
+    def get_carbohydrates(calorie):
+        return round((calorie * 0.4) / 4, 2)
+
+    @staticmethod
+    def get_fats(calorie):
+        return round((calorie * 0.3) / 9, 2)
+
+    @staticmethod
+    def get_protein(calorie):
+        return round((calorie * 0.3) / 4, 2)
+
+    @staticmethod
+    def get_calorie(calorie, des_weight, weight):
+
+        target = weight - des_weight
+
+        if target > 0:
+            return round(calorie - calorie * 0.1, 2)
+        elif target < 0:
+            return round(calorie + calorie * 0.1, 2)
+
+        return round(calorie, 2)
 
     @staticmethod
     def get_gender(gender):
@@ -43,6 +91,15 @@ class AnonInformation(views.APIView):
         }
 
         return activity_data[activity]
+
+
+@decorators.api_view(['GET', ])
+def get_anon_information(request):
+    anonim_uuid = request.COOKIES['anonim_uuid']
+
+    anon_user = AnonInformation.objects.get(anonim_uuid=anonim_uuid)
+
+    return response.Response({'Anonymous': AnonInfoSerializer(anon_user).data})
 
 
 class InformationView(views.APIView):

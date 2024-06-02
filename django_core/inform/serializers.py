@@ -1,6 +1,26 @@
 from rest_framework import serializers
+
 from api.models import CustomUser
-from .models import Information
+from .models import Information, AnonInformation
+
+
+class AnonInfoSerializer(serializers.Serializer):
+
+    anonim_uuid = serializers.UUIDField(read_only=True)
+
+    gender = serializers.CharField(max_length=1)
+    age = serializers.IntegerField()
+    weight = serializers.IntegerField()
+    des_weight = serializers.IntegerField()
+    height = serializers.IntegerField()
+    activity = serializers.IntegerField()
+    calorie = serializers.FloatField()
+    protein = serializers.FloatField()
+    fats = serializers.FloatField()
+    carbohydrates = serializers.FloatField()
+
+    def create(self, validated_data):
+        return AnonInformation.objects.create(**validated_data)
 
 
 class InformationSerializer(serializers.Serializer):

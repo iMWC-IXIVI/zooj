@@ -1,9 +1,8 @@
 from django.urls import path
-from .views import InformationView, GetDataView, AnonInformation
+from .views import InformationView, GetDataView, AnonInformationAPI, get_anon_information
 
 
 urlpatterns = [
-    path('an-info', AnonInformation.as_view(), name='anon_information'),
-    path('info', InformationView.as_view(), name='information'),
-    path('get-data', GetDataView.as_view(), name='get_user_data')
+    path('anon-info/', AnonInformationAPI.as_view(), name='anon_info'),
+    path('get-anon-info/', get_anon_information, name='get_anon_info')
 ]

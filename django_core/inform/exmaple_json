@@ -17,7 +17,7 @@
   "gender": "М",
   "age": "30",
   "weight": "70",
+  "des_weight":"80",
   "height": "180",
-  "activity": "Минимальная",
-  "des_weight": "Похудеть"
+  "activity": "1"
 }
