@@ -24,13 +24,13 @@ services:
   frontend:
     build: ./front
     container_name: "frontend-dev"
+    restart: always
     # volumes:
     #   - ./front:/app
     networks:
       - dev
     ports:
       - '80:80'
-    restart: always
     stdin_open: true
     environment:
       - NODE_ENV=development

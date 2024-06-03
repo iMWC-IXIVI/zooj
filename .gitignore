@@ -5,3 +5,4 @@ venv
 django_core/.env
 django_core/.idea
 django_core/**/__pycache__/
+django_core/**/migrations/**.py
