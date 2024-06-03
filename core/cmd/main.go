@@ -26,6 +26,7 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.GET("/api/v1/catalog", handler.GetDishes)
+	e.GET("/api/v1/images/:dish_id", handler.GetDishImage)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }

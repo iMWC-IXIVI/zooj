@@ -1,10 +1,9 @@
 from django.urls import path
-from .views import TestView, RegistrationAPIView
-
+from .views import TestView, LoginViewAPI, ConfirmationViewAPI  # AuthorizationView
 
 urlpatterns = [
     path('django-test/', TestView.as_view(), name='api-test'),
-    path('registration/', RegistrationAPIView.as_view()),
+    path('login/', LoginViewAPI.as_view(), name='login'),
+    path('confirmation/', ConfirmationViewAPI.as_view(), name='confirmation'),
+    # path('authorization/', AuthorizationView.as_view(), name='authorization')
 ]
-
-# TODO: Сделать отдельный эндпоинт для получения токена user'a
