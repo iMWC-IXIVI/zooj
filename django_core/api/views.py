@@ -4,7 +4,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.http import HttpResponse, HttpRequest
 
-from rest_framework import views, response, status
+from rest_framework import views, response, status, decorators
 
 from .models import CustomUser, RegistrToken
 from .serializers import UserSerializer
@@ -17,8 +17,9 @@ class TestView(views.APIView):
             {'Method GET': f'Hello from GET GET {UserSerializer(CustomUser.objects.filter().first()).data}'})
 
 
-class LoginViewAPI(views.APIView):
+class SendMailAPI(views.APIView):
     def post(self, request):
+
         email = request.data['email']
 
         token = f'''{registration_token()}'''
@@ -34,8 +35,9 @@ class LoginViewAPI(views.APIView):
         return response.Response({"Код отправлен": "Успешно"})
 
 
-class ConfirmationViewAPI(views.APIView):
+class RegistrationViewAPI(views.APIView):
     def post(self, request):
+
         code = request.data['code']
 
         try:
@@ -53,18 +55,42 @@ class ConfirmationViewAPI(views.APIView):
             "time_life": time_life.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "time": datetime.datetime.now(tz=datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         }
-        access_token = jwt.encode(payload=payload,
-                                  key=settings.SECRET_KEY,
-                                  algorithm="HS256")
-        response_token = HttpResponse()
+        access_token = jwt.encode(payload=payload, key=settings.SECRET_KEY, algorithm="HS256")
+        response_token = response.Response()
         response_token.set_cookie("token", access_token)
+        response_token.data = {"message": "success"}
+        response_token.status_code = status.HTTP_201_CREATED
 
-        return response.Response({"access_token": access_token})
+        return response_token
 
 
-# class AuthorizationView(views.APIView):
-#     def post(self, request: HttpRequest):
-#         token = request.COOKIES.get('token')
-#         if token is not None:
-#             token_decode = jwt.decode(token, algorithms="utf-8")
-#             print(token_decode)
+@decorators.api_view(['GET', ])
+def login(request):
+
+    try:
+        token = request.COOKIES['token']
+    except KeyError:
+        return response.Response({"error": "token not found"})
+
+    token_decode = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms=['HS256', ])
+    user_id = token_decode['user_id']
+    user = CustomUser.objects.get(id=user_id)
+    serializer = UserSerializer(user)
+
+    return response.Response(serializer.data)
+
+
+@decorators.api_view(['POST', ])
+def logout(request):
+
+    response_token = response.Response()
+    response_token.delete_cookie(key='token')
+    response_token.data = {"message": "success"}
+    response_token.status_code = status.HTTP_200_OK
+
+    return response_token
+
+
+
+
+
