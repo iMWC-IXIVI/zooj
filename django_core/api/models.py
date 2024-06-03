@@ -11,16 +11,6 @@ class CustomUserManager(BaseUserManager):
         email = self.normalize_email(email)
 
         user = self.model(email=email)
-
-        user.save(using=self._db)
-
-        return user
-
-    def create_superuser(self, email):
-        user = self.create_user(email=email)
-
-        user.is_superuser = True
-        user.is_staff = True
         user.save(using=self._db)
 
         return user

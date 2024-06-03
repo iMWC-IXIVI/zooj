@@ -47,9 +47,7 @@ class InformationSerializer(serializers.Serializer):
         instance.height = validated_data.get('height', instance.height)
         instance.activity = validated_data.get('activity', instance.activity)
         instance.calorie = validated_data.get('calorie', instance.calorie)
-        instance.target = validated_data.get('target', instance.target)
-        instance.allergen = validated_data.get('allergen', instance.allergen)
-        instance.protein = validated_data.get('squirrels', instance.squirrels)
+        instance.protein = validated_data.get('protein', instance.protein)
         instance.fats = validated_data.get('fats', instance.fats)
         instance.carbohydrates = validated_data.get('carbohydrates', instance.carbohydrates)
 
