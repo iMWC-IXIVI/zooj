@@ -27,17 +27,16 @@ class InformationSerializer(serializers.Serializer):
 
     user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
 
-    gender = serializers.CharField()
+    gender = serializers.CharField(max_length=1)
     age = serializers.IntegerField()
     weight = serializers.IntegerField()
+    des_weight = serializers.IntegerField()
     height = serializers.IntegerField()
-    activity = serializers.CharField()
+    activity = serializers.IntegerField()
     calorie = serializers.FloatField()
     protein = serializers.FloatField()
     fats = serializers.FloatField()
     carbohydrates = serializers.FloatField()
-    target = serializers.CharField()
-    allergen = serializers.CharField()
 
     def create(self, validated_data):
         return Information.objects.create(**validated_data)
