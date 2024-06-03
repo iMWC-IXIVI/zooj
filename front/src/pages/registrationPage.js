@@ -1,11 +1,11 @@
 import React from "react";
 import "../App.css"
-import Header from '../components/header';
+// import Header from '../components/header';
 
 function registrationPage(){
     return (
         <>
-        <Header/>
+        {/* <Header/> */}
         <form>
             <input placeholder="username"></input>
             <input placeholder="email"></input>

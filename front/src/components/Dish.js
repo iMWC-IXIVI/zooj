@@ -1,3 +1,5 @@
+import React from "react";
+
 function Dish({dish}) {
 
   let ingList = [];
