@@ -38,7 +38,6 @@ func (r *Repo) GetDishes(page int, pageSize int, categoryIDs []int) ([]entity.Di
 
 	sql := "select id, title, kcal, proteins, fats, carbos, image from dishes"
 	args := []any{pageSize, offset}
-	log.Printf("MAMA categoryIDS: %v %v\n", len(categoryIDs), categoryIDs)
 
 	if len(categoryIDs) > 0 {
 		sql += " where exists (select 1 from dishes_categories where dish_id = dishes.id and category_id = any($3))"
