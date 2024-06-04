@@ -33,7 +33,9 @@ func (h *Handler) GetDishes(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
 
-	dishes, err := h.repo.GetDishes(page, pageSize)
+	categoryIDs := parseCategoryIDs(c)
+
+	dishes, err := h.repo.GetDishes(page, pageSize, categoryIDs)
 	if err != nil {
 		return err
 	}
@@ -42,6 +44,24 @@ func (h *Handler) GetDishes(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, GetDishesResponse{Dishes: dishes})
+}
+
+func parseCategoryIDs(c echo.Context) []int {
+	categoryIDs := c.QueryParam("categories[]")
+	catIDs := strings.Split(categoryIDs, ",")
+	ids := make([]int, 0)
+	for _, strID := range catIDs {
+		if strID != "" {
+			id, err := strconv.Atoi(strID)
+			if err != nil {
+				return make([]int, 0)
+			}
+
+			ids = append(ids, id)
+		}
+	}
+
+	return ids
 }
 
 func (h *Handler) GetDishImage(c echo.Context) error {
@@ -64,7 +84,6 @@ func (h *Handler) GetDishImage(c echo.Context) error {
 }
 
 func parsePaginationParams(c echo.Context) (page int, pageSize int, err error) {
-
 	pageStr := c.QueryParam("page")
 	pageSizeStr := c.QueryParam("pageSize")
 
@@ -73,12 +92,7 @@ func parsePaginationParams(c echo.Context) (page int, pageSize int, err error) {
 	}
 
 	if pageSizeStr == "" {
-		pageSizeStr = "10"
-	}
-
-	if strings.Contains(pageStr, "-") || strings.Contains(pageStr, "-") {
-		log.Printf("Invaild page parameters")
-		return 0, 0, errors.New("invalid page parameters")
+		pageSizeStr = "100"
 	}
 
 	page, err = strconv.Atoi(pageStr)
