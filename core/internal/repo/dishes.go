@@ -2,8 +2,11 @@ package repo
 
 import (
 	"context"
+	"fmt"
 	"goauth/internal/entity"
 	"log"
+	"strconv"
+	"strings"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -31,18 +34,34 @@ func (r *Repo) GetDish(id int) (entity.Dish, error) {
 	return dish, nil
 }
 
-func (r *Repo) GetDishes(page int, pageSize int, categoryIDs []int) ([]entity.Dish, error) {
+func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int) ([]entity.Dish, error) {
 	dishes := make([]entity.Dish, 0)
+	fmt.Printf("MAMA: %v\n", categoryIDs, tagIDs)
 
 	offset := (page - 1) * pageSize
 
 	sql := "select id, title, kcal, proteins, fats, carbos, image from dishes"
 	args := []any{pageSize, offset}
 
+	if len(categoryIDs) > 0 || len(tagIDs) > 0 {
+		sql += " where "
+	}
+
+	wheres := []string{}
+
 	if len(categoryIDs) > 0 {
-		sql += " where exists (select 1 from dishes_categories where dish_id = dishes.id and category_id = any($3))"
+		key := len(args) + 1
+		wheres = append(wheres, " exists (select 1 from dishes_categories where dish_id = dishes.id and category_id = any($"+strconv.Itoa(key)+"))")
 		args = append(args, categoryIDs)
 	}
+
+	if len(tagIDs) > 0 {
+		key := len(args) + 1
+		wheres = append(wheres, " not exists (select 1 from dishes_tags where dish_id = dishes.id and tag_id = any($"+strconv.Itoa(key)+"))")
+		args = append(args, tagIDs)
+	}
+
+	sql += strings.Join(wheres, " and ")
 
 	sql += " order by id LIMIT $1 OFFSET $2"
 
@@ -126,12 +145,19 @@ func (r *Repo) GetDishes(page int, pageSize int, categoryIDs []int) ([]entity.Di
 		}
 	}
 
+	args = []any{dishIDs}
+
 	sql = `select id, title, dish_id
 		from categories join dishes_categories on dishes_categories.category_id = categories.id
 		where dish_id  = any($1)
 		`
 
-	rows, err = r.db.Query(context.Background(), sql, dishIDs)
+	if len(categoryIDs) > 0 {
+		sql += ` and id = any($2)`
+		args = append(args, categoryIDs)
+	}
+
+	rows, err = r.db.Query(context.Background(), sql, args...)
 	if err != nil {
 		log.Printf("failed to select categories with %v\n", err)
 		return make([]entity.Dish, 0), err
