@@ -26,7 +26,7 @@ class SendMailAPI(views.APIView):
         msg = EmailMultiAlternatives(to=[email, ])
         msg.attach_alternative(html_content, 'text/html')
         msg.send()
-        return response.Response({"Код отправлен": "Успешно"})
+        return response.Response({"message": "success"})
 
 
 class RegistrationViewAPI(views.APIView):
