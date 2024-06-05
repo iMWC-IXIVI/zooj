@@ -7,8 +7,8 @@ from rest_framework import views, response, status, decorators
 
 from inform.models import AnonInformation, Information
 from inform.serializers import AnonInfoSerializer, InformationSerializer
-from .models import CustomUser, RegistrToken
-from .serializers import UserSerializer
+from .models import CustomUser, RegistrToken, Profile
+from .serializers import UserSerializer, ProfileSerializer
 from .utils import registration_token
 
 
@@ -43,6 +43,8 @@ class RegistrationViewAPI(views.APIView):
 
         if not CustomUser.objects.filter(email=data_user.email).exists():
             user = CustomUser.objects.create_user(email=data_user.email)
+            Profile.objects.create(user_id=user.id,
+                                   email=user.email)
             data_user.delete()
         else:
             user = CustomUser.objects.get(email=data_user.email)
@@ -101,7 +103,7 @@ def login(request):
     serializer = UserSerializer(user)
 
     return response.Response(serializer.data)
-
+# TOdO: в случае, если токен не найден, нужно повторно отправить пост запрос с почтой
 
 @decorators.api_view(['POST', ])
 def logout(request):
@@ -128,3 +130,17 @@ def get_user(request):
     return response.Response(data={'user': serializer_user,
                                    'anketa': serializer_information},
                              status=status.HTTP_200_OK)
+
+
+class ProfileView(views.APIView):
+    def get(self, *args, **kwargs):
+        print(kwargs)
+        pk = kwargs.get('pk')
+        # objects = Profile.objects.
+        print(pk)
+        profile = Profile.objects.get(pk=pk)
+        serializer = UserSerializer(profile).data
+        avatar_serializer = ProfileSerializer(profile).data
+
+        return response.Response({"profile": serializer,
+                                  "avatar": avatar_serializer})

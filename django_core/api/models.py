@@ -41,6 +41,17 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class RegistrToken(models.Model):
     token = models.CharField(max_length=50)
-    email = models.EmailField(unique=True, max_length=255)
+    email = models.EmailField(max_length=255)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='profile_avatars/', null=True, blank=True, default='foto_profile.jpg')
+    email = models.EmailField(max_length=255)
+    phone = models.CharField(max_length=255, blank=True, null=True)
+    username = models.CharField(max_length=255, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+
+    # TODO: установить картинку по умолчанию
 
 

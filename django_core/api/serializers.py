@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser
+from .models import CustomUser, Profile
 
 
 class UserSerializer(serializers.Serializer):
@@ -11,3 +11,8 @@ class UserSerializer(serializers.Serializer):
     def create(self, validated_data):
         user = CustomUser.objects.create_user(**validated_data)
         return user
+
+
+class ProfileSerializer(serializers.Serializer):
+    avatar = serializers.ImageField()
+
