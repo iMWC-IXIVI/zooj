@@ -20,7 +20,7 @@ class Information(models.Model):
 
 
 class AnonInformation(models.Model):
-    anonim_uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    anonim_uuid = models.UUIDField(primary_key=True, editable=False)
 
     gender = models.CharField(max_length=1)
     age = models.PositiveIntegerField()
