@@ -1,17 +1,58 @@
 import React from "react";
-
-function Header({className}) {
+import Button from "./Button";
+function Header({ className }) {
   return (
-    <header className={className}>
-      <div>
-        logo
+    <header>
+      <div className={className}>
+        <div className="logo">ЗОЖНИК</div>
         <nav>
-          <ul>
-            <li>first</li>
-            <li>second</li>
-            <li>third</li>
+          <ul className="header-list">
+            <li>
+              <a href="#">Полезное питание</a>
+            </li>
+            <li>
+              <svg
+                width="2"
+                height="22"
+                viewBox="0 0 2 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="0.5"
+                  width="1"
+                  height="22"
+                  fill="#444444"
+                  fill-opacity="0.08"
+                />
+              </svg>
+            </li>
+            <li>
+              <a href="#">Готовые программы</a>
+            </li>
+            <li>
+              <svg
+                width="2"
+                height="22"
+                viewBox="0 0 2 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="0.5"
+                  width="1"
+                  height="22"
+                  fill="#444444"
+                  fill-opacity="0.08"
+                />
+              </svg>
+            </li>
+            <li>
+              <a href="https://zozhnik.ru/#gsc.tab=0">Метод тарелки</a>
+            </li>
           </ul>
         </nav>
+        <Button className="header-btn" label="Войти"></Button>
       </div>
     </header>
   );

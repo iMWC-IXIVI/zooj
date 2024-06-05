@@ -1,3 +1,5 @@
+import React from "react";
+
 function Category({category, toggleCategory}) {
     function switchCategory() {
         toggleCategory(category.id)

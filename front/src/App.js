@@ -1,15 +1,13 @@
 import React from 'react';
 import './App.css';
-import Header from './components/header';
+import Header from './components/Header';
 import CatalogIndex from './components/CatalogIndex';
-import RegistrationPage from "./pages/registrationPage";
 
 function App() {
   return (
     <>
-      <Header className="app-header"/>
+      <Header className="container header-container"/>
       <CatalogIndex/>
-      <RegistrationPage/>
     </>
   );
 }
