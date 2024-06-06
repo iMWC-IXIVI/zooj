@@ -1,70 +1,125 @@
-import jwt, datetime, json
+import jwt, datetime
 
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
-from django.http import HttpResponse, HttpRequest
 
-from rest_framework import views, response, status
+from rest_framework import views, response, status, decorators
 
+from inform.models import AnonInformation, Information
+from inform.serializers import AnonInfoSerializer, InformationSerializer
 from .models import CustomUser, RegistrToken
 from .serializers import UserSerializer
 from .utils import registration_token
 
 
-class TestView(views.APIView):
-    def get(self, request, *args, **kwargs):
-        return response.Response(
-            {'Method GET': f'Hello from GET GET {UserSerializer(CustomUser.objects.filter().first()).data}'})
-
-
-class LoginViewAPI(views.APIView):
+class SendMailAPI(views.APIView):
     def post(self, request):
+
         email = request.data['email']
 
-        token = f'''{registration_token()}'''
-        RegistrToken.objects.create(
-            token=token,
-            email=request.data['email']
-        )
-        html_content = f"""<h1>Здравствуйте!</h1>
-                <p>Ваш код для авторизации: {token}</p>"""
-        msg = EmailMultiAlternatives(to=[request.data['email'], ])
+        token = registration_token()
+
+        RegistrToken.objects.create(token=token, email=email)
+
+        html_content = ('<h1>Здравствуйте!</h1>'
+                        f'<p>Ваш код для авторизации: {token}</p>')
+        msg = EmailMultiAlternatives(to=[email, ])
         msg.attach_alternative(html_content, 'text/html')
         msg.send()
-        return response.Response({"Код отправлен": "Успешно"})
+        return response.Response({"message": "success"})
 
 
-class ConfirmationViewAPI(views.APIView):
+class RegistrationViewAPI(views.APIView):
     def post(self, request):
+
+        user_uuid = request.headers['anonymous_uuid']
+
         code = request.data['code']
 
         try:
             data_user = RegistrToken.objects.get(token=code)
         except:
-            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+            return response.Response(data={"error": "code not found"}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = CustomUser.objects.create_user(email=data_user.email)
-        # TODO: сделать проверку на наличие пользователя в бд, удалить 4 значный код из бд
+        if not CustomUser.objects.filter(email=data_user.email).exists():
+            user = CustomUser.objects.create_user(email=data_user.email)
+            data_user.delete()
+        else:
+            user = CustomUser.objects.get(email=data_user.email)
+            data_user.delete()
 
-        time_life = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(minutes=60)
+        if user_uuid:
+            response_token = self.create_information(user, user_uuid)
+        else:
+            response_token = response.Response()
 
         payload = {
-            "user_id": user.pk,
-            "time_life": time_life.strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "time": datetime.datetime.now(tz=datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+            "user_id": user.pk
         }
-        access_token = jwt.encode(payload=payload,
-                                  key=settings.SECRET_KEY,
-                                  algorithm="HS256")
-        response_token = HttpResponse()
-        response_token.set_cookie("token", access_token)
+        access_token = jwt.encode(payload=payload, key=settings.SECRET_KEY, algorithm="HS256")
 
-        return response.Response({"access_token": access_token})
+        response_token.data = {'token': access_token}
+        response_token.status_code = status.HTTP_201_CREATED
+
+        return response_token
+
+    @staticmethod
+    def create_information(user, user_uuid):
+
+        anon_data = AnonInformation.objects.get(pk=user_uuid)
+        serializer_anon = AnonInfoSerializer(anon_data).data
+        serializer_anon['user'] = user.pk
+
+        serializer = InformationSerializer(data=serializer_anon)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        anon_data.delete()
+
+        response_user = response.Response()
+
+        return response_user
 
 
-# class AuthorizationView(views.APIView):
-#     def post(self, request: HttpRequest):
-#         token = request.COOKIES.get('token')
-#         if token is not None:
-#             token_decode = jwt.decode(token, algorithms="utf-8")
-#             print(token_decode)
+@decorators.api_view(['GET', ])
+def login(request):
+
+    try:
+        token = request.headers['token']
+    except KeyError:
+        return response.Response({"error": "token not found"})
+
+    token_decode = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms=['HS256', ])
+    user_id = token_decode['user_id']
+    user = CustomUser.objects.get(id=user_id)
+    serializer = UserSerializer(user)
+
+    return response.Response({'user': serializer.data})
+
+
+@decorators.api_view(['POST', ])
+def logout(request):
+    """Под вопросом"""
+    response_token = response.Response()
+    response_token.delete_cookie(key='token')
+    response_token.data = {"message": "success"}
+    response_token.status_code = status.HTTP_200_OK
+
+    return response_token
+
+
+@decorators.api_view(['GET', ])
+def get_user(request):
+    token = request.headers['token']
+
+    token_decode = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms=['HS256', ])
+
+    user = CustomUser.objects.get(pk=token_decode['user_id'])
+    information = Information.objects.get(user_id=user.pk)
+
+    serializer_user = UserSerializer(user).data
+    serializer_information = InformationSerializer(information).data
+
+    return response.Response(data={'user': serializer_user,
+                                   'anketa': serializer_information},
+                             status=status.HTTP_200_OK)

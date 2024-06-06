@@ -13,15 +13,14 @@ class Information(models.Model):
     des_weight = models.PositiveIntegerField()
     height = models.PositiveIntegerField()
     activity = models.CharField()
-    calorie = models.FloatField(blank=True, null=True)
-    target = models.CharField(blank=True, null=True)
-    protein = models.FloatField(blank=True, null=True)
-    fats = models.FloatField(blank=True, null=True)
-    carbohydrates = models.FloatField(blank=True, null=True)
+    calorie = models.FloatField()
+    protein = models.FloatField()
+    fats = models.FloatField()
+    carbohydrates = models.FloatField()
 
 
 class AnonInformation(models.Model):
-    anonim_uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    anonim_uuid = models.UUIDField(primary_key=True, editable=False)
 
     gender = models.CharField(max_length=1)
     age = models.PositiveIntegerField()

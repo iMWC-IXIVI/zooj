@@ -27,7 +27,7 @@ function Dish({dish}) {
         <li>Углеводы: {dish.carbos}</li>
       </ul>
 
-      <h3>Ингридиенты:</h3>
+      <h3>Ингредиенты:</h3>
       <ul>
         { ingList }
       </ul>
