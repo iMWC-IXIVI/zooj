@@ -11,4 +11,3 @@ function Tag({tag, selected, toggleTag}) {
   }
   
   export default Tag;
-  

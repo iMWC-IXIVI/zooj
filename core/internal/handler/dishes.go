@@ -89,23 +89,6 @@ func parseAntiTags(c echo.Context) []int {
 	return ids
 }
 
-func parseCategoryIDs(c echo.Context) []int {
-	categoryIDs := c.QueryParam("categories[]")
-	catIDs := strings.Split(categoryIDs, ",")
-	ids := make([]int, 0)
-	for _, strID := range catIDs {
-		if strID != "" {
-			id, err := strconv.Atoi(strID)
-			if err != nil {
-				return make([]int, 0)
-			}
-
-			ids = append(ids, id)
-		}
-	}
-
-	return ids
-}
 
 func (h *Handler) GetDishImage(c echo.Context) error {
 	strDishID := c.Param("dish_id")
