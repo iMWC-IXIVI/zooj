@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import SendMailAPI, RegistrationViewAPI, login, logout, get_user, ProfileView
+from .views import SendMailAPI, RegistrationViewAPI, login, logout, get_user
 
 
 urlpatterns = [
@@ -8,5 +8,5 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('logout/', logout, name='logout'),
     path('get-user/', get_user, name='get_user'),
-    path('profile/', ProfileView.as_view(), name='profile')
+    # path('profile/', ProfileView.as_view(), name='profile')
 ]

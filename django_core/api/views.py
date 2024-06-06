@@ -7,8 +7,8 @@ from rest_framework import views, response, status, decorators
 
 from inform.models import AnonInformation, Information
 from inform.serializers import AnonInfoSerializer, InformationSerializer
-from .models import CustomUser, RegistrToken, Profile
-from .serializers import UserSerializer, ProfileSerializer
+from .models import CustomUser, RegistrToken
+from .serializers import UserSerializer
 from .utils import registration_token
 
 
@@ -132,14 +132,14 @@ def get_user(request):
                              status=status.HTTP_200_OK)
 
 
-class ProfileView(views.APIView):
-    def get(self, *args, **kwargs):
-        print(kwargs)
-        pk = kwargs.get('pk')
-        print(pk)
-        profile = Profile.objects.get(pk=pk)
-        serializer = UserSerializer(profile).data
-        avatar_serializer = ProfileSerializer(profile).data
-
-        return response.Response({"profile": serializer,
-                                  "avatar": avatar_serializer})
+# class ProfileView(views.APIView):
+#     def get(self, *args, **kwargs):
+#         print(kwargs)
+#         pk = kwargs.get('pk')
+#         print(pk)
+#         profile = Profile.objects.get(pk=pk)
+#         serializer = UserSerializer(profile).data
+#         avatar_serializer = ProfileSerializer(profile).data
+#
+#         return response.Response({"profile": serializer,
+#                                   "avatar": avatar_serializer})
