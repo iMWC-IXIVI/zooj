@@ -136,7 +136,6 @@ class ProfileView(views.APIView):
     def get(self, *args, **kwargs):
         print(kwargs)
         pk = kwargs.get('pk')
-        # objects = Profile.objects.
         print(pk)
         profile = Profile.objects.get(pk=pk)
         serializer = UserSerializer(profile).data

@@ -52,6 +52,6 @@ class Profile(models.Model):
     username = models.CharField(max_length=255, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
 
-    # TODO: установить картинку по умолчанию
 
 
+# в модель юзера добавить аватар и выводить всю информацию юзера
