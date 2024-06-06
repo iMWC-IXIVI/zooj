@@ -35,14 +35,11 @@ func (h *Handler) GetDishes(c echo.Context) error {
 	}
 
 	categoryIDs := parseCategoryIDs(c)
-<<<<<<< HEAD
 
-	dishes, err := h.repo.GetDishes(page, pageSize, categoryIDs)
-=======
 	antiTagIDs := parseAntiTags(c)
 
 	dishes, err := h.repo.GetDishes(page, pageSize, categoryIDs, antiTagIDs)
->>>>>>> main
+
 	if err != nil {
 		return err
 	}

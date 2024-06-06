@@ -80,7 +80,6 @@ h1 {
   border-radius: 50px;
 }
 
-.header-list
-{
+.header-list{
   display: flex;
 }

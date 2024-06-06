@@ -75,11 +75,10 @@ services:
       POSTGRES_USER: django
       POSTGRES_PASSWORD: django
       POSTGRES_DB: django
-<<<<<<< HEAD
-=======
+
     ports:
       - "5433:5432"
->>>>>>> main
+
     networks:
       - dev
 

@@ -8,7 +8,7 @@ function Header({ className }) {
         <nav>
           <ul className="header-list">
             <li>
-              <a href="#">Полезное питание</a>
+              <a href="https://zozhnik.ru/#gsc.tab=0">Полезное питание</a>
             </li>
             <li>
               <svg
@@ -28,7 +28,7 @@ function Header({ className }) {
               </svg>
             </li>
             <li>
-              <a href="#">Готовые программы</a>
+              <a href="https://zozhnik.ru/#gsc.tab=0">Готовые программы</a>
             </li>
             <li>
               <svg

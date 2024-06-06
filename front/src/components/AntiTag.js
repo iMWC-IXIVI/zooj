@@ -1,3 +1,5 @@
+import React from 'react';
+
 function Tag({tag, selected, toggleTag}) {
     function switchTag() {
         toggleTag(tag.id)
