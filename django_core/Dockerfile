@@ -11,6 +11,4 @@ COPY . /django-core/
 RUN python manage.py makemigrations
 
 CMD python manage.py migrate \
-    && python manage.py shell -c "from api.models import CustomUser; CustomUser.objects.filter(email='root@me.com').exists() or CustomUser.objects.create_user(email='root@me.com')" \
-
     && python manage.py runserver 0.0.0.0:8000

@@ -108,7 +108,7 @@ class InformationView(views.APIView):
         serializer_response = response.Response()
 
         # TODO: проверку на наличие токена
-        token = request.headers['authorization']
+        token = request.headers['Authorization']
 
         user = self.get_user(token)
 

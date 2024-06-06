@@ -85,7 +85,7 @@ class RegistrationViewAPI(views.APIView):
 def login(request):
 
     try:
-        token = request.headers['token']
+        token = request.headers['Authorization']
     except KeyError:
         return response.Response({"error": "token not found"})
 
@@ -110,7 +110,7 @@ def logout(request):
 
 @decorators.api_view(['GET', ])
 def get_user(request):
-    token = request.headers['token']
+    token = request.headers['Authorization']
 
     token_decode = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms=['HS256', ])
 
