@@ -2,7 +2,6 @@ package repo
 
 import (
 	"context"
-	"fmt"
 	"goauth/internal/entity"
 	"log"
 	"strconv"
@@ -36,7 +35,6 @@ func (r *Repo) GetDish(id int) (entity.Dish, error) {
 
 func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int) ([]entity.Dish, error) {
 	dishes := make([]entity.Dish, 0)
-	fmt.Printf("MAMA: %v\n", categoryIDs, tagIDs)
 
 	offset := (page - 1) * pageSize
 
