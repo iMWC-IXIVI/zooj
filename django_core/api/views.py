@@ -66,8 +66,12 @@ class RegistrationViewAPI(views.APIView):
     @staticmethod
     def create_information(user, user_uuid):
 
-        anon_data = AnonInformation.objects.get(pk=user_uuid)
-        serializer_anon = AnonInfoSerializer(anon_data).data
+        anon_data = AnonInformation.objects.filter(pk=user_uuid).exists()
+
+        if not anon_data:
+            return response.Response()
+
+        serializer_anon = AnonInfoSerializer(anon_data.first()).data
         serializer_anon['user'] = user.pk
 
         serializer = InformationSerializer(data=serializer_anon)
@@ -115,10 +119,14 @@ def get_user(request):
     token_decode = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms=['HS256', ])
 
     user = CustomUser.objects.get(pk=token_decode['user_id'])
-    information = Information.objects.get(user_id=user.pk)
+    information = Information.objects.filter(user_id=user.pk)
+
+    if not information.exists():
+        serializer_information = None
+    else:
+        serializer_information = InformationSerializer(information.first()).data
 
     serializer_user = UserSerializer(user).data
-    serializer_information = InformationSerializer(information).data
 
     return response.Response(data={'user': serializer_user,
                                    'anketa': serializer_information},
