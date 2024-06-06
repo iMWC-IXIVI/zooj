@@ -1,14 +1,12 @@
 import React from "react";
 
-function Category({category, toggleCategory}) {
+function Category({category, selected, toggleCategory}) {
     function switchCategory() {
         toggleCategory(category.id)
     }
 
     return (
-      <div className="category">
-        <div onClick={switchCategory}>{category.title}</div>
-      </div>
+      <div className={"category " + (selected ? 'green' : 'black') } onClick={switchCategory}>{category.title}</div>
     );
   }
   

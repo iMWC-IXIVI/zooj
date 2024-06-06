@@ -3,6 +3,55 @@
   --white: #FFFFFF;
 }
 
+#CatalogList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+#categoriesMenu {
+  display: flex;  flex-direction: row;  justify-content: flex-start;
+}
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
+}
+
+#categoriesMenu > div {
+  margin-right: 5px;
+  margin-left: 17px;
+}
+
+#tagsMenu {
+  margin-left: 17px;
+  padding-top: 10px;
+  display: flex;  flex-direction: row;  justify-content: flex-start;
+}
+
+#tagsMenu > div {
+  margin-right: 5px;
+  margin-left: 17px;
+}
+
+
+h1 {
+  text-align: left;
+  margin-left: 17px;
+}
+
+.app {
+  padding: 10px;
+  text-align: center;
+
+}
+
 .container{
   margin: 0 auto;
   max-width: 1300px;
