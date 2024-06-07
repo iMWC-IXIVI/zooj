@@ -100,7 +100,8 @@ class RegistrationViewAPI(views.APIView):
     @transaction.atomic
     def create_information(user, user_uuid):
 
-        anon_data = AnonInformation.objects.filter(pk=user_uuid)
+        anon_data = AnonInformation.objects.filter(anonim_uuid=user_uuid)
+        instance = Information.objects.filter(user_id=user.pk)
 
         if not anon_data.exists():
             return response.Response()
@@ -108,9 +109,14 @@ class RegistrationViewAPI(views.APIView):
         serializer_anon = AnonInfoSerializer(anon_data.first()).data
         serializer_anon['user'] = user.pk
 
-        serializer = InformationSerializer(data=serializer_anon)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+        if instance.exists():
+            serializer = InformationSerializer(data=serializer_anon, instance=instance.first())
+            serializer.is_valid()
+            serializer.save()
+        else:
+            serializer = InformationSerializer(data=serializer_anon)
+            serializer.is_valid()
+            serializer.save()
 
         anon_data.delete()
 
