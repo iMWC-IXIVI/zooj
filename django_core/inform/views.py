@@ -13,31 +13,31 @@ from api.models import CustomUser
 
 class AnonInformationAPI(views.APIView):
     """Анонимная анкета пользователя"""
+
+    @transaction.atomic
     def post(self, request):
 
-        with transaction.atomic():
+        serializer_response = response.Response()
 
-            serializer_response = response.Response()
+        calorie = self.get_calorie()
 
-            calorie = self.get_calorie()
+        request.data['calorie'] = calorie
+        request.data['protein'] = self.get_protein(calorie)
+        request.data['fats'] = self.get_fats(calorie)
+        request.data['carbohydrates'] = self.get_carbohydrates(calorie)
+        request.data['anonim_uuid'] = request.headers['anonymous_uuid']
 
-            request.data['calorie'] = calorie
-            request.data['protein'] = self.get_protein(calorie)
-            request.data['fats'] = self.get_fats(calorie)
-            request.data['carbohydrates'] = self.get_carbohydrates(calorie)
-            request.data['anonim_uuid'] = request.headers['anonymous_uuid']
+        serializer = AnonInfoSerializer(data=request.data)
 
-            serializer = AnonInfoSerializer(data=request.data)
+        if not serializer.is_valid():
+            raise exceptions.ValidationError(detail='Data does not valid')
 
-            if not serializer.is_valid():
-                raise exceptions.ValidationError(detail='Data does not valid')
+        serializer.save()
 
-            serializer.save()
-
-            serializer_response.data = {
-                'message': 'success'
-            }
-            serializer_response.status_code = status.HTTP_201_CREATED
+        serializer_response.data = {
+            'message': 'success'
+        }
+        serializer_response.status_code = status.HTTP_201_CREATED
 
         return serializer_response
 
@@ -124,13 +124,14 @@ def get_anon_information(request):
     try:
         anon_user = AnonInformation.objects.get(anonim_uuid=anonim_uuid)
     except:
-        return response.Response(data={'error': 'bad cookie'}, status=status.HTTP_400_BAD_REQUEST)
+        return response.Response(data={'Anonymous': None}, status=status.HTTP_400_BAD_REQUEST)
 
     return response.Response({'Anonymous': AnonInfoSerializer(anon_user).data})
 
 
 # TODO: тут остановился для выявления ошибок в коде
 class InformationView(views.APIView):
+    @transaction.atomic
     def post(self, request):
 
         serializer_response = response.Response()
@@ -139,6 +140,9 @@ class InformationView(views.APIView):
         token = request.headers['Authorization']
 
         user = self.get_user(token)
+
+        if Information.objects.filter(user_id=user.pk).exists():
+            return response.Response({'error': 'it is forbidden create new information'})
 
         weight = int(request.data['weight'])
         des_weight = int(request.data['des_weight'])
@@ -167,6 +171,7 @@ class InformationView(views.APIView):
 
         return serializer_response
 
+    @transaction.atomic
     def put(self, request):
         serializer_response = response.Response()
 

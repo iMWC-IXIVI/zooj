@@ -2,6 +2,7 @@ import jwt, datetime
 
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from django.db import transaction
 
 from rest_framework import views, response, status, decorators
 
@@ -13,6 +14,7 @@ from .utils import registration_token
 
 
 class SendMailAPI(views.APIView):
+    @transaction.atomic
     def post(self, request):
 
         email = request.data['email']
@@ -30,6 +32,7 @@ class SendMailAPI(views.APIView):
 
 
 class RegistrationViewAPI(views.APIView):
+    @transaction.atomic
     def post(self, request):
 
         user_uuid = request.headers['anonymous_uuid']
@@ -64,11 +67,12 @@ class RegistrationViewAPI(views.APIView):
         return response_token
 
     @staticmethod
+    @transaction.atomic
     def create_information(user, user_uuid):
 
-        anon_data = AnonInformation.objects.filter(pk=user_uuid).exists()
+        anon_data = AnonInformation.objects.filter(pk=user_uuid)
 
-        if not anon_data:
+        if not anon_data.exists():
             return response.Response()
 
         serializer_anon = AnonInfoSerializer(anon_data.first()).data
