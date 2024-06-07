@@ -1,5 +1,4 @@
 # TODO: ИЗУЧИТЬ MIDDLEWARE ПОПЫТАТЬСЯ ДОБАВИТЬ ЕГО В ПРОЕКТ
-# TODO: ПОФИКСИТЬ КОНСТУРКЦИИ ПРИ ПУСТОМ ВВОДЕ И ПРОВЕРИТЬ
 
 import jwt
 
@@ -16,13 +15,22 @@ from api.models import CustomUser
 
 class AnonInformationAPI(views.APIView):
     """Анонимная анкета пользователя"""
-
     @transaction.atomic
     def post(self, request):
+
+        user_uuid = request.headers.get('anonymous-uuid')
+
+        if AnonInformation.objects.filter(anonim_uuid=user_uuid).exists():
+            return response.Response(data={'error': 'user have data'},
+                                     status=status.HTTP_400_BAD_REQUEST)
 
         serializer_response = response.Response()
 
         calorie = self.get_calorie()
+
+        if calorie < 0:
+            return response.Response(data={'error': 'error in field'},
+                                     status=status.HTTP_400_BAD_REQUEST)
 
         request.data['calorie'] = calorie
         request.data['protein'] = self.get_protein(calorie)
@@ -56,8 +64,7 @@ class AnonInformationAPI(views.APIView):
             gender = self.get_gender(self.request.data['gender'])
             activity = self.get_activity(self.request.data['activity'])
         except:
-            return response.Response(data={'error': 'error in field'},
-                                     status=status.HTTP_400_BAD_REQUEST)
+            return -1
 
         calorie = (weight * 10 + height * 6.25 - age * 5 + gender) * activity
 
@@ -94,8 +101,7 @@ class AnonInformationAPI(views.APIView):
         }
 
         if gender not in gender_data:
-            return response.Response(data={'error': 'field with gender does not valid'},
-                                     status=status.HTTP_400_BAD_REQUEST)
+            raise KeyError('field with gender params does not valid')
 
         return gender_data[gender]
 
@@ -111,8 +117,7 @@ class AnonInformationAPI(views.APIView):
         }
 
         if activity not in activity_data:
-            return response.Response(data={'error': 'field with activity does not valid'},
-                                     status=status.HTTP_400_BAD_REQUEST)
+            raise KeyError('field with activity params does not valid')
 
         return activity_data[activity]
 

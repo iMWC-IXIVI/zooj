@@ -1,5 +1,5 @@
 # TODO: ИЗУЧИТЬ MIDDLEWARE ПОПЫТАТЬСЯ ДОБАВИТЬ ЕГО В ПРОЕКТ
-# TODO: ПОФИКСИТЬ КОНСТУРКЦИИ ПРИ ПУСТОМ ВВОДЕ И ПРОВЕРИТЬ
+# TODO: ПЕРЕДЕЛАТЬ ПРИВЕТСТВЕННОЕ ПИСЬМО В КЛАССЕ SendMailAPI
 
 import jwt
 
@@ -20,11 +20,20 @@ class SendMailAPI(views.APIView):
     @transaction.atomic
     def post(self, request):
 
+        if request.headers.get('anonymous-uuid') is None:
+            return response.Response(data={'error': 'user does\'t uuid'},
+                                     status=status.HTTP_400_BAD_REQUEST)
+
         try:
             email = request.data['email']
         except:
             return response.Response(data={'error': 'field email does\'t found'},
                                      status=status.HTTP_400_BAD_REQUEST)
+
+        check_data = RegistrToken.objects.filter(email=email)
+
+        if check_data.exists():
+            check_data.delete()
 
         request.data['token'] = token = registration_token()
 
@@ -36,7 +45,6 @@ class SendMailAPI(views.APIView):
 
         serializer.save()
 
-        # TODO: Переделать приветственное письмо
         html_content = ('<h1>Здравствуйте!</h1>'
                         f'<p>Ваш код для авторизации: {token}</p>')
 
