@@ -1,3 +1,5 @@
+# TODO: ИЗУЧИТЬ MIDDLEWARE ПОПЫТАТЬСЯ ДОБАВИТЬ ЕГО В ПРОЕКТ
+
 import jwt, datetime
 
 from django.core.mail import EmailMultiAlternatives
