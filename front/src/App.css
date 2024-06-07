@@ -40,16 +40,9 @@
   margin-left: 17px;
 }
 
-
-h1 {
-  text-align: left;
-  margin-left: 17px;
-}
-
 .app {
   padding: 10px;
   text-align: center;
-
 }
 
 .container{
@@ -71,10 +64,10 @@ h1 {
 
 .btn{
   border: 0px;
-  min-width: 200px;
+  min-width: 56px;
 }
 
-.header-btn{
+.header-btn-login{
   background-color: var(--main-color);
   color: var(--white);
   border-radius: 50px;

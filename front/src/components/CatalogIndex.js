@@ -103,8 +103,8 @@ function CatalogIndex() {
   })
 
   return (
-    <div className="CatalogIndex">
-      <h1>зоЖник</h1>
+    <div className="container">
+      <div className="CatalogIndex">
         <div id='categoriesMenu'>
           { categoriesList }
         </div>
@@ -116,7 +116,7 @@ function CatalogIndex() {
         <div id="CatalogList">
           { dishesList }
         </div>
-
+    </div>
     </div>
   );
 }

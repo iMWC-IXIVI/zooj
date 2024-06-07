@@ -1,5 +1,7 @@
 import React from "react";
 import Button from "./Button";
+import FavIcon from "./FavIcon";
+
 function Header({ className }) {
   return (
     <header>
@@ -52,7 +54,11 @@ function Header({ className }) {
             </li>
           </ul>
         </nav>
-        <Button className="header-btn" label="Войти"></Button>
+        <div>
+        <Button className="header-btn" label={FavIcon}></Button>
+        <Button className="header-btn" label=" "></Button>
+        <Button className="header-btn-login" label="Войти"></Button>
+        </div>
       </div>
     </header>
   );
