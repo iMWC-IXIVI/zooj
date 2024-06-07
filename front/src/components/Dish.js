@@ -16,6 +16,28 @@ function Dish({dish}) {
     )
   });
 
+  function renderIngredients(ingList) {
+    return (
+      <>
+        <h3>Ингредиенты:</h3>
+        <ul>
+          { ingList }
+        </ul>
+      </>
+    )
+  }
+
+  function renderSteps(stepsList) {
+    return (
+      <>
+        <h3>Способ приготовления:</h3>
+        <ul>
+          { stepsList }
+        </ul>
+      </>
+    )
+  }
+
   return (
     <div className="dish">
       <h2>{dish.title}</h2>
@@ -27,15 +49,8 @@ function Dish({dish}) {
         <li>Углеводы: {dish.carbos}</li>
       </ul>
 
-      <h3>Ингредиенты:</h3>
-      <ul>
-        { ingList }
-      </ul>
-
-      <h3>Способ приготовления:</h3>
-      <ul>
-        { stepsList }
-      </ul>
+      { ingList.length > 0 ? renderIngredients(ingList) : null }
+      { stepsList.length > 0 ? renderSteps(stepsList) : null }
     </div>
   );
 }

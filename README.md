@@ -25,3 +25,16 @@ docker compose up --build
 ```
 {"Method GET":"Hello from GET"}
 ```
+
+# Регистрация пользователя
+```
+curl -X POST -H "Content-Type: application/json" \
+    -H "anonymous-uuid: d39fd515-c635-4d09-a2db-165c21e2d5ef" \
+    --data '{"email":"mxm.mdz@gmail.com"}' "http://localhost/api/send-mail/" 
+```
+Полученный токен отправляем:
+```
+curl -X POST -H "Content-Type: application/json" \
+    -H "anonymous-uuid: d39fd515-c635-4d09-a2db-165c21e2d5ef" \
+    --data '{"code": "3377"}' "http://localhost/api/registration/"
+```

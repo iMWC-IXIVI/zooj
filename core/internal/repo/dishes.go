@@ -21,11 +21,11 @@ func NewRepo(db *pgxpool.Pool) *Repo {
 }
 
 func (r *Repo) GetDish(id int) (entity.Dish, error) {
-	sql := "select id, title, kcal, proteins, fats, carbos, image from dishes where id = $1"
+	sql := "select id, title, kcal, proteins, fats, carbos, image, kind from dishes where id = $1"
 	row := r.db.QueryRow(context.Background(), sql, id)
 
 	dish := entity.Dish{}
-	err := row.Scan(&dish.ID, &dish.Title, &dish.Kcal, &dish.Proteins, &dish.Fats, &dish.Carbos, &dish.Image)
+	err := row.Scan(&dish.ID, &dish.Title, &dish.Kcal, &dish.Proteins, &dish.Fats, &dish.Carbos, &dish.Image, &dish.Kind)
 	if err != nil {
 		return dish, err
 	}
@@ -38,7 +38,7 @@ func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int) ([]e
 
 	offset := (page - 1) * pageSize
 
-	sql := "select id, title, kcal, proteins, fats, carbos, image from dishes"
+	sql := "select id, title, kcal, proteins, fats, carbos, image, coalesce(kind, 0) from dishes"
 	args := []any{pageSize, offset}
 
 	if len(categoryIDs) > 0 || len(tagIDs) > 0 {
@@ -78,7 +78,7 @@ func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int) ([]e
 			Steps:       make([]entity.Step, 0),
 			Categories:  make([]entity.Category, 0),
 		}
-		err := rows.Scan(&dish.ID, &dish.Title, &dish.Kcal, &dish.Proteins, &dish.Fats, &dish.Carbos, &dish.Image)
+		err := rows.Scan(&dish.ID, &dish.Title, &dish.Kcal, &dish.Proteins, &dish.Fats, &dish.Carbos, &dish.Image, &dish.Kind)
 		if err != nil {
 			log.Printf("failed to scan dishes with %v\n", err)
 			return make([]entity.Dish, 0), err
