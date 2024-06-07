@@ -6,7 +6,7 @@ from .models import Information, AnonInformation
 
 class AnonInfoSerializer(serializers.Serializer):
 
-    anonim_uuid = serializers.UUIDField(read_only=True)
+    anonim_uuid = serializers.UUIDField()
 
     gender = serializers.CharField(max_length=1)
     age = serializers.IntegerField()

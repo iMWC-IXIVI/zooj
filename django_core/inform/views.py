@@ -9,7 +9,6 @@ from .serializers import InformationSerializer, AnonInfoSerializer
 from .models import Information, AnonInformation
 
 from api.models import CustomUser
-from api.serializers import UserSerializer
 
 
 class AnonInformationAPI(views.APIView):
@@ -26,6 +25,7 @@ class AnonInformationAPI(views.APIView):
             request.data['protein'] = self.get_protein(calorie)
             request.data['fats'] = self.get_fats(calorie)
             request.data['carbohydrates'] = self.get_carbohydrates(calorie)
+            request.data['anonim_uuid'] = request.headers['anonymous_uuid']
 
             serializer = AnonInfoSerializer(data=request.data)
 
@@ -34,9 +34,6 @@ class AnonInformationAPI(views.APIView):
 
             serializer.save()
 
-            user_uuid = serializer.data['anonim_uuid']
-
-            serializer_response.set_cookie(key='anonim_uuid', value=user_uuid, httponly=True)
             serializer_response.data = {
                 'message': 'success'
             }
@@ -122,10 +119,7 @@ class AnonInformationAPI(views.APIView):
 def get_anon_information(request):
     """Получение данных об анонимном пользователе"""
 
-    try:
-        anonim_uuid = request.COOKIES['anonim_uuid']
-    except:
-        return response.Response(data={'error': 'cookie not found'}, status=status.HTTP_400_BAD_REQUEST)
+    anonim_uuid = request.headers['anonymous_uuid']
 
     try:
         anon_user = AnonInformation.objects.get(anonim_uuid=anonim_uuid)
@@ -142,7 +136,7 @@ class InformationView(views.APIView):
         serializer_response = response.Response()
 
         # TODO: проверку на наличие токена
-        token = request.COOKIES['token']
+        token = request.headers['Authorization']
 
         user = self.get_user(token)
 
@@ -177,7 +171,7 @@ class InformationView(views.APIView):
         serializer_response = response.Response()
 
         # TODO: проверку на наличие токена
-        token = request.COOKIES['token']
+        token = request.headers['authorization']
 
         user = self.get_user(token)
 

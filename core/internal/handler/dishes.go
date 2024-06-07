@@ -24,7 +24,8 @@ func NewHandler(r *repo.Repo) Handler {
 }
 
 type GetDishesResponse struct {
-	Dishes []entity.Dish
+	Dishes   []entity.Dish `json:"dishes"`
+	AntiTags []entity.Tag  `json:"anti_tag"`
 }
 
 func (h *Handler) GetDishes(c echo.Context) error {
@@ -33,7 +34,10 @@ func (h *Handler) GetDishes(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
 
-	dishes, err := h.repo.GetDishes(page, pageSize)
+	categoryIDs := parseCategoryIDs(c)
+	antiTagIDs := parseAntiTags(c)
+
+	dishes, err := h.repo.GetDishes(page, pageSize, categoryIDs, antiTagIDs)
 	if err != nil {
 		return err
 	}
@@ -41,7 +45,46 @@ func (h *Handler) GetDishes(c echo.Context) error {
 		dishes[index].Image = "/api/v1/images/" + strconv.Itoa(dish.ID)
 	}
 
-	return c.JSON(http.StatusOK, GetDishesResponse{Dishes: dishes})
+	antiTags, err := h.repo.GetAntiTags()
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, GetDishesResponse{Dishes: dishes, AntiTags: antiTags})
+}
+
+func parseCategoryIDs(c echo.Context) []int {
+	categoryIDs := c.QueryParam("categories")
+	catIDs := strings.Split(categoryIDs, ",")
+	ids := make([]int, 0)
+	for _, strID := range catIDs {
+		if strID != "" {
+			id, err := strconv.Atoi(strID)
+			if err != nil {
+				return make([]int, 0)
+			}
+
+			ids = append(ids, id)
+		}
+	}
+
+	return ids
+}
+
+func parseAntiTags(c echo.Context) []int {
+	tagsIDs := c.QueryParam("anti_tags")
+	tagIDs := strings.Split(tagsIDs, ",")
+	ids := make([]int, 0)
+	for _, strID := range tagIDs {
+		if strID != "" {
+			id, err := strconv.Atoi(strID)
+			if err != nil {
+				return make([]int, 0)
+			}
+			ids = append(ids, id)
+		}
+	}
+	return ids
 }
 
 func (h *Handler) GetDishImage(c echo.Context) error {
@@ -64,7 +107,6 @@ func (h *Handler) GetDishImage(c echo.Context) error {
 }
 
 func parsePaginationParams(c echo.Context) (page int, pageSize int, err error) {
-
 	pageStr := c.QueryParam("page")
 	pageSizeStr := c.QueryParam("pageSize")
 
@@ -73,12 +115,7 @@ func parsePaginationParams(c echo.Context) (page int, pageSize int, err error) {
 	}
 
 	if pageSizeStr == "" {
-		pageSizeStr = "10"
-	}
-
-	if strings.Contains(pageStr, "-") || strings.Contains(pageStr, "-") {
-		log.Printf("Invaild page parameters")
-		return 0, 0, errors.New("invalid page parameters")
+		pageSizeStr = "100"
 	}
 
 	page, err = strconv.Atoi(pageStr)
