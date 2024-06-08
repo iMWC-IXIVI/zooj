@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './App.css';
-import './components/CatalogIndex'
+
+import Header from './components/Header';
+import CatalogIndex from './components/CatalogIndex';
+
 import { GetAnonymous, ResetAnonymous } from './services/anonymous.js';
-import CatlogIndex from './components/CatalogIndex';
 import { SendAnketa, RequestCodeEmail, GetToken } from './services/auth.js';
 
 function App() {
@@ -33,23 +35,25 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <header className="app-header">
+    <>
+      <Header className="container header-container"/>
+      <CatalogIndex/>
+
+      <footer>
         Anonymous ID: { anonId } 
-        <button onClick={doResetAnon}>Сбросить anonymous_id</button>
-        <button onClick={doSendAnketa}>Отправить анкету</button>
-        <br/>
-        <input type="text" id="email"></input>
-        <button onClick={doSendEmail}>Запросить код</button>
-        <br/>
-        <input type="text" id="code"></input>
-        <button onClick={login}>Войти</button><br/>
-        token is: { token }
-
-
-        <CatlogIndex/>
-      </header>
-    </div>
+          <button onClick={doResetAnon}>Сбросить anonymous_id</button>
+          <button onClick={doSendAnketa}>Отправить анкету</button>
+          <br/>
+          
+          <input type="text" id="email"></input>
+          <button onClick={doSendEmail}>Запросить код</button>
+          <br/>
+          
+          <input type="text" id="code"></input>
+          <button onClick={login}>Войти</button><br/>
+          token is: { token }
+      </footer>
+    </>
   );
 }
 
