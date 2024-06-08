@@ -1,4 +1,7 @@
-import jwt, datetime
+# TODO: ИЗУЧИТЬ MIDDLEWARE ПОПЫТАТЬСЯ ДОБАВИТЬ ЕГО В ПРОЕКТ
+# TODO: ПЕРЕДЕЛАТЬ ПРИВЕТСТВЕННОЕ ПИСЬМО В КЛАССЕ SendMailAPI
+
+import jwt
 
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
@@ -9,7 +12,7 @@ from rest_framework import views, response, status, decorators
 from inform.models import AnonInformation, Information
 from inform.serializers import AnonInfoSerializer, InformationSerializer
 from .models import CustomUser, RegistrToken
-from .serializers import UserSerializer
+from .serializers import UserSerializer, RegistrTokenSerializer
 from .utils import registration_token
 
 
@@ -17,32 +20,59 @@ class SendMailAPI(views.APIView):
     @transaction.atomic
     def post(self, request):
 
-        email = request.data['email']
+        if request.headers.get('anonymous-uuid') is None:
+            return response.Response(data={'error': 'user does\'t uuid'},
+                                     status=status.HTTP_400_BAD_REQUEST)
 
-        token = registration_token()
+        try:
+            email = request.data['email']
+        except:
+            return response.Response(data={'error': 'field email does\'t found'},
+                                     status=status.HTTP_400_BAD_REQUEST)
 
-        RegistrToken.objects.create(token=token, email=email)
+        check_data = RegistrToken.objects.filter(email=email)
+
+        if check_data.exists():
+            check_data.delete()
+
+        request.data['token'] = token = registration_token()
+
+        serializer = RegistrTokenSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return response.Response(data={'error': 'bad request'},
+                                     status=status.HTTP_400_BAD_REQUEST)
+
+        serializer.save()
 
         html_content = ('<h1>Здравствуйте!</h1>'
                         f'<p>Ваш код для авторизации: {token}</p>')
+
         msg = EmailMultiAlternatives(to=[email, ])
-        msg.attach_alternative(html_content, 'text/html')
+        msg.attach_alternative(content=html_content,
+                               mimetype='text/html')
         msg.send()
-        return response.Response({"message": "success"})
+
+        return response.Response(data={"message": "success"},
+                                 status=status.HTTP_201_CREATED)
 
 
 class RegistrationViewAPI(views.APIView):
     @transaction.atomic
     def post(self, request):
 
-        user_uuid = request.headers['anonymous_uuid']
-
-        code = request.data['code']
+        try:
+            user_uuid = request.headers['anonymous_uuid']
+            code = request.data['code']
+        except:
+            return response.Response(data={'error': 'authorization error'},
+                                     status=status.HTTP_400_BAD_REQUEST)
 
         try:
             data_user = RegistrToken.objects.get(token=code)
         except:
-            return response.Response(data={"error": "code not found"}, status=status.HTTP_400_BAD_REQUEST)
+            return response.Response(data={"error": "code not found"},
+                                     status=status.HTTP_400_BAD_REQUEST)
 
         if not CustomUser.objects.filter(email=data_user.email).exists():
             user = CustomUser.objects.create_user(email=data_user.email)
@@ -70,7 +100,8 @@ class RegistrationViewAPI(views.APIView):
     @transaction.atomic
     def create_information(user, user_uuid):
 
-        anon_data = AnonInformation.objects.filter(pk=user_uuid)
+        anon_data = AnonInformation.objects.filter(anonim_uuid=user_uuid)
+        instance = Information.objects.filter(user_id=user.pk)
 
         if not anon_data.exists():
             return response.Response()
@@ -78,9 +109,14 @@ class RegistrationViewAPI(views.APIView):
         serializer_anon = AnonInfoSerializer(anon_data.first()).data
         serializer_anon['user'] = user.pk
 
-        serializer = InformationSerializer(data=serializer_anon)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+        if instance.exists():
+            serializer = InformationSerializer(data=serializer_anon, instance=instance.first())
+            serializer.is_valid()
+            serializer.save()
+        else:
+            serializer = InformationSerializer(data=serializer_anon)
+            serializer.is_valid()
+            serializer.save()
 
         anon_data.delete()
 
@@ -91,7 +127,7 @@ class RegistrationViewAPI(views.APIView):
 
 @decorators.api_view(['GET', ])
 def login(request):
-
+    """Не нужен с таким названием, можно взять основу для ПРОФИЛЯ"""
     try:
         token = request.headers['Authorization']
     except KeyError:
@@ -105,24 +141,22 @@ def login(request):
     return response.Response({'user': serializer.data})
 
 
-@decorators.api_view(['POST', ])
-def logout(request):
-    """Под вопросом"""
-    response_token = response.Response()
-    response_token.delete_cookie(key='token')
-    response_token.data = {"message": "success"}
-    response_token.status_code = status.HTTP_200_OK
-
-    return response_token
-
-
 @decorators.api_view(['GET', ])
 def get_user(request):
-    token = request.headers['Authorization']
+
+    try:
+        token = request.headers['Authorization']
+    except:
+        return response.Response(data={'error': 'authorization error'},
+                                 status=status.HTTP_400_BAD_REQUEST)
 
     token_decode = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms=['HS256', ])
 
-    user = CustomUser.objects.get(pk=token_decode['user_id'])
+    try:
+        user = CustomUser.objects.get(pk=token_decode['user_id'])
+    except:
+        return response.Response(data={'error': 'user does\'t found'})
+
     information = Information.objects.filter(user_id=user.pk)
 
     if not information.exists():

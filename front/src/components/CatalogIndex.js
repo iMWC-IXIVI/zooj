@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 import Dish from './Dish'
@@ -37,6 +38,7 @@ function CatalogIndex() {
     fetch(url)
          .then((response) => response.json())
          .then((data) => {
+
             setAntiTags(data.anti_tag)
             
             let cats = [];
@@ -45,6 +47,7 @@ function CatalogIndex() {
             let dinner = [];
 
             data.dishes.forEach((dish) => {
+
               dish.categories.forEach((category) => {
                 for (let i = 0; i < cats.length; i++) {
                   if (cats[i].id === category.id) {
@@ -77,8 +80,8 @@ function CatalogIndex() {
          .catch((err) => {
             console.log(err.message);
          });
-  }, [categoriesFilter, antiTagsFilter]);
 
+  }, [categoriesFilter, antiTagsFilter]);
 
   let breakfastList = [];
   breakfast.forEach((dish) => breakfastList.push(<Dish dish={dish}/>))
@@ -92,6 +95,7 @@ function CatalogIndex() {
   let categoriesList = [];
 
   function toggleCategory(id) {
+
     let idx = categoriesFilter.indexOf(id)
     if (idx === -1) {
       setCategoriesFilter([...categoriesFilter, id])
@@ -122,8 +126,8 @@ function CatalogIndex() {
   })
 
   return (
-    <div className="CatalogIndex">
-      <h1>зоЖник</h1>
+    <div className="container">
+      <div className="CatalogIndex">
         <div id='categoriesMenu'>
           { categoriesList }
         </div>
@@ -152,6 +156,7 @@ function CatalogIndex() {
             { dinnerList }
           </div>
         </dish>
+    </div>
     </div>
   );
 }
