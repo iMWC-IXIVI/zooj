@@ -34,7 +34,7 @@ function App() {
 
   return (
     <div className="app">
-      <header className="app-header">
+      <div className="app-header">
         Anonymous ID: { anonId } 
         <button onClick={doResetAnon}>Сбросить anonymous_id</button>
         <button onClick={doSendAnketa}>Отправить анкету</button>
@@ -45,10 +45,10 @@ function App() {
         <input type="text" id="code"></input>
         <button onClick={login}>Войти</button><br/>
         token is: { token }
+      </div>
 
 
-        <CatlogIndex/>
-      </header>
+      <CatlogIndex/>
     </div>
   );
 }

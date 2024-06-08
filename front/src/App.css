@@ -1,6 +1,47 @@
 .dish-list {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, 0fr);
+}
+
+.dish {
+  font-size: 0.7rem;
+}
+img.dish-img {
+  width: 150px;
+}
+
+.dish-popup {
+  padding: 1em 2em;
+}
+
+.float-left {
+  float: left
+}
+
+.float-right {
+  float: right;
+}
+
+.w-50 {
+  width: 50%
+}
+
+.text-left{
+  text-align: left;
+}
+
+ul.one-line > li {
+  display: inline; padding-right: 20px;
+}
+
+div.popup-closer {
+  float: right; width: 30px; 
+  font-size: 1.2rem;
+  text-align: right;
+  margin-right: 3px;
+}
+div.popup-closer > a {
+  text-decoration: none; 
 }
 
 #categoriesMenu {
@@ -57,17 +98,6 @@ h1 {
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 .App-link {
   color: #61dafb;
 }
@@ -79,4 +109,49 @@ h1 {
   to {
     transform: rotate(360deg);
   }
+}
+
+.box {
+  background-color: black;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box a {
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 3px;
+  text-decoration: none;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(
+      100,
+      100,
+      100,
+      0.3
+  );
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-pad {
+  padding-inline-start: 0px;
+  margin-right: 20px;
+}
+
+.content {
+  position: relative;
+  background: white;
+  border-radius: 4px;
+  max-width: 60%;
+}
+
+.modal:target {
+  display: flex;
 }
