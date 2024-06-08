@@ -38,4 +38,5 @@ type Dish struct {
 	Tags        []Tag        `json:"tags"`
 	Image       string       `json:"image"`
 	Kind        int          `json:"kind"`
+	Weight      int          `json:"weight"`
 }

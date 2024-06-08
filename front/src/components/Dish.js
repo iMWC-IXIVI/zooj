@@ -1,58 +1,28 @@
-import React from "react";
+import DishPopup from "./DishPopup";
 
 function Dish({dish}) {
-
-  let ingList = [];
-
-  dish.ingredients.forEach((ing) => {
-    ingList.push(
-      <li>{ing.title}, {ing.weight} г</li>
-    )
-  });
-
-  let stepsList = []
-
-  dish.steps.forEach((step) => {
-    stepsList.push(
-      <li>{step.description}</li>
-    )
-  });
-
-  function renderIngredients(ingList) {
-    return (
-      <>
-        <h3>Ингредиенты:</h3>
-        <ul>
-          { ingList }
-        </ul>
-      </>
-    )
-  }
-
-  function renderSteps(stepsList) {
-    return (
-      <>
-        <h3>Способ приготовления:</h3>
-        <ul>
-          { stepsList }
-        </ul>
-      </>
-    )
-  }
-
   return (
     <div className="dish">
-      <h2>{dish.title}</h2>
-      <img src={dish.image} alt="some mama" width="400"/>
-      <ul>
-        <li>Каллорийность: {dish.kcal} ккал</li>
-        <li>Белки: {dish.carbos} г</li>
-        <li>Жиры: {dish.fats} г</li>
-        <li>Углеводы: {dish.carbos}</li>
-      </ul>
+      <a href={`#dish-popup-${dish.id}`}>
+        <div class="dish-img-wrapper">
+          <img className="dish-img" src={dish.image} alt="some mama"/>
+        </div>
+        
+        <p>{dish.title}</p>
+      </a>
 
-      { ingList.length > 0 ? renderIngredients(ingList) : null }
-      { stepsList.length > 0 ? renderSteps(stepsList) : null }
+      <p>{dish.weight} г • {dish.kcal} ккал • ⭐ 5.0</p>
+      <a href="/#">Выбрать</a>
+
+      <div id={`dish-popup-${dish.id}`} class="modal">
+        <div class="content">
+          <div className="popup-closer">
+            <a href="/#" className="closer">&times;</a>
+          </div>
+          
+          <DishPopup dish={dish}/>  
+        </div>
+      </div>
     </div>
   );
 }
