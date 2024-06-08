@@ -35,11 +35,9 @@ func (h *Handler) GetDishes(c echo.Context) error {
 	}
 
 	categoryIDs := parseCategoryIDs(c)
-
 	antiTagIDs := parseAntiTags(c)
 
 	dishes, err := h.repo.GetDishes(page, pageSize, categoryIDs, antiTagIDs)
-
 	if err != nil {
 		return err
 	}
@@ -88,7 +86,6 @@ func parseAntiTags(c echo.Context) []int {
 	}
 	return ids
 }
-
 
 func (h *Handler) GetDishImage(c echo.Context) error {
 	strDishID := c.Param("dish_id")
