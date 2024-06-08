@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "./Button";
-import FavIcon from "./FavIcon";
+// import FavIcon from "./FavIcon";
 
 function Header({ className }) {
   return (
