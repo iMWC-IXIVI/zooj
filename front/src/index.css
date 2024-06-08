@@ -3,6 +3,10 @@
   src: url("./fonts/Inter-VariableFont.ttf") format("ttf");
 }
 
+@font-face {
+  font-family: "Vollkorn";
+  src: url("./fonts/Vollkorn-VariableFont_wght.ttf") format("ttf");
+}
 
 * {
   box-sizing: border-box;
@@ -10,10 +14,14 @@
   padding: 0;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 body {
   font-family: Inter;
   font-weight: 400;
-  
   background-color: #fdfdfd;
 }
 

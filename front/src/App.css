@@ -30,7 +30,7 @@
 }
 
 #tagsMenu {
-  margin-left: 17px;
+  /* margin-left: 17px; */
   padding-top: 10px;
   display: flex;  flex-direction: row;  justify-content: flex-start;
 }
@@ -55,6 +55,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   margin: 36px auto;
 }
 
@@ -64,15 +65,34 @@
 
 .btn{
   border: 0px;
-  min-width: 56px;
+  min-width: 50px;
+}
+
+.header-btns{
+  display: flex;
+  gap: 10px;
+  
+}
+
+.header-btn{
+  background-color: #F2F2F2;
+  padding: 15px;
+  border-radius: 50px;
 }
 
 .header-btn-login{
   background-color: var(--main-color);
   color: var(--white);
   border-radius: 50px;
+  padding: 18px 82px;
 }
 
 .header-list{
   display: flex;
+  gap: 10px;
+  padding: 15px 0;
+}
+
+.header-list_item{
+  padding: 0 15px;
 }

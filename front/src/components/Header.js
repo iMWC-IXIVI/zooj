@@ -9,7 +9,7 @@ function Header({ className }) {
         <div className="logo">ЗОЖНИК</div>
         <nav>
           <ul className="header-list">
-            <li>
+            <li className="header-list_item">
               <a href="https://zozhnik.ru/#gsc.tab=0">Полезное питание</a>
             </li>
             <li>
@@ -29,7 +29,7 @@ function Header({ className }) {
                 />
               </svg>
             </li>
-            <li>
+            <li className="header-list_item">
               <a href="https://zozhnik.ru/#gsc.tab=0">Готовые программы</a>
             </li>
             <li>
@@ -49,13 +49,13 @@ function Header({ className }) {
                 />
               </svg>
             </li>
-            <li>
+            <li className="header-list_item">
               <a href="https://zozhnik.ru/#gsc.tab=0">Метод тарелки</a>
             </li>
           </ul>
         </nav>
-        <div>
-        <Button className="header-btn" label={FavIcon}></Button>
+        <div className="header-btns">
+        <Button className="header-btn" label=" "></Button>
         <Button className="header-btn" label=" "></Button>
         <Button className="header-btn-login" label="Войти"></Button>
         </div>
