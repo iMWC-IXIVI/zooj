@@ -4,7 +4,10 @@ function Dish({dish}) {
   return (
     <div className="dish">
       <a href={`#dish-popup-${dish.id}`}>
-        <img className="dish-img" src={dish.image} alt="some mama"/>
+        <div class="dish-img-wrapper">
+          <img className="dish-img" src={dish.image} alt="some mama"/>
+        </div>
+        
         <p>{dish.title}</p>
       </a>
 
