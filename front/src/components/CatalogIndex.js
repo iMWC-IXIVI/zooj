@@ -6,7 +6,10 @@ import Category from './Category'
 import AntiTag from './AntiTag'
 
 function CatalogIndex() {
-  const [dishes, setDishes] = useState([]);
+  // const [dishes, setDishes] = useState([]);
+  const [breakfast, setBreakfast] = useState([]);
+  const [lunch, setLunch] = useState([]);
+  const [dinner, setDinner] = useState([]);
   
   const [categories, setCategories] = useState([]);
   const [categoriesFilter, setCategoriesFilter] = useState([]);
@@ -37,9 +40,11 @@ function CatalogIndex() {
          .then((data) => {
 
             setAntiTags(data.anti_tag)
-            setDishes(data.dishes);
             
             let cats = [];
+            let breakfast = [];
+            let lunch = [];
+            let dinner = [];
 
             data.dishes.forEach((dish) => {
 
@@ -52,9 +57,25 @@ function CatalogIndex() {
   
                 cats.push(category)
               });
+
+              console.log(dish.kind)
+              if (dish.kind === 1) {
+                 breakfast.push(dish);
+              }
+
+              if (dish.kind === 2) {
+                lunch.push(dish);
+              }
+
+              if (dish.kind === 3) {
+                dinner.push(dish);
+              }
             });
 
             setCategories(cats);
+            setBreakfast(breakfast);
+            setLunch(lunch);
+            setDinner(dinner);
          })
          .catch((err) => {
             console.log(err.message);
@@ -62,12 +83,14 @@ function CatalogIndex() {
 
   }, [categoriesFilter, antiTagsFilter]);
 
-  let dishesList = [];
+  let breakfastList = [];
+  breakfast.forEach((dish) => breakfastList.push(<Dish dish={dish}/>))
 
-  dishes.forEach((dish, index) => {
+  let lunchList = [];
+  lunch.forEach((dish) => lunchList.push(<Dish dish={dish}/>))
 
-    dishesList.push(<Dish dish={dish}/>)
-  });
+  let dinnerList = [];
+  dinner.forEach((dish) => dinnerList.push(<Dish dish={dish}/>))
 
   let categoriesList = [];
 
@@ -113,9 +136,26 @@ function CatalogIndex() {
           Исключить: { antiTagsList }
         </div>
         
-        <div id="CatalogList">
-          { dishesList }
+        <div id="breakfast">
+          <h1>Завтрак</h1>
+          <div class="dish-list">
+            { breakfastList }
+          </div>
         </div>
+
+        <div id="lunch">
+        <h1>Обед</h1>
+          <div class="dish-list">
+            { lunchList }
+          </div>
+        </div>
+
+        <dish id="dinner">
+          <h1>Ужин</h1>
+          <div class="dish-list">
+            { dinnerList }
+          </div>
+        </dish>
     </div>
     </div>
   );
