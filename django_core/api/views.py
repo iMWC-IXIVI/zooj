@@ -125,20 +125,20 @@ class RegistrationViewAPI(views.APIView):
         return response_user
 
 
-@decorators.api_view(['GET', ])
-def login(request):
-    """Не нужен с таким названием, можно взять основу для ПРОФИЛЯ"""
-    try:
-        token = request.headers['Authorization']
-    except KeyError:
-        return response.Response({"error": "token not found"})
-
-    token_decode = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms=['HS256', ])
-    user_id = token_decode['user_id']
-    user = CustomUser.objects.get(id=user_id)
-    serializer = UserSerializer(user)
-
-    return response.Response({'user': serializer.data})
+# @decorators.api_view(['GET', ])
+# def login(request):
+#     """Не нужен с таким названием, можно взять основу для ПРОФИЛЯ"""
+#     try:
+#         token = request.headers['Authorization']
+#     except KeyError:
+#         return response.Response({"error": "token not found"})
+#
+#     token_decode = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms=['HS256', ])
+#     user_id = token_decode['user_id']
+#     user = CustomUser.objects.get(id=user_id)
+#     serializer = UserSerializer(user)
+#
+#     return response.Response({'user': serializer.data})
 
 
 @decorators.api_view(['GET', ])
@@ -171,14 +171,17 @@ def get_user(request):
                              status=status.HTTP_200_OK)
 
 
-# class ProfileView(views.APIView):
-#     def get(self, *args, **kwargs):
-#         print(kwargs)
-#         pk = kwargs.get('pk')
-#         print(pk)
-#         profile = Profile.objects.get(pk=pk)
-#         serializer = UserSerializer(profile).data
-#         avatar_serializer = ProfileSerializer(profile).data
-#
-#         return response.Response({"profile": serializer,
-#                                   "avatar": avatar_serializer})
+class ProfileView(views.APIView):
+    def get(self, request):
+        try:
+            token = request.headers['Authorization']
+        except:
+            return response.Response({'error': 'token not found'})
+
+        token_decode = jwt.decode(token, key=settings.SECRET_KEY, algorithms=['HS256', ])
+        user_id = token_decode['user_id']
+        user = CustomUser.objects.get(id=user_id)
+        serializer = UserSerializer(user).data
+
+        return response.Response(serializer)
+
