@@ -14,10 +14,13 @@ class FavoriteAPI(views.APIView):
 
         user = self.get_user(request.headers.get('authorization'))
 
-        data = Favorite.objects.filter(user_id=user.pk)
-        serializer = FavoriteSerializer(data, many=True).data
+        data = Favorite.objects.filter(user_id=user.pk).values_list('dishes')
 
-        return response.Response({'data': serializer})
+        result = []
+        for value in data:
+            result.append(*value)
+
+        return response.Response({'favorite': result})
 
     def post(self, request):
 
