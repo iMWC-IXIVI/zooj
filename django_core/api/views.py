@@ -62,7 +62,7 @@ class RegistrationViewAPI(views.APIView):
     def post(self, request):
 
         try:
-            user_uuid = request.headers['anonymous_uuid']
+            user_uuid = request.headers['anonymous-uuid']
             code = request.data['code']
         except:
             return response.Response(data={'error': 'authorization error'},
