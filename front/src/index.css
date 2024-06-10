@@ -2,7 +2,7 @@
   font-family: "Inter";
   src: url("./fonts/Inter-VariableFont.ttf") format("ttf");
 }
-
+/* serif */
 @font-face {
   font-family: "Vollkorn";
   src: url("./fonts/Vollkorn-VariableFont_wght.ttf") format("ttf");
@@ -20,15 +20,11 @@ a {
 }
 
 body {
-  font-family: Inter;
+  font-family: Inter, sans-serif;
   font-weight: 400;
   background-color: #fdfdfd;
 }
 
 li {
   list-style-type: none;
-}
-
-button {
-  cursor: pointer;
 }
