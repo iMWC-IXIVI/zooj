@@ -64,11 +64,6 @@ div.popup-closer > a {
   color: black;
 }
 
-.category {
-  margin-right: 5px;
-  margin-left: 17px;
-}
-
 #categoriesMenu, #tagsMenu {
   padding-top: 10px;
   display: flex;  flex-direction: row;  justify-content: flex-start;
