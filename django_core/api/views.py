@@ -125,22 +125,6 @@ class RegistrationViewAPI(views.APIView):
         return response_user
 
 
-# @decorators.api_view(['GET', ])
-# def login(request):
-#     """Не нужен с таким названием, можно взять основу для ПРОФИЛЯ"""
-#     try:
-#         token = request.headers['Authorization']
-#     except KeyError:
-#         return response.Response({"error": "token not found"})
-#
-#     token_decode = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms=['HS256', ])
-#     user_id = token_decode['user_id']
-#     user = CustomUser.objects.get(id=user_id)
-#     serializer = UserSerializer(user)
-#
-#     return response.Response({'user': serializer.data})
-
-
 @decorators.api_view(['GET', ])
 def get_user(request):
 
@@ -184,4 +168,21 @@ class ProfileView(views.APIView):
         serializer = UserSerializer(user).data
 
         return response.Response(serializer)
+
+    def put(self, request):
+        try:
+            token = request.headers['Authorization']
+        except:
+            return response.Response({'error': 'token not found'})
+        token_decode = jwt.decode(token, key=settings.SECRET_KEY, algorithms=['HS256', ])
+        user_id = token_decode['user_id']
+        user = CustomUser.objects.get(id=user_id)
+
+        if not request.data:
+            return response.Response({'error': 'no data to change'})
+        serializer = UserSerializer(data=request.data, instance=user, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return response.Response({'message': 'success'}, status=status.HTTP_200_OK)
 
