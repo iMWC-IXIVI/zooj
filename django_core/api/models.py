@@ -23,7 +23,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     address = models.CharField(max_length=255, null=True, blank=True)
     date_creation = models.DateTimeField(auto_now_add=True)
     date_update = models.DateTimeField(null=True, blank=True)
-    avatar = models.ImageField(null=True, blank=True)
+    birthday = models.CharField(null=True, blank=True)
     password = None
 
     REQUIRED_FIELDS = []

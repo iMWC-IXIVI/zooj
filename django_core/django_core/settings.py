@@ -32,6 +32,7 @@ INSTALLED_APPS = [
 
     'api.apps.ApiConfig',
     'inform.apps.InformConfig',
+    'favorite.apps.FavoriteConfig',
 ]
 
 MIDDLEWARE = [
