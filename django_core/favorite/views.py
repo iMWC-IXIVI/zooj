@@ -28,8 +28,14 @@ class FavoriteAPI(views.APIView):
 
         request.data['user'] = user.pk
 
+        if len(request.data) > 2:
+            raise exceptions.ValidationError({'detail': 'fields not equal system fields'})
+
         serializer = FavoriteSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+
+        if not serializer.is_valid():
+            raise exceptions.ValidationError({'detail': 'field dishes not found'})
+
         serializer.save()
 
         return response.Response(data={'message': 'success'},
@@ -37,7 +43,11 @@ class FavoriteAPI(views.APIView):
 
     def delete(self, request):
 
-        data = Favorite.objects.get(dishes=request.data['dishes'])
+        try:
+            data = Favorite.objects.get(dishes=request.data['dishes'])
+        except:
+            raise exceptions.ValidationError({'detail': 'field a dishes is bad data'})
+
         data.delete()
 
         return response.Response({'message': 'success'})
