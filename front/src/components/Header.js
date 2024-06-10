@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "./Button";
-// import FavIcon from "./FavIcon";
+import FavIcon from "./FavIcon";
 
 function Header({ className }) {
   return (
@@ -10,7 +10,7 @@ function Header({ className }) {
         <nav>
           <ul className="header-list">
             <li className="header-list_item">
-              <a href="https://zozhnik.ru/#gsc.tab=0">Полезное питание</a>
+              Полезное питание
             </li>
             <li>
               <svg
@@ -55,7 +55,11 @@ function Header({ className }) {
           </ul>
         </nav>
         <div className="header-btns">
-        <Button className="header-btn" label=" "></Button>
+        <Button className="header-btn" label=" ">
+          <div>
+            <FavIcon></FavIcon>
+          </div>
+        </Button>
         <Button className="header-btn" label=" "></Button>
         <Button className="header-btn-login" label="Войти"></Button>
         </div>
