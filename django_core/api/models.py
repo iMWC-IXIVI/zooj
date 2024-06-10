@@ -38,6 +38,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
-class RegistrToken(models.Model):
+class Code(models.Model):
     token = models.CharField(max_length=50)
     email = models.EmailField(max_length=255)

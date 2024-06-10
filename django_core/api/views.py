@@ -11,8 +11,8 @@ from rest_framework import views, response, status, decorators
 
 from inform.models import AnonInformation, Information
 from inform.serializers import AnonInfoSerializer, InformationSerializer
-from .models import CustomUser, RegistrToken
-from .serializers import UserSerializer, RegistrTokenSerializer
+from .models import CustomUser, Code
+from .serializers import UserSerializer, CodeSerializer
 from .utils import registration_token
 
 
@@ -30,14 +30,14 @@ class SendMailAPI(views.APIView):
             return response.Response(data={'error': 'field email does\'t found'},
                                      status=status.HTTP_400_BAD_REQUEST)
 
-        check_data = RegistrToken.objects.filter(email=email)
+        check_data = Code.objects.filter(email=email)
 
         if check_data.exists():
             check_data.delete()
 
         request.data['token'] = token = registration_token()
 
-        serializer = RegistrTokenSerializer(data=request.data)
+        serializer = CodeSerializer(data=request.data)
 
         if not serializer.is_valid():
             return response.Response(data={'error': 'bad request'},
@@ -69,7 +69,7 @@ class RegistrationViewAPI(views.APIView):
                                      status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            data_user = RegistrToken.objects.get(token=code)
+            data_user = Code.objects.get(token=code)
         except:
             return response.Response(data={"error": "code not found"},
                                      status=status.HTTP_400_BAD_REQUEST)
@@ -127,7 +127,6 @@ class RegistrationViewAPI(views.APIView):
 
 @decorators.api_view(['GET', ])
 def get_user(request):
-
     try:
         token = request.headers['Authorization']
     except:
@@ -157,26 +156,13 @@ def get_user(request):
 
 class ProfileView(views.APIView):
     def get(self, request):
-        try:
-            token = request.headers['Authorization']
-        except:
-            return response.Response({'error': 'token not found'})
-
-        token_decode = jwt.decode(token, key=settings.SECRET_KEY, algorithms=['HS256', ])
-        user_id = token_decode['user_id']
-        user = CustomUser.objects.get(id=user_id)
+        user = self.get_user()
         serializer = UserSerializer(user).data
 
         return response.Response(serializer)
 
     def put(self, request):
-        try:
-            token = request.headers['Authorization']
-        except:
-            return response.Response({'error': 'token not found'})
-        token_decode = jwt.decode(token, key=settings.SECRET_KEY, algorithms=['HS256', ])
-        user_id = token_decode['user_id']
-        user = CustomUser.objects.get(id=user_id)
+        user = self.get_user()
 
         if not request.data:
             return response.Response({'error': 'no data to change'})
@@ -186,3 +172,18 @@ class ProfileView(views.APIView):
 
         return response.Response({'message': 'success'}, status=status.HTTP_200_OK)
 
+    def delete(self, request):
+        self.get_user().delete()
+
+        return response.Response({'message': 'success'}, status=status.HTTP_200_OK)
+
+    def get_user(self):
+        try:
+            token = self.request.headers['Authorization']
+        except:
+            return response.Response({'error': 'token not found'})
+
+        token_decode = jwt.decode(token, key=settings.SECRET_KEY, algorithms=['HS256', ])
+        user_id = token_decode['user_id']
+        user = CustomUser.objects.get(id=user_id)
+        return user
