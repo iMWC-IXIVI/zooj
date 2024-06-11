@@ -1,5 +1,7 @@
 # TODO: ИЗУЧИТЬ MIDDLEWARE ПОПЫТАТЬСЯ ДОБАВИТЬ ЕГО В ПРОЕКТ
 # TODO: ПЕРЕДЕЛАТЬ ПРИВЕТСТВЕННОЕ ПИСЬМО В КЛАССЕ SendMailAPI
+# TODO: ПРОВЕРКА ПОЛЯ ID В МЕТОДЕ PUT PROFILE
+# TODO: 133, В СЛУЧАЕ, ЕСЛИ ПОЛЬЗОВАТЕЛЬ УДАЛЕН И НЕТ РК
 
 import jwt
 
@@ -125,41 +127,21 @@ class RegistrationViewAPI(views.APIView):
         return response_user
 
 
-@decorators.api_view(['GET', ])
-def get_user(request):
-    try:
-        token = request.headers['Authorization']
-    except:
-        return response.Response(data={'error': 'authorization error'},
-                                 status=status.HTTP_400_BAD_REQUEST)
-
-    token_decode = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms=['HS256', ])
-
-    try:
-        user = CustomUser.objects.get(pk=token_decode['user_id'])
-    except:
-        return response.Response(data={'error': 'user does\'t found'})
-
-    information = Information.objects.filter(user_id=user.pk)
-
-    if not information.exists():
-        serializer_information = None
-    else:
-        serializer_information = InformationSerializer(information.first()).data
-
-    serializer_user = UserSerializer(user).data
-
-    return response.Response(data={'user': serializer_user,
-                                   'anketa': serializer_information},
-                             status=status.HTTP_200_OK)
-
-
 class ProfileView(views.APIView):
     def get(self, request):
         user = self.get_user()
-        serializer = UserSerializer(user).data
+        information = Information.objects.filter(user_id=user.pk)
 
-        return response.Response(serializer)
+        if not information.exists():
+            serializer_information = None
+        else:
+            serializer_information = InformationSerializer(information.first()).data
+
+        serializer_user = UserSerializer(user).data
+
+        return response.Response(data={'user': serializer_user,
+                                       'anketa': serializer_information},
+                                 status=status.HTTP_200_OK)
 
     def put(self, request):
         user = self.get_user()
@@ -185,5 +167,8 @@ class ProfileView(views.APIView):
 
         token_decode = jwt.decode(token, key=settings.SECRET_KEY, algorithms=['HS256', ])
         user_id = token_decode['user_id']
-        user = CustomUser.objects.get(id=user_id)
+        try:
+            user = CustomUser.objects.get(id=user_id)
+        except:
+            return response.Response(data={'error': 'user does\'t found'})
         return user
