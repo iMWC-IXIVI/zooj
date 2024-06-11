@@ -9,7 +9,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.db import transaction
 
-from rest_framework import views, response, status, decorators
+from rest_framework import views, response, status, exceptions
 
 from inform.models import AnonInformation, Information
 from inform.serializers import AnonInfoSerializer, InformationSerializer
@@ -129,7 +129,7 @@ class RegistrationViewAPI(views.APIView):
 
 class ProfileView(views.APIView):
     def get(self, request):
-        user = self.get_user()
+        user = self.get_user(request)
         information = Information.objects.filter(user_id=user.pk)
 
         if not information.exists():
@@ -144,7 +144,7 @@ class ProfileView(views.APIView):
                                  status=status.HTTP_200_OK)
 
     def put(self, request):
-        user = self.get_user()
+        user = self.get_user(request)
 
         if not request.data:
             return response.Response({'error': 'no data to change'})
@@ -155,20 +155,20 @@ class ProfileView(views.APIView):
         return response.Response({'message': 'success'}, status=status.HTTP_200_OK)
 
     def delete(self, request):
-        self.get_user().delete()
+        self.get_user(request).delete()
 
         return response.Response({'message': 'success'}, status=status.HTTP_200_OK)
 
-    def get_user(self):
+    @staticmethod
+    def get_user(request):
+        """Получение пользователя по JWT"""
         try:
-            token = self.request.headers['Authorization']
+            token = request.headers['Authorization']
+            token_decode = jwt.decode(jwt=token,
+                                      key=settings.SECRET_KEY,
+                                      algorithms=['HS256', ])
+            user = CustomUser.objects.get(id=token_decode['user_id'])
         except:
-            return response.Response({'error': 'token not found'})
+            raise exceptions.AuthenticationFailed()
 
-        token_decode = jwt.decode(token, key=settings.SECRET_KEY, algorithms=['HS256', ])
-        user_id = token_decode['user_id']
-        try:
-            user = CustomUser.objects.get(id=user_id)
-        except:
-            return response.Response(data={'error': 'user does\'t found'})
         return user
