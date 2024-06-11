@@ -24,7 +24,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     date_creation = models.DateTimeField(auto_now_add=True)
     date_update = models.DateTimeField(null=True, blank=True)
     birthday = models.CharField(null=True, blank=True)
+
     password = None
+    last_login = None
+    is_superuser = None
+    date_update = None
 
     REQUIRED_FIELDS = []
     EMAIL_FIELD = 'email'
@@ -38,6 +42,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
-class RegistrToken(models.Model):
+class Code(models.Model):
     token = models.CharField(max_length=50)
     email = models.EmailField(max_length=255)
