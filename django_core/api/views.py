@@ -2,6 +2,7 @@
 # TODO: ПЕРЕДЕЛАТЬ ПРИВЕТСТВЕННОЕ ПИСЬМО В КЛАССЕ SendMailAPI
 # TODO: ПРОВЕРКА ПОЛЯ ID В МЕТОДЕ PUT PROFILE
 # TODO: 133, В СЛУЧАЕ, ЕСЛИ ПОЛЬЗОВАТЕЛЬ УДАЛЕН И НЕТ РК
+# TODO: ПРОТЕСТИРОВАТЬ HEADERS
 
 import jwt
 
@@ -22,15 +23,15 @@ class SendMailAPI(views.APIView):
     @transaction.atomic
     def post(self, request):
 
-        if request.headers.get('anonymous-uuid') is None:
-            return response.Response(data={'error': 'user does\'t uuid'},
-                                     status=status.HTTP_400_BAD_REQUEST)
+        try:
+            request.headers['anonymous-uuid']
+        except:
+            raise exceptions.AuthenticationFailed({'detail': 'user does\'t uuid'})
 
         try:
             email = request.data['email']
         except:
-            return response.Response(data={'error': 'field email does\'t found'},
-                                     status=status.HTTP_400_BAD_REQUEST)
+            raise exceptions.ValidationError({'detail': 'field email does\'t found'})
 
         check_data = Code.objects.filter(email=email)
 
@@ -42,8 +43,7 @@ class SendMailAPI(views.APIView):
         serializer = CodeSerializer(data=request.data)
 
         if not serializer.is_valid():
-            return response.Response(data={'error': 'bad request'},
-                                     status=status.HTTP_400_BAD_REQUEST)
+            raise exceptions.ValidationError({'detail': 'data is bad'})
 
         serializer.save()
 
@@ -65,38 +65,25 @@ class RegistrationViewAPI(views.APIView):
 
         try:
             user_uuid = request.headers['anonymous-uuid']
-            code = request.data['code']
+            data_user = Code.objects.get(token=request.data['code'])
         except:
-            return response.Response(data={'error': 'authorization error'},
-                                     status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            data_user = Code.objects.get(token=code)
-        except:
-            return response.Response(data={"error": "code not found"},
-                                     status=status.HTTP_400_BAD_REQUEST)
+            raise exceptions.AuthenticationFailed({'detail': 'authorization error'})
 
         if not CustomUser.objects.filter(email=data_user.email).exists():
             user = CustomUser.objects.create_user(email=data_user.email)
-            data_user.delete()
         else:
             user = CustomUser.objects.get(email=data_user.email)
-            data_user.delete()
 
-        if user_uuid:
-            response_token = self.create_information(user, user_uuid)
-        else:
-            response_token = response.Response()
+        data_user.delete()
 
-        payload = {
-            "user_id": user.pk
-        }
-        access_token = jwt.encode(payload=payload, key=settings.SECRET_KEY, algorithm="HS256")
+        self.create_information(user, user_uuid)
 
-        response_token.data = {'token': access_token}
-        response_token.status_code = status.HTTP_201_CREATED
+        access_token = jwt.encode(payload={'user_id': user.pk},
+                                  key=settings.SECRET_KEY,
+                                  algorithm="HS256")
 
-        return response_token
+        return response.Response(data={'token': access_token},
+                                 status=status.HTTP_201_CREATED)
 
     @staticmethod
     @transaction.atomic
@@ -106,7 +93,7 @@ class RegistrationViewAPI(views.APIView):
         instance = Information.objects.filter(user_id=user.pk)
 
         if not anon_data.exists():
-            return response.Response()
+            return None
 
         serializer_anon = AnonInfoSerializer(anon_data.first()).data
         serializer_anon['user'] = user.pk
@@ -122,14 +109,14 @@ class RegistrationViewAPI(views.APIView):
 
         anon_data.delete()
 
-        response_user = response.Response()
-
-        return response_user
+        return None
 
 
 class ProfileView(views.APIView):
     def get(self, request):
+
         user = self.get_user(request)
+
         information = Information.objects.filter(user_id=user.pk)
 
         if not information.exists():
@@ -140,24 +127,31 @@ class ProfileView(views.APIView):
         serializer_user = UserSerializer(user).data
 
         return response.Response(data={'user': serializer_user,
-                                       'anketa': serializer_information},
-                                 status=status.HTTP_200_OK)
+                                       'anketa': serializer_information})
 
     def put(self, request):
+
         user = self.get_user(request)
 
         if not request.data:
-            return response.Response({'error': 'no data to change'})
-        serializer = UserSerializer(data=request.data, instance=user, partial=True)
-        serializer.is_valid(raise_exception=True)
+            raise exceptions.ValidationError({'detail': 'no data to change'})
+
+        serializer = UserSerializer(data=request.data,
+                                    instance=user,
+                                    partial=True)
+
+        if not serializer.is_valid():
+            raise exceptions.ValidationError({'detail': 'data is bad'})
+
         serializer.save()
 
-        return response.Response({'message': 'success'}, status=status.HTTP_200_OK)
+        return response.Response(data={'message': 'success'})
 
     def delete(self, request):
+
         self.get_user(request).delete()
 
-        return response.Response({'message': 'success'}, status=status.HTTP_200_OK)
+        return response.Response(data={'message': 'success'})
 
     @staticmethod
     def get_user(request):
@@ -169,6 +163,6 @@ class ProfileView(views.APIView):
                                       algorithms=['HS256', ])
             user = CustomUser.objects.get(id=token_decode['user_id'])
         except:
-            raise exceptions.AuthenticationFailed()
+            raise exceptions.AuthenticationFailed({'detail': 'authorization error'})
 
         return user
