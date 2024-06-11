@@ -28,5 +28,9 @@ func main() {
 	e.GET("/api/v1/catalog", handler.GetDishes)
 	e.GET("/api/v1/images/:dish_id", handler.GetDishImage)
 
+	e.GET("/api/v1/basket", handler.GetBasket)
+	e.POST("/api/v1/basket", handler.CreateBasket)
+	e.DELETE("/api/v1/basket", handler.DeleteBasket)
+
 	e.Logger.Fatal(e.Start(":8080"))
 }
