@@ -1,29 +1,47 @@
 :root {
-  --main-color:#008231;
-  --white: #FFFFFF;
+  --main-color: #008231;
+  --white: #ffffff;
+  --light-green: #f2fff2;
 }
+
+/* если понадобится плавный скрол  */
+/* html {
+  scroll-behavior: smooth;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+} */
 
 .dish-list {
   display: grid;
-  grid-template-columns: repeat(6, 0fr);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   justify-content: space-between;
+  gap: 15px;
 }
 
 .dish {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 200px;
+  min-height: 290px;
   font-size: 0.7rem;
 }
 
 img.dish-img {
-  width: 150px;
+  width: 200px;
+  padding-bottom: 12px;
 }
 
 .dish-popup {
   padding: 1em 2em;
-  opacity: 1 !important;
 }
 
 .float-left {
-  float: left
+  float: left;
 }
 
 .float-right {
@@ -31,25 +49,24 @@ img.dish-img {
 }
 
 .w-50 {
-  width: 50%
+  width: 50%;
 }
 
-.text-left{
+.text-left {
   text-align: left;
 }
 
 ul.one-line > li {
-  display: inline; padding-right: 20px;
+  display: inline;
+  padding-right: 20px;
 }
 
 div.popup-closer {
-  float: right; width: 30px; 
+  float: right;
+  width: 30px;
   font-size: 1.2rem;
   text-align: right;
   margin-right: 3px;
-}
-div.popup-closer > a {
-  text-decoration: none; 
 }
 
 .green {
@@ -64,27 +81,34 @@ div.popup-closer > a {
   color: black;
 }
 
-#categoriesMenu, #tagsMenu {
+#categoriesMenu,
+#tagsMenu {
   padding-top: 10px;
-  display: flex;  flex-direction: row;  justify-content: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   gap: 16px;
 }
 
-.category, .tag{
+.category,
+.tag {
   cursor: pointer;
 }
 
-
-
+.category {
+  padding: 14px 20px;
+  background-color: #f6f6f6;
+  border-radius: 50px;
+}
 
 .app {
   padding: 10px;
   text-align: center;
 }
 
-.container{
+.container {
   margin: 0 auto;
-  max-width: 1300px;
+  max-width: 1330px;
   padding: 0 15px;
 }
 
@@ -106,14 +130,15 @@ div.popup-closer > a {
   margin: 36px auto;
 }
 
-.logo{
+.logo {
   font-size: 30px;
 }
 
-.btn{
+.btn {
   border: 0px;
   font-family: inherit;
   min-width: 50px;
+  border-radius: 50px;
   cursor: pointer;
 }
 
@@ -135,12 +160,7 @@ div.popup-closer > a {
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(
-      100,
-      100,
-      100,
-      0.3
-  );
+  background: rgba(100, 100, 100, 0.3);
   display: none;
   align-items: center;
   justify-content: center;
@@ -152,7 +172,6 @@ div.popup-closer > a {
 }
 
 .dish-img-wrapper {
-  min-height: 200px;
   align-content: center;
 }
 
@@ -167,35 +186,47 @@ div.popup-closer > a {
   display: flex;
 }
 
-.header-btns{
+.header-btns {
   display: flex;
   gap: 10px;
-  
 }
 
-.header-btn{
-  background-color: #F2F2F2;
+.header-btn {
+  background-color: #f2f2f2;
   padding: 15px;
   border-radius: 50px;
 }
 
-.header-btn-login{
+.header-btn-login {
   background-color: var(--main-color);
   color: var(--white);
   border-radius: 50px;
   padding: 18px 82px;
 }
 
-.header-list{
+.header-list {
   display: flex;
+  max-height: 50px;
   gap: 10px;
-  padding: 15px 0;
 }
 
-.header-list_item{
-  padding: 0 15px;
+.header-list_item {
+  padding: 14px 16px;
+  border-radius: 50px;
 }
 
-.header-list_item:hover {
-  background-color: #F2FFF2;
+.header-list_item:nth-child(even) {
+  padding: 14px 0;
+}
+
+.header-list_item:nth-child(odd):hover {
+  background-color: var(--light-green);
+}
+
+.dish-btn {
+  width: 100%;
+  padding: 8px 0;
+  color: var(--main-color);
+  background-color: var(--light-green);
+  border: 1px solid var(--main-color);
 }

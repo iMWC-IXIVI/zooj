@@ -1,18 +1,21 @@
 import React from "react";
+import {NavLink} from "react-router-dom"
+
 import Button from "./Button";
 import FavIcon from "./FavIcon";
+import Logo from "./Logo";
 
 function Header({ className }) {
   return (
     <header>
       <div className={className}>
-        <div className="logo">ЗОЖНИК</div>
+        <Logo />
         <nav>
           <ul className="header-list">
             <li className="header-list_item">
-              Полезное питание
+              <NavLink to="/MainPage">Полезное питание</NavLink>
             </li>
-            <li>
+            <li className="header-list_item">
               <svg
                 width="2"
                 height="22"
@@ -25,14 +28,14 @@ function Header({ className }) {
                   width="1"
                   height="22"
                   fill="#444444"
-                  fill-opacity="0.08"
+                  fillOpacity="0.08"
                 />
               </svg>
+            </li> 
+            <li className="header-list_item">
+              <NavLink to="/ReadyProgs">Готовые программы</NavLink>
             </li>
             <li className="header-list_item">
-              <a href="https://zozhnik.ru/#gsc.tab=0">Готовые программы</a>
-            </li>
-            <li>
               <svg
                 width="2"
                 height="22"
@@ -45,23 +48,23 @@ function Header({ className }) {
                   width="1"
                   height="22"
                   fill="#444444"
-                  fill-opacity="0.08"
+                  fillOpacity="0.08"
                 />
               </svg>
             </li>
             <li className="header-list_item">
-              <a href="https://zozhnik.ru/#gsc.tab=0">Метод тарелки</a>
+              <NavLink to="/DishMethod">Метод тарелки</NavLink>
             </li>
           </ul>
         </nav>
         <div className="header-btns">
-        <Button className="header-btn" label=" ">
-          <div>
-            <FavIcon></FavIcon>
-          </div>
-        </Button>
-        <Button className="header-btn" label=" "></Button>
-        <Button className="header-btn-login" label="Войти"></Button>
+          <Button className="header-btn" label=" ">
+            <div>
+              <FavIcon />
+            </div>
+          </Button>
+          <Button className="header-btn" label=" "></Button>
+          <Button className="header-btn-login" label="Войти"></Button>
         </div>
       </div>
     </header>
