@@ -1,4 +1,3 @@
-# TODO: ИЗУЧИТЬ MIDDLEWARE ПОПЫТАТЬСЯ ДОБАВИТЬ ЕГО В ПРОЕКТ
 # TODO: ПЕРЕДЕЛАТЬ ПРИВЕТСТВЕННОЕ ПИСЬМО В КЛАССЕ SendMailAPI
 # TODO: ПРОВЕРКА ПОЛЯ ID В МЕТОДЕ PUT PROFILE
 # TODO: ПРОТЕСТИРОВАТЬ HEADERS

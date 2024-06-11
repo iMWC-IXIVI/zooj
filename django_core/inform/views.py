@@ -1,7 +1,3 @@
-# TODO: ИЗУЧИТЬ MIDDLEWARE ПОПЫТАТЬСЯ ДОБАВИТЬ ЕГО В ПРОЕКТ
-# TODO: Положительные числа в полях
-# TODO: Проверка на валидацию uuid
-
 import jwt
 
 from django.conf import settings
@@ -59,6 +55,9 @@ class AnonInformationAPI(views.APIView):
             gender = self.get_gender(self.request.data['gender'])
             activity = self.get_activity(self.request.data['activity'])
         except:
+            raise exceptions.ValidationError({'detail': 'data is bad'})
+
+        if not (weight > 0 and des_weight > 0 and height > 0 and age > 0):
             raise exceptions.ValidationError({'detail': 'data is bad'})
 
         calorie = (weight * 10 + height * 6.25 - age * 5 + gender) * activity
@@ -207,6 +206,9 @@ class InformationView(views.APIView):
             gender = self.get_gender(self.request.data['gender'])
             activity = self.get_activity(self.request.data['activity'])
         except:
+            raise exceptions.ValidationError({'detail': 'data is bad'})
+
+        if not (weight > 0 and des_weight > 0 and height > 0 and age > 0):
             raise exceptions.ValidationError({'detail': 'data is bad'})
 
         calorie = (weight * 10 + height * 6.25 - age * 5 + gender) * activity
