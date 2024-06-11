@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, RegistrToken
+from .models import CustomUser, Code
 
 
 class UserSerializer(serializers.Serializer):
@@ -14,10 +14,19 @@ class UserSerializer(serializers.Serializer):
         user = CustomUser.objects.create_user(**validated_data)
         return user
 
+    def update(self, instance, validated_data):
+        instance.email = validated_data.get('email', instance.email)
+        instance.username = validated_data.get('username', instance.username)
+        instance.phone = validated_data.get('phone', instance.phone)
+        instance.address = validated_data.get('address', instance.address)
+        instance.birthday = validated_data.get('birthday', instance.birthday)
+        instance.save()
+        return instance
 
-class RegistrTokenSerializer(serializers.Serializer):
+
+class CodeSerializer(serializers.Serializer):
     token = serializers.CharField(max_length=50)
     email = serializers.EmailField(max_length=255)
 
     def create(self, validated_data):
-        return RegistrToken.objects.create(**validated_data)
+        return Code.objects.create(**validated_data)
