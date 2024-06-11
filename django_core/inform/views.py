@@ -1,7 +1,3 @@
-# TODO: ИЗУЧИТЬ MIDDLEWARE ПОПЫТАТЬСЯ ДОБАВИТЬ ЕГО В ПРОЕКТ
-# TODO: UUID в анонимной анкете
-# TODO: Положительные числа в полях
-
 import jwt
 
 from django.conf import settings
@@ -20,41 +16,34 @@ class AnonInformationAPI(views.APIView):
     @transaction.atomic
     def post(self, request):
 
-        user_uuid = request.headers.get('anonymous-uuid')
+        try:
+            user_uuid = request.headers['anonymous-uuid']
+        except:
+            raise exceptions.AuthenticationFailed({'detail': 'authentication error'})
 
         if AnonInformation.objects.filter(anonim_uuid=user_uuid).exists():
-            return response.Response(data={'error': 'user have data'},
-                                     status=status.HTTP_400_BAD_REQUEST)
-
-        serializer_response = response.Response()
+            raise exceptions.ValidationError({'detail': 'user have data'})
 
         calorie = self.get_calorie()
 
         if calorie < 0:
-            return response.Response(data={'error': 'error in field'},
-                                     status=status.HTTP_400_BAD_REQUEST)
+            raise exceptions.ValidationError({'detail': 'calorie an invalid value'})
 
         request.data['calorie'] = calorie
         request.data['protein'] = self.get_protein(calorie)
         request.data['fats'] = self.get_fats(calorie)
         request.data['carbohydrates'] = self.get_carbohydrates(calorie)
-        request.data['anonim_uuid'] = request.headers['anonymous_uuid']
+        request.data['anonim_uuid'] = user_uuid
 
         serializer = AnonInfoSerializer(data=request.data)
 
         if not serializer.is_valid():
-            serializer_response.data = {'error': 'data does\'t valid'}
-            serializer_response.status_code = status.HTTP_400_BAD_REQUEST
-            return serializer_response
+            raise exceptions.ValidationError({'detail': 'data is bad'})
 
         serializer.save()
 
-        serializer_response.data = {
-            'message': 'success'
-        }
-        serializer_response.status_code = status.HTTP_201_CREATED
-
-        return serializer_response
+        return response.Response(data={'message': 'success'},
+                                 status=status.HTTP_201_CREATED)
 
     def get_calorie(self):
         """Получение кбжу пользователя"""
@@ -66,7 +55,10 @@ class AnonInformationAPI(views.APIView):
             gender = self.get_gender(self.request.data['gender'])
             activity = self.get_activity(self.request.data['activity'])
         except:
-            return -1
+            raise exceptions.ValidationError({'detail': 'data is bad'})
+
+        if not (weight > 0 and des_weight > 0 and height > 0 and age > 0):
+            raise exceptions.ValidationError({'detail': 'data is bad'})
 
         calorie = (weight * 10 + height * 6.25 - age * 5 + gender) * activity
 
@@ -103,7 +95,7 @@ class AnonInformationAPI(views.APIView):
         }
 
         if gender not in gender_data:
-            raise KeyError('field with gender params does not valid')
+            raise exceptions.ValidationError({'detail': 'field with gender params does not valid'})
 
         return gender_data[gender]
 
@@ -119,7 +111,7 @@ class AnonInformationAPI(views.APIView):
         }
 
         if activity not in activity_data:
-            raise KeyError('field with activity params does not valid')
+            raise exceptions.ValidationError({'detail': 'field with activity params does not valid'})
 
         return activity_data[activity]
 
@@ -130,14 +122,12 @@ def get_anon_information(request):
     try:
         anonim_uuid = request.headers['anonymous_uuid']
     except:
-        return response.Response(data={'error': 'uuid does\'t found'},
-                                 status=status.HTTP_400_BAD_REQUEST)
+        raise exceptions.AuthenticationFailed({'detail': 'authentication error'})
 
     try:
         anon_user = AnonInformation.objects.get(anonim_uuid=anonim_uuid)
     except:
-        return response.Response(data={'Anonymous': None},
-                                 status=status.HTTP_400_BAD_REQUEST)
+        return response.Response(data={'Anonymous': None})
 
     return response.Response({'Anonymous': AnonInfoSerializer(anon_user).data})
 
@@ -146,22 +136,18 @@ class InformationView(views.APIView):
     @transaction.atomic
     def post(self, request):
 
-        serializer_response = response.Response()
-
         try:
-            token = request.headers['Authorization']
-            user = self.get_user(token)
+            user = self.get_user(request.headers['Authorization'])
         except:
-            serializer_response.data = {'error': 'authorization error'}
-            serializer_response.status_code = status.HTTP_400_BAD_REQUEST
-            return serializer_response
+            raise exceptions.AuthenticationFailed({'detail': 'authorization error'})
 
         if Information.objects.filter(user_id=user.pk).exists():
-            serializer_response.data = {'error': 'it is forbidden create new information'}
-            serializer_response.status_code = status.HTTP_400_BAD_REQUEST
-            return serializer_response
+            raise exceptions.ValidationError({'detail': 'it is forbidden create new information'})
 
         calorie = self.get_calorie()
+
+        if calorie < 0:
+            raise exceptions.ValidationError({'detail': 'calorie an invalid value'})
 
         request.data['user'] = user.pk
         request.data['calorie'] = calorie
@@ -172,33 +158,25 @@ class InformationView(views.APIView):
         serializer = InformationSerializer(data=request.data)
 
         if not serializer.is_valid():
-            serializer_response.data = {'error': 'data does\'t valid'}
-            serializer_response.status_code = status.HTTP_400_BAD_REQUEST
-            return serializer_response
+            raise exceptions.ValidationError({'detail': 'data is bad'})
 
         serializer.save()
 
-        serializer_response.data = {
-            'message': 'success'
-        }
-        serializer_response.status_code = status.HTTP_201_CREATED
-
-        return serializer_response
+        return response.Response(data={'message': 'success'},
+                                 status=status.HTTP_201_CREATED)
 
     def put(self, request):
 
-        serializer_response = response.Response()
-
         try:
-            token = request.headers['Authorization']
-            user = self.get_user(token)
+            user = self.get_user(request.headers['Authorization'])
             instance = Information.objects.get(user_id=user.pk)
         except:
-            serializer_response.data = {'error': 'authorization error'}
-            serializer_response.status_code = status.HTTP_400_BAD_REQUEST
-            return serializer_response
+            raise exceptions.AuthenticationFailed({'detail': 'authorization error'})
 
         calorie = self.get_calorie()
+
+        if calorie < 0:
+            raise exceptions.ValidationError({'detail': 'calorie an invalid value'})
 
         request.data['user'] = user.pk
         request.data['calorie'] = calorie
@@ -211,18 +189,12 @@ class InformationView(views.APIView):
                                            partial=True)
 
         if not serializer.is_valid():
-            serializer_response.data = {'error': 'data does\'t valid'}
-            serializer_response.status_code = status.HTTP_400_BAD_REQUEST
-            return serializer_response
+            raise exceptions.ValidationError({'detail': 'data is bad'})
 
         serializer.save()
 
-        serializer_response.data = {
-            'message': 'success'
-        }
-        serializer_response.status_code = status.HTTP_201_CREATED
-
-        return serializer_response
+        return response.Response(data={'message': 'success'},
+                                 status=status.HTTP_201_CREATED)
 
     def get_calorie(self):
         """Получение кбжу пользователя"""
@@ -234,8 +206,10 @@ class InformationView(views.APIView):
             gender = self.get_gender(self.request.data['gender'])
             activity = self.get_activity(self.request.data['activity'])
         except:
-            return response.Response(data={'error': 'error in field'},
-                                     status=status.HTTP_400_BAD_REQUEST)
+            raise exceptions.ValidationError({'detail': 'data is bad'})
+
+        if not (weight > 0 and des_weight > 0 and height > 0 and age > 0):
+            raise exceptions.ValidationError({'detail': 'data is bad'})
 
         calorie = (weight * 10 + height * 6.25 - age * 5 + gender) * activity
 
@@ -272,8 +246,7 @@ class InformationView(views.APIView):
         }
 
         if gender not in gender_data:
-            return response.Response(data={'error': 'field with gender does not valid'},
-                                     status=status.HTTP_400_BAD_REQUEST)
+            raise exceptions.ValidationError({'detail': 'field with gender does not valid'})
 
         return gender_data[gender]
 
@@ -289,8 +262,7 @@ class InformationView(views.APIView):
         }
 
         if activity not in activity_data:
-            return response.Response(data={'error': 'field with activity does not valid'},
-                                     status=status.HTTP_400_BAD_REQUEST)
+            raise exceptions.ValidationError({'detail': 'field with activity does not valid'})
 
         return activity_data[activity]
 
