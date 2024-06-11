@@ -1,7 +1,6 @@
 # TODO: ИЗУЧИТЬ MIDDLEWARE ПОПЫТАТЬСЯ ДОБАВИТЬ ЕГО В ПРОЕКТ
 # TODO: ПЕРЕДЕЛАТЬ ПРИВЕТСТВЕННОЕ ПИСЬМО В КЛАССЕ SendMailAPI
 # TODO: ПРОВЕРКА ПОЛЯ ID В МЕТОДЕ PUT PROFILE
-# TODO: 133, В СЛУЧАЕ, ЕСЛИ ПОЛЬЗОВАТЕЛЬ УДАЛЕН И НЕТ РК
 # TODO: ПРОТЕСТИРОВАТЬ HEADERS
 
 import jwt
@@ -135,6 +134,9 @@ class ProfileView(views.APIView):
 
         if not request.data:
             raise exceptions.ValidationError({'detail': 'no data to change'})
+
+        if request.data.get('id'):
+            raise exceptions.ValidationError({'detail': 'data is bad'})
 
         serializer = UserSerializer(data=request.data,
                                     instance=user,
