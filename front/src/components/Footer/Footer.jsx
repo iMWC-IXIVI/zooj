@@ -1,8 +1,7 @@
 import classes from "./Footer.module.scss";
-
 import SvgSelector from "../SvgSelector";
 import {Link} from "react-router-dom";
-import RoundButtonEmpty from "../Buttons/RoundButtonEmpty/RoundButtonEmpty";
+
 
 export default function Footer() {
   return (
@@ -12,9 +11,9 @@ export default function Footer() {
           <SvgSelector name={"logo"} />
         </div>
         <div className={classes.navigate_footer}>
-          <Link to={"#"}>Полезное питание</Link>
-          <Link to={"#"}>Готовые программы</Link>
-          <Link to={"#"}>Метод тарелки</Link>
+          <Link to={"/"}>Полезное питание</Link>
+          <Link to={"/readyprogram"}>Готовые программы</Link>
+          <Link to={"/dishmethod"}>Метод тарелки</Link>
         </div>
         <div className={classes.button_footer}>
           <Link to="#">

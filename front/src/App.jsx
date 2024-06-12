@@ -1,26 +1,26 @@
-import CatalogIndex from "./components/CatalogIndex.js";
-import MainPage from "./pages/MainPage.js";
-import ReadyPrograms from "./pages/ReadyProgs.js";
-import DishMethod from "./pages/DishMethod.js";
-
 import {Route, Routes} from "react-router-dom";
 
+// components
+import CatalogIndex from "./components/CatalogIndex.js";
 import Header from "./components/Header/Header.jsx";
 import Footer from "./components/Footer/Footer.jsx";
+import Main from "./components/Main/Main.jsx";
+import ReadyProgs from "./components/ReadyProgs/ReadyProgs.jsx";
+import DishMethod from "./components/DishMethod/DishMethod.jsx";
 
-function App() {
+export default function App() {
   return (
     <>
       <Header />
       <CatalogIndex />
       <Routes>
-        <Route path="/MainPage" component={MainPage} />
-        <Route path="/ReadyProgs" component={ReadyPrograms} />
-        <Route path="/DishMethod" component={DishMethod} />
+        <Route path="" element={<Main />} />
+        <Route path="readyprogram" element={<ReadyProgs />} />
+        <Route path="dishmethod" element={<DishMethod />} />
       </Routes>
       <Footer />
     </>
   );
 }
 
-export default App;
+
