@@ -3,6 +3,7 @@ package repo
 import (
 	"context"
 	"goauth/internal/entity"
+	"strconv"
 )
 
 func (r *Repo) GetBasket(userID int) (entity.Basket, error) {
@@ -10,7 +11,17 @@ func (r *Repo) GetBasket(userID int) (entity.Basket, error) {
 		Items: make([]entity.BasketItem, 0),
 	}
 
-	sql := " select user_id, dish_id from basket where user_id = $1"
+	sql := `
+		select 
+		basket.user_id, basket.dish_id,
+		dishes.title, dishes.kcal, dishes.proteins, dishes.fats, dishes.carbos,
+		dishes.image, coalesce(dishes.weight, 400),
+		dishes.provider, dishes.link, dishes.link_image, dishes.price
+		from basket 
+		inner join dishes on dishes.id = basket.dish_id
+		where basket.user_id = $1
+		order by dishes.provider
+	`
 	rows, err := r.db.Query(context.Background(), sql, userID)
 
 	if err != nil {
@@ -19,10 +30,19 @@ func (r *Repo) GetBasket(userID int) (entity.Basket, error) {
 
 	for rows.Next() {
 		item := entity.BasketItem{}
-		err := rows.Scan(&item.UserID, &item.DishID)
+		err := rows.Scan(
+			&item.UserID, &item.DishID, &item.Title, &item.Kcal, &item.Proteins, &item.Fats, &item.Carbos,
+			&item.Image, &item.Weight, &item.Provider, &item.Link, &item.LinkImage, &item.Price)
 		if err != nil {
 			return basket, err
 		}
+		item.Image = "/api/v1/images/" + strconv.Itoa(int(item.DishID))
+		basket.Items = append(basket.Items, item)
+
+		basket.Kcal.Actual += float32(item.Kcal)
+		basket.Fats.Actual += float32(item.Fats)
+		basket.Proteins.Actual += float32(item.Proteins)
+		basket.Carbos.Actual += float32(item.Carbos)
 	}
 	return basket, nil
 }
@@ -51,7 +71,7 @@ func (r *Repo) CreateBasket(userID, dishID int) error {
 }
 
 func (r *Repo) DeleteBasket(userID, dishID int) error {
-	sql := " delete from basket where user_id = $1 and dish_id = $2"
+	sql := "delete from basket where user_id = $1 and dish_id = $2"
 
 	_, err := r.db.Exec(context.Background(), sql, userID, dishID)
 	if err != nil {

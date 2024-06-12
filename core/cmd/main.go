@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"goauth/internal/handler"
+	"goauth/internal/mdwr"
 	"goauth/internal/repo"
 	"log"
 	"os"
@@ -25,6 +26,7 @@ func main() {
 
 	e := echo.New()
 	e.Use(middleware.Logger())
+	e.Use(mdwr.UserInfo)
 	e.GET("/api/v1/catalog", handler.GetDishes)
 	e.GET("/api/v1/images/:dish_id", handler.GetDishImage)
 
