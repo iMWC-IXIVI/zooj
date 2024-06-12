@@ -4,11 +4,14 @@
 
  html {
     height: 100%;
-    font: $font_weight_m 12px $font_family_inter;
+    font: $font_weight_m 14px $font_family_inter;
 }
 
 body { 
     background-color: $color_neutral_0;
+    padding: 0 48px 48px 48px;
+
+
 
 
     -webkit-text-size-adjust: none;

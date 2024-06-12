@@ -1,8 +1,8 @@
 import classes from "./RoundButton.module.scss";
 
-export default function RoundButton({children, onClick}) {
+export default function RoundButton({children, onClick }) {
   return (
-    <button className={classes.round_button} onClick={onClick}>
+    <button className={classes.button} onClick={onClick}>
       {children}
     </button>
   );

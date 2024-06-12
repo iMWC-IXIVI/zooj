@@ -1,0 +1,46 @@
+@import "../../scss/variables";
+
+
+.footer {
+    height: 236px;
+    background-color: $color_blue_80;
+    border-radius: 56px;
+    padding: 52px 40px;
+}
+
+.one_line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.navigate_footer {
+    :last-child {
+        margin-right: 0px;
+    }
+
+    a {
+        font-weight: $font_weight_l;
+        font-size: $font_size_l;
+        text-decoration: none;
+        margin-right: 32px;
+    }
+
+}
+
+.button_footer {
+    display: flex;
+
+    :last-child {
+        margin-right: 0px;
+    }
+
+    button {
+        margin-right: 24px;
+    }
+}
+
+.two_line{
+    display: flex;
+}
