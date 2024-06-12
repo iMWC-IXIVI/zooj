@@ -2,7 +2,6 @@ package handler
 
 import (
 	"errors"
-	"fmt"
 	"goauth/internal/entity"
 	"goauth/internal/repo"
 	"log"
@@ -100,9 +99,6 @@ func (h *Handler) GetDishImage(c echo.Context) error {
 	}
 
 	path := "./images/" + dish.Image
-	fmt.Printf("dish is %#v+\n", dish)
-
-	fmt.Printf("path is %v\n", path)
 	return c.File(path)
 }
 

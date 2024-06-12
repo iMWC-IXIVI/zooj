@@ -38,7 +38,8 @@ func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int) ([]e
 
 	offset := (page - 1) * pageSize
 
-	sql := "select id, title, kcal, proteins, fats, carbos, image, coalesce(kind, 0), coalesce(weight, 400) from dishes"
+	sql := `select id, title, kcal, proteins, fats, carbos, image, coalesce(kind, 0), coalesce(weight, 400), 
+			provider, link, link_image, price from dishes`
 	args := []any{pageSize, offset}
 
 	if len(categoryIDs) > 0 || len(tagIDs) > 0 {
@@ -79,7 +80,7 @@ func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int) ([]e
 			Categories:  make([]entity.Category, 0),
 		}
 		err := rows.Scan(&dish.ID, &dish.Title, &dish.Kcal, &dish.Proteins, &dish.Fats,
-			&dish.Carbos, &dish.Image, &dish.Kind, &dish.Weight)
+			&dish.Carbos, &dish.Image, &dish.Kind, &dish.Weight, &dish.Provider, &dish.Link, &dish.LinkImage, &dish.Price)
 		if err != nil {
 			log.Printf("failed to scan dishes with %v\n", err)
 			return make([]entity.Dish, 0), err
