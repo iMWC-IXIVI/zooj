@@ -1,4 +1,5 @@
 import {Route, Routes} from "react-router-dom";
+import {useState} from "react";
 
 // components
 import CatalogIndex from "./components/CatalogIndex.js";
@@ -7,13 +8,16 @@ import Footer from "./components/Footer/Footer.jsx";
 import Main from "./components/Main/Main.jsx";
 import ReadyProgs from "./components/ReadyProgs/ReadyProgs.jsx";
 import DishMethod from "./components/DishMethod/DishMethod.jsx";
+import WrapperLogin from "./components/Authentication/WrapperLogin/WrapperLogin.jsx";
 
 export default function App() {
+  const [wrapperLogin, setWrapperLogin] = useState(true);
   return (
     <>
-      <Header />
-      <CatalogIndex />
       
+      <Header />
+      {wrapperLogin && <WrapperLogin setWrapperLogin={setWrapperLogin} />}
+      <CatalogIndex />
       <Routes>
         <Route path="" element={<Main />} />
         <Route path="readyprogram" element={<ReadyProgs />} />
@@ -23,5 +27,3 @@ export default function App() {
     </>
   );
 }
-
-

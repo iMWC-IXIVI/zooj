@@ -1,0 +1,50 @@
+@import "../../../scss/variables";
+
+.text_box {
+    display: inline-block;
+    position: relative;
+}
+
+.text_box_input {
+    width: 100%;
+    padding: 15px 20px;
+    border: 1px solid $color_neutral_60;
+    border-radius: 56px;
+    font-size: 24px;
+    color: $color_neutral_60;
+
+}
+
+.text_box_label {
+    display: block;
+    color: $color_neutral_60;
+    z-index: 2;
+    margin-bottom: 18px;
+}
+
+.text_box_message {
+    color: $color_neutral_80;
+}
+
+.control_box_input {
+    z-index: 1;
+    display: block;
+    position: absolute;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text_box_error{
+    .text_box_input {
+        border-color: red;
+    }
+
+    .text_box_label {
+        color: red;
+    }
+
+
+    .text_box_message {
+        color: red;
+    }
+}

@@ -28,6 +28,9 @@
         font-size: $font_size_l;
         text-decoration: none;
         margin-right: 32px;
+        &:hover{
+            text-decoration: underline;
+         }
     }
 
 }
@@ -44,6 +47,7 @@
         border-radius: 50%;
         height: 44px;
         width: 44px;
+        
     }
 
     :last-child {
@@ -65,7 +69,7 @@
     a{
     margin-right: 32px;
     text-decoration: none;
-    :hover{
+    &:hover{
         text-decoration: underline;
     }
     

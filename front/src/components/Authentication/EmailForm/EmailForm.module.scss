@@ -1,0 +1,15 @@
+@import "../../../scss/variables";
+
+.message{
+    font-size: 20px;
+    margin-bottom: 32px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+   button{
+    margin-top: 32px;
+   }
+}
+
