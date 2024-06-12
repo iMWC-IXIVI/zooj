@@ -1,0 +1,23 @@
+/********************************************
+ * Initialization styles
+ ********************************************/
+
+ html {
+    height: 100%;
+    font: $font_weight_m 12px $font_family_inter;
+}
+
+body { 
+    background-color: $color_neutral_0;
+
+
+    -webkit-text-size-adjust: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+
+}
+
+strong,b {
+    font-weight: $font_weight_l;
+}

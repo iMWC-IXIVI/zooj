@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "./App.css";
 
-import Header from "./components/Header";
+
+
 import CatalogIndex from "./components/CatalogIndex";
 import MainPage from "./pages/MainPage";
 import ReadyPrograms from "./pages/ReadyProgs";
@@ -10,6 +10,7 @@ import DishMethod from "./pages/DishMethod";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { GetAnonymous, ResetAnonymous } from "./services/anonymous.js";
 import { SendAnketa, RequestCodeEmail, GetToken } from "./services/auth.js";
+import Header from "./components/Header/Header.jsx";
 
 function App() {
   let [anonId, setAnonId] = useState(GetAnonymous());
@@ -40,7 +41,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Header className="container header-container" />
+        <Header />
         <CatalogIndex/>
         <Routes>
           <Route path="/MainPage" component={MainPage} />
