@@ -13,6 +13,7 @@ export default function App() {
     <>
       <Header />
       <CatalogIndex />
+      
       <Routes>
         <Route path="" element={<Main />} />
         <Route path="readyprogram" element={<ReadyProgs />} />
