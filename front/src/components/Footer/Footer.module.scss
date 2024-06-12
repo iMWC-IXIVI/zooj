@@ -6,6 +6,9 @@
     background-color: $color_blue_80;
     border-radius: 56px;
     padding: 52px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .one_line {
@@ -32,15 +35,42 @@
 .button_footer {
     display: flex;
 
+    a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 24px;
+        border: 1px solid $color_neutral_80;
+        border-radius: 50%;
+        height: 44px;
+        width: 44px;
+    }
+
     :last-child {
         margin-right: 0px;
     }
 
-    button {
-        margin-right: 24px;
-    }
+
 }
 
-.two_line{
+.two_line {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+
+}
+
+.info {
+    a{
+    margin-right: 32px;
+    text-decoration: none;
+
+    :hover{
+        text-decoration:underline;
+    }
+    }
+    :last-child {
+        margin-right: 0px;
+    }
 }

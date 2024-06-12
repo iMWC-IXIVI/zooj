@@ -17,41 +17,30 @@ export default function Footer() {
           <Link to={"#"}>Метод тарелки</Link>
         </div>
         <div className={classes.button_footer}>
-          <RoundButtonEmpty>
-            <Link to="#">
-              <SvgSelector name={"telegram"} />
-            </Link>
-          </RoundButtonEmpty>
-          <RoundButtonEmpty>
-            <Link to="#">
-              <SvgSelector name={"vk"} />
-            </Link>
-          </RoundButtonEmpty>
-          <RoundButtonEmpty>
-            <Link to="#">
-              <SvgSelector name={"youtube"} />
-            </Link>
-          </RoundButtonEmpty>
-          <RoundButtonEmpty>
-            <Link to="#">
-              <SvgSelector name={"email"} />
-            </Link>
-          </RoundButtonEmpty>
+          <Link to="#">
+            <SvgSelector name={"telegram"} />
+          </Link>
+
+          <Link to="#">
+            <SvgSelector name={"vk"} />
+          </Link>
+
+          <Link to="#">
+            <SvgSelector name={"youtube"} />
+          </Link>
+
+          <Link to="#">
+            <SvgSelector name={"email"} />
+          </Link>
         </div>
       </div>
       <div className={classes.two_line}>
-        <div>
-            <Link to="#">
-            Политика конфиденциальности
-            </Link>
-            <Link to="#">
-            Условия предоставления услуг
-            </Link>
+        <div className={classes.info} >
+          <Link to="#">Политика конфиденциальности</Link>
+          <Link to="#">Условия предоставления услуг</Link>
         </div>
         <div>
-           <p>
-           © 2023 Зожник. Все права защищены
-           </p>
+          <p>© 2023 Зожник. Все права защищены</p>
         </div>
       </div>
     </footer>
