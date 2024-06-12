@@ -1,7 +1,3 @@
-# TODO: ПЕРЕДЕЛАТЬ ПРИВЕТСТВЕННОЕ ПИСЬМО В КЛАССЕ SendMailAPI
-# TODO: ПРОВЕРКА ПОЛЯ ID В МЕТОДЕ PUT PROFILE
-# TODO: ПРОТЕСТИРОВАТЬ HEADERS
-
 import jwt
 
 from django.core.mail import EmailMultiAlternatives
