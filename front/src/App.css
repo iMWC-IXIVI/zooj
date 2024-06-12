@@ -169,6 +169,10 @@ div.popup-closer > a {
   display: flex;
 }
 
+.display-flex {
+  display: flex;
+}
+
 .header-btns{
   display: flex;
   gap: 10px;

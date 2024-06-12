@@ -1,6 +1,11 @@
 import DishPopup from "./DishPopup";
+import { AddToCart } from '../services/basket'
 
 function Dish({dish}) {
+  function addToCart() {
+    AddToCart(dish.id)
+  }
+
   return (
     <div className="dish">
       <a href={`#dish-popup-${dish.id}`}>
@@ -12,7 +17,7 @@ function Dish({dish}) {
       </a>
 
       <p>{dish.weight} г • {dish.kcal} ккал • ⭐ 5.0</p>
-      <a href="/#">Выбрать</a>
+      <a href="/#" onClick={addToCart}>Выбрать</a>
 
       <div id={`dish-popup-${dish.id}`} class="modal">
         <div class="content">
