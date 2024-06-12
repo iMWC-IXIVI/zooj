@@ -23,7 +23,7 @@ function App() {
     RequestCodeEmail(email).then((data) => console.log(data));
   }
 
-  let [token, setToken] = useState('');
+  let [token, setToken] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.LXGZYiJLyP8UUr7Zi3aeRhxZbjAFlbEdWGe6S7Srv0w');
   async function login() {
     let code = document.getElementById('code').value;
     let newToken = await GetToken(code);

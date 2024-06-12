@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "./Button";
+import { Basket } from './Basket'
 // import FavIcon from "./FavIcon";
 
 function Header({ className }) {
@@ -56,7 +57,7 @@ function Header({ className }) {
         </nav>
         <div className="header-btns">
         <Button className="header-btn" label=" "></Button>
-        <Button className="header-btn" label=" "></Button>
+        <Basket/>
         <Button className="header-btn-login" label="Войти"></Button>
         </div>
       </div>
