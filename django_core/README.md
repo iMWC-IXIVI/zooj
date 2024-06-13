@@ -65,4 +65,43 @@ docker compose up --build - В случае глобальных изменен�
 http://localhost/<дальше пути из nginx>
 ```
 ___
-# Дальше больше...
+# Примеры API
+___
+## /api/send-mail/
+
+method POST
+
+На вход такие данные
+
+```json
+{
+  "email": "zooj@yandex.ru"
+}
+```
+
+На выходе в случае успеха такой ответ:
+
+```json
+{
+  "message": "success"
+}
+```
+
+В случае негативного сценария:
+
+```
+{"detail": "user doest uuid"}
+{"detail": "field email doest found"}
+{"detail": "data is bad"}
+```
+
+cURL:
+
+```
+curl --location 'http://localhost/api/send-mail/' \
+--header 'anonymous-uuid: 8b038105-b926-4e11-9ada-39e792a2e8c3' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "zooj@yandex.ru"
+}'
+```
