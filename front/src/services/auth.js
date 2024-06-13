@@ -1,4 +1,3 @@
-import { GetAnonymous } from "./anonymous";
 import { SetToken } from "./token"
 
 export async function SendAnketa() {

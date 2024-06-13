@@ -36,7 +36,17 @@ export default function Header({setWrapperLogin}) {
         <RoundButton>
           <SvgSelector name="basket" />
         </RoundButton>
-        <button onClick={()=>{setWrapperLogin(true)}} >Войти</button>
+        {localStorage.getItem("token") ? (
+          <button>Профиль</button>
+        ) : (
+          <button
+            onClick={() => {
+              setWrapperLogin(true);
+            }}
+          >
+            Войти
+          </button>
+        )}
       </div>
     </header>
   );

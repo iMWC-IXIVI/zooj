@@ -6,22 +6,32 @@ import CodeForm from "../CodeForm/CodeForm";
 import EmailForm from "../EmailForm/EmailForm";
 import SvgSelector from "../../SvgSelector";
 
-export default function WrapperLogin({setWrapperLogin}) {
+export default function WrapperLogin({setWrapperLogin, uuid}) {
   const [email, setEmail] = useState(null);
 
   return (
     <div className={classes.wrapper}>
       <div className={classes.wrapper_window}>
         <div className={classes.header}>
-        
           <h3>Вход на сайт</h3>
-          <button onClick={()=> {
-            setWrapperLogin(false)
-          }}>
+          <button
+            onClick={() => {
+              setWrapperLogin(false);
+            }}
+          >
             <SvgSelector name="close" />
           </button>
         </div>
-        {email ? <CodeForm email={email} setEmail={setEmail}/> : <EmailForm setEmail={setEmail} />}
+        {email ? (
+          <CodeForm
+            email={email}
+            setEmail={setEmail}
+            uuid={uuid}
+            setWrapperLogin={setWrapperLogin}
+          />
+        ) : (
+          <EmailForm setEmail={setEmail} uuid={uuid} />
+        )}
         <p className={classes.agreement}>
           Продолжая, вы соглашаетесь со сбором и обработкой персональных данных
           и пользовательским соглашением
