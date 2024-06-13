@@ -17,6 +17,8 @@ from .models import CustomUser, Code
 from .serializers import UserSerializer, CodeSerializer
 from .utils import registration_token
 
+'''Предствление для отправки кода на почту'''
+
 
 class SendMailAPI(views.APIView):
     @transaction.atomic
