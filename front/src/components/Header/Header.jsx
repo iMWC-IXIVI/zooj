@@ -31,7 +31,7 @@ export default function Header({setWrapperLogin}) {
       </div>
       <div className={classes.buttons}>
         <RoundButton>
-          <SvgSelector name="love" />
+          <SvgSelector name="favorite" />
         </RoundButton>
         <RoundButton>
           <SvgSelector name="basket" />

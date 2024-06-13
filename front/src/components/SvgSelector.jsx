@@ -16,7 +16,7 @@ export default function SvgSelector({name}) {
         </svg>
       );
 
-    case "love":
+    case "favorite":
       return (
         <svg
           width="24"
