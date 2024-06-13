@@ -11,11 +11,11 @@ import DishMethod from "./components/DishMethod/DishMethod.jsx";
 import WrapperLogin from "./components/Authentication/WrapperLogin/WrapperLogin.jsx";
 
 export default function App() {
-  const [wrapperLogin, setWrapperLogin] = useState(true);
+  const [wrapperLogin, setWrapperLogin] = useState(false);
   return (
     <>
       
-      <Header />
+      <Header setWrapperLogin={setWrapperLogin} />
       {wrapperLogin && <WrapperLogin setWrapperLogin={setWrapperLogin} />}
       <CatalogIndex />
       <Routes>

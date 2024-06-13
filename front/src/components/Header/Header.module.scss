@@ -1,2 +1,67 @@
-@import "../../scss/variables"
+@import "../../scss/variables";
 
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 36px 48px;
+}
+
+.navigate {
+    display: flex;
+    align-items: center;
+
+    a {
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
+        margin-right: 8px;
+        padding: 16px 14px;
+        border-radius: 56px;
+
+        &:last-child {
+            margin-right: 0px;
+        }
+
+    }
+
+    .active{
+
+        background-color: $color_green_10;
+
+    }
+}
+
+.line {
+    height: 22px;
+    width: 1px;
+    background-color: $color_neutral_60;
+    margin-right: 8px;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+
+    button{
+        height: 56px;
+        width: 56px;
+        background-color: $color_neutral_10;
+        margin-right: 9px;
+        &:hover{
+            cursor: pointer;
+        }
+
+        &:last-child{
+            margin-right: 0px;
+            background-color: $color_green_80;
+            width: 212px;
+            border-radius: 56px;
+            color: $color_neutral_0;
+            font-size: 16px;
+            font-weight: 500;
+
+        }
+    }
+
+}
