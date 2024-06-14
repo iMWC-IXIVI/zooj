@@ -26,6 +26,9 @@ class FavoriteAPI(views.APIView):
 
         user = self.get_user(request.headers.get('authorization'))
 
+        if Favorite.objects.filter(user_id=user.pk, dishes=request.data['dishes']).exists():
+            raise exceptions.ValidationError({'detail': 'data is bad'})
+
         request.data['user'] = user.pk
 
         if len(request.data) > 2:
