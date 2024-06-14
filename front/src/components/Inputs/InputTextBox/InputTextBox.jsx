@@ -6,7 +6,6 @@ export default function InputTextBox({
   label,
   type,
   message,
-  children,
   error,
   registerName,
   registerValidate,
@@ -17,21 +16,18 @@ export default function InputTextBox({
     <div
       className={`${classes.text_box} ${error ? classes.text_box_error : null}`}
     >
-      {label ? <label className={classes.text_box_label}>{label}</label> : null}
+      {label ? <label className={classes.label}>{label}</label> : null}
       <input
         {...register(`${registerName}`, registerValidate)}
         defaultValue={defaultValue}
         type={type}
         placeholder={placeholder}
-        className={classes.text_box_input }
+        className={classes.input }
       />
       {error ? (
         <p className={classes.text_box_message}>{error}</p>
       ) : message ? (
         <p className={classes.text_box_message}>{message}</p>
-      ) : null}
-      {children ? (
-        <div className={classes.control_box_input}>{children}</div>
       ) : null}
     </div>
   );
