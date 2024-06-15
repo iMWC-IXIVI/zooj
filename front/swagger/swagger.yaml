@@ -1,0 +1,462 @@
+openapi: "3.1.0"
+info:
+  title: Что-то про ЗОЖ
+  version: 1.0.0
+servers:
+  - url: http://localhost
+    description: zoj server
+paths:
+
+  /api/anon-info/:
+    post:
+      summary: Метод по отправке анонимной анкеты
+      tags:
+        - Анкета
+      description: Пример ввода данных
+      operationId: PostAnonInfo
+      parameters:
+        - name: anonymous-uuid
+          in: header
+          required: true
+          content:
+            application/json:
+              example: 7eed90e1-2b5a-4162-a790-c34f5ba51cd8
+      requestBody:
+        required: true
+        description: Пример ввода данных анонимной анкеты
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Info'
+      responses:
+        '201':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              example: {message: success}
+        'default':
+          description: Отрицательный ответ от сервера
+          content:
+            application/json:
+              examples:
+                401:
+                  value: {detail: authentication error}
+                400:
+                  value: {detail: [user have data, calorie an invalid value, data is bad, field with gender params does not valid, field with activity params does not valid]}
+  /api/get-anon-info/:
+    get:
+      parameters:
+        - name: anonymous-uuid
+          in: header
+          required: true
+          content:
+            application/json:
+              example: 7eed90e1-2b5a-4162-a790-c34f5ba51cd8
+      tags:
+        - Анкета
+      summary: Метод по выводу информации об анонимном пользователе
+      description: Пример данных
+      operationId: GetAnonInfo
+      responses:
+        '200':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              examples:
+                NonInfo:
+                  value: {Anonymous: null}
+                Info:
+                  value: {anonim-uuid: 7eed90e1-2b5a-4162-a790-c34f5ba51cd8,
+                          gender: М,
+                          age: 30,
+                          weight: 70,
+                          des_weight: 80,
+                          height: 180,
+                          activity: 1,
+                          calorie: 2217.6,
+                          protein: 166.32,
+                          fats: 73.92,
+                          carbohydrates: 221.76}
+        'default':
+          description: Отрицательный ответ от сервера
+          content:
+            application/json:
+              examples:
+                401:
+                  value: {detail: authentication error}
+  /api/send-mail/:
+    post:
+      summary: Метод по отправке на почту кода
+      tags:
+        - Регистрация/Авторизация
+      description: Пример отправки данных
+      parameters:
+        - name: anonymous-uuid
+          in: header
+          required: true
+          content:
+            application/json:
+              example: 7eed90e1-2b5a-4162-a790-c34f5ba51cd8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Email'
+      responses:
+        '201':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              example: {message: success}
+        'default':
+          description: Отрицательный ответ от сервера
+          content:
+            application/json:
+              examples:
+                401:
+                  value: {detail: user doest uuid}
+                400:
+                  value: {detail: [field email doest found, data is bad]}
+  /api/registration/:
+    post:
+      summary: Метод по Аутентификации/Регистрации
+      tags:
+        - Регистрация/Авторизация
+      description: Пример отправки данных
+      parameters:
+        - name: anonymous-uuid
+          in: header
+          required: true
+          content:
+            application/json:
+              example: 7eed90e1-2b5a-4162-a790-c34f5ba51cd8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Code'
+      responses:
+        '201':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              example: {token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c}
+        'default':
+          description: Отрицательный ответ от сервера
+          content:
+            application/json:
+              examples:
+                401:
+                  value: {detail: authorization error}
+  /api/info/:
+    post:
+      summary: Метод по отправке анкеты
+      tags:
+        - Анкета
+      security:
+        - JWT: []
+      description: Пример входных данных
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Info'
+      responses:
+        '201':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              example: {message: success}
+        'default':
+          description: Отрицательный ответ от сервера
+          content:
+            application/json:
+              examples:
+                401:
+                  value: {detail: authorization error}
+                400:
+                  value: {detail: [it is forbidden create new information, calorie an invalid value, data is bad, field with gender does not valid, field with activity does not valid]}
+    put:
+      summary: Метод по изменении анкеты
+      tags:
+        - Анкета
+      description: Пример входных данных
+      security:
+        - JWT: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Info'
+      responses:
+        '200':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              example: {message: success}
+        'default':
+          description: Отрицательный ответ от сервера
+          content:
+            application/json:
+              examples:
+                400:
+                  value: {detail: [calorie an invalid value, data is bad, field with gender does not valid, field with activity does not valid]}
+                401:
+                  value: {detail: authorization error}
+  /api/get-user/:
+    get:
+      security:
+        - JWT: []
+      summary: Метод по получению данных пользователя
+      tags:
+        - Пользователь
+      description: Пример данных
+      responses:
+        '200':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              example: {'user': {id: 1,
+                                 email: zooj@yandex.ru,
+                                 username: null,
+                                 phone: null,
+                                 address: null,
+                                 berthday: null},
+                        'anketa': {user: 1,
+                                   gender: M,
+                                   age: 30,
+                                   weight: 70,
+                                   des_weight: 80,
+                                   height: 180,
+                                   activity: 1,
+                                   calorie: 2217.6,
+                                   protein: 166.32,
+                                   fats: 73.92,
+                                   carbohydrates: 221.76}}
+        'default':
+          description: Отрицательный ответ от сервера
+          content:
+            application/json:
+              examples:
+                401:
+                  value: {detail: authorization error}
+    put:
+      summary: Метод по изменению данных пользователя
+      tags:
+        - Пользователь
+      description: Пример отправки данных данных
+      security:
+        - JWT: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              example: {message: success}
+        'default':
+          description: Отрицательный от от сервера
+          content:
+            applicaiton/json:
+              examples:
+                401:
+                  value: {detail: authorization error}
+                400:
+                  value: {detail: [no data to change, data is bad]}
+    delete:
+      summary: Метод по удалению пользователя
+      tags: 
+        - Пользователь
+      description: Удаление пользователя
+      security:
+        - JWT: []
+      responses:
+        '200':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              example: {message: success}
+        'default':
+          description: Отрицательный ответ от сервера
+          content:
+            applciation/json:
+              examples:
+                401:
+                  value: {detail: authorization error}
+  /api/favorite/:
+    get:
+      summary: Метод по выводу избранного
+      tags:
+        - Избранное
+      description: Пример вывода данных
+      security:
+        - JWT: []
+      responses:
+        '200': 
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              example: {favorite: []}
+        'default':
+          description: Отрицательный ответ от сервера
+          content:
+            application/json:
+              examples:
+                401:
+                  value: {detail: authorization error}
+    post:
+      summary: Метод по добавлению с избранное
+      tags:
+        - Избранное
+      description: Пример входных данных
+      security:
+        - JWT: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Favorite'
+      responses:
+        '201':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              example: {message: success}
+        'default':
+          description: отрицательный ответ от сервера
+          content:
+            application/json:
+              examples:
+                401:
+                  value: {detail: authorization error}
+                400:
+                  value: {detail: [fields not equal system fields, field dishes not found]}
+    delete:
+      summary: Метод по удалению блюд из избранного
+      tags:
+        - Избранное
+      description: Удаление данных
+      security:
+        - JWT: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Favorite'
+      responses:
+        '200':
+          description: Положительный ответ от сервера
+          content:
+            application/json:
+              example: {message: success}
+        'default':
+          description: Отрицательный ответ от сервера
+          content:
+            application/json:
+              examples:
+                401:
+                  value: {detail : authorization error}
+                400:
+                  value: {detail: field a dishes is bad data}
+components:
+  schemas:
+    Info:
+      type: object
+      required:
+        - gender
+        - age
+        - weight
+        - des_weight
+        - height
+        - activity
+      properties:
+        gender:
+          type: string
+          enum:
+            - М
+            - Ж
+        age:
+          type: string
+          example: '30'
+        weight:
+          type: string
+          example: '70'
+        des_weight:
+          type: string
+          example: '80'
+        height:
+          type: string
+          example: '180'
+        activity:
+          type: string
+          enum: 
+            - '1'
+            - '2'
+            - '3'
+            - '4'
+            - '5'
+    Email:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          example: 'zooj@yandex.ru'
+    Code:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          example: '1234'
+    User:
+      type: object
+      required:
+        - email
+        - username
+        - phone
+        - address
+        - birthday
+      properties:
+        email:
+          type: string
+          example: zooj@yandex.ru
+        username:
+          type: string
+          example: YourName
+        phone:
+          type: string
+          example: +7 800 555 35 35
+        address:
+          type: string
+          example: YourAddress
+        birthday:
+          type: string
+          example: DD.MM
+    Favorite:
+      type: object
+      required:
+        - dishes
+      properties:
+        dishes:
+          type: string
+          example: '1'
+        
+  securitySchemes:
+    JWT:
+      type: apiKey
+      in: header
+      name: Authorization
