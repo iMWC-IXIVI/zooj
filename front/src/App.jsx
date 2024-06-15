@@ -2,7 +2,7 @@ import {Route, Routes} from "react-router-dom";
 import {useState} from "react";
 
 // components
-import CatalogIndex from "./components/CatalogIndex.js";
+import CatalogIndex from "./components/Catalog/Catalog.jsx";
 import Header from "./components/Header/Header.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import Main from "./components/Main/Main.jsx";

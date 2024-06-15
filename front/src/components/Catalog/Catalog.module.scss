@@ -1,0 +1,32 @@
+@import "../../scss/variables";
+
+.categoriesMenu {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.dishList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+h1 {
+  font-family: $font_family_vollkorn;
+  font-size: 26px !important;
+  letter-spacing: 0.6px;
+  line-height: 30px;
+}
+
+.tagsMenu {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding-top: 10px;
+
+  div {
+    margin-right: 5px;
+    margin-left: 17px;
+  }
+}

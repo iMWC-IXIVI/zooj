@@ -1,0 +1,28 @@
+@import "../../scss/variables";
+
+.dishPopup {
+  padding: 1em 2em;
+
+  .oneLine > {
+    li {
+      display: inline;
+      padding-right: 20px;
+    }
+  }
+  
+  .renderIng{
+    width: 50%;
+    text-align: left;
+    float: right;
+
+    :first-child{
+      float: left
+    }
+  }
+}
+
+.noPad {
+  padding-inline-start: 0px;
+  margin-right: 20px;
+}
+
