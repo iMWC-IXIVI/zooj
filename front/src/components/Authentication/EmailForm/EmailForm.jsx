@@ -1,12 +1,27 @@
-import InputTextBox from "../../Inputs/InputTextBox/InputTextBox";
 import {useForm, FormProvider} from "react-hook-form";
 import classes from "./EmailForm.module.scss";
+
+import Auth from "../../../services/Authentication";
+
+// Components
 import SubmitButton from "../../Buttons/SubmitButton/SubmitButton";
-export default function EmailForm({setEmail}) {
+import InputTextBox from "../../Inputs/InputTextBox/InputTextBox";
+import {useState} from "react";
+
+export default function EmailForm({setEmail, uuid}) {
   const methods = useForm();
+  const [error, setError] = useState(null);
 
   const onSubmit = (data) => {
-    setEmail(data.email);
+    setEmail(data.email)
+    setError(null)
+    Auth.sendEmail(data.email, uuid).then((res) => {
+      if (res.status === 201) {
+        setEmail(data.email);
+      } else {
+        setError("Усп... что то пошло не так!");
+      }
+    });
   };
   return (
     <>
@@ -36,12 +51,12 @@ export default function EmailForm({setEmail}) {
                   : ""
               }
             />
+            {error ? <p>{error}</p> : null}
             <SubmitButton disabled={!methods.formState.isValid}>
               Выслать код
             </SubmitButton>
           </form>
         </FormProvider>
-        
       </div>
     </>
   );

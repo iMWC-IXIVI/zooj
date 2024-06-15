@@ -5,7 +5,7 @@
     position: relative;
 }
 
-.text_box_input {
+.input {
     width: 100%;
     padding: 15px 20px;
     border: 1px solid $color_neutral_60;
@@ -15,7 +15,7 @@
 
 }
 
-.text_box_label {
+.label {
     display: block;
     color: $color_neutral_60;
     z-index: 2;
@@ -26,13 +26,6 @@
     color: $color_neutral_80;
 }
 
-.control_box_input {
-    z-index: 1;
-    display: block;
-    position: absolute;
-    justify-content: space-between;
-    align-items: center;
-}
 
 .text_box_error{
     .text_box_input {

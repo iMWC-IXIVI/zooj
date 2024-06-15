@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer className={classes.footer}>
       <div className={classes.one_line}>
-        <div>
+        <div className={classes.footer_logo}>
           <SvgSelector name={"logo"} />
         </div>
         <div className={classes.navigate_footer}>
@@ -34,14 +34,10 @@ export default function Footer() {
         </div>
       </div>
       <div className={classes.two_line}>
-        <div className={classes.info} >
           <Link to="#">Политика конфиденциальности</Link>
           <Link to="#">Условия предоставления услуг</Link>
-        </div>
-        <div>
-          <p>© 2023 Зожник. Все права защищены</p>
-        </div>
       </div>
+      <p>© 2023 Зожник. Все права защищены</p>
     </footer>
   );
 }

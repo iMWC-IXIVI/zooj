@@ -25,7 +25,7 @@
 
     }
 
-    .active{
+    .active {
 
         background-color: $color_green_10;
 
@@ -43,16 +43,21 @@
     display: flex;
     align-items: center;
 
-    button{
+    button {
         height: 56px;
         width: 56px;
         background-color: $color_neutral_10;
         margin-right: 9px;
-        &:hover{
+
+        &:hover {
             cursor: pointer;
         }
 
-        &:last-child{
+        a {
+            text-decoration: none;
+        }
+
+        &:last-child {
             margin-right: 0px;
             background-color: $color_green_80;
             width: 212px;
@@ -60,7 +65,6 @@
             color: $color_neutral_0;
             font-size: 16px;
             font-weight: 500;
-
         }
     }
 
