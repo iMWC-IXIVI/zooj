@@ -1,0 +1,21 @@
+@import "../../../scss/variables";
+
+.button {
+    font-size: 16px;
+    border: 1px solid $color_green_80;
+    background-color: $color_green_10;
+    color: $color_green_80;
+    border-radius: 56px;
+    padding: 18px 0;
+}
+
+.active {
+
+    background-color: $color_green_80;
+    color: $color_neutral_0;
+
+    &:hover{
+        opacity: 0.9;
+    }
+
+}

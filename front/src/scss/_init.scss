@@ -1,0 +1,31 @@
+/********************************************
+ * Initialization styles
+ ********************************************/
+
+ html {
+    height: 100%;
+    font: $font_weight_m 14px $font_family_inter;
+}
+
+body { 
+    background-color: $color_neutral_0;
+    padding: 0 48px 48px 48px;
+
+    max-width: 1440px;
+    margin: 0 auto;
+
+
+    -webkit-text-size-adjust: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+
+}
+
+strong,b {
+    font-weight: $font_weight_l;
+}
+
+button, a {
+    cursor: pointer;
+}
