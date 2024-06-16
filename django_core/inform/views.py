@@ -173,7 +173,7 @@ class InformationView(views.APIView):
         except:
             raise exceptions.AuthenticationFailed({'detail': 'authorization error'})
 
-        calorie = self.get_calorie()
+        calorie = self.get_calorie(instance)
 
         if calorie < 0:
             raise exceptions.ValidationError({'detail': 'calorie an invalid value'})
@@ -196,17 +196,62 @@ class InformationView(views.APIView):
         return response.Response(data={'message': 'success'},
                                  status=status.HTTP_201_CREATED)
 
-    def get_calorie(self):
+    def get_calorie(self, instance=None):
         """Получение кбжу пользователя"""
-        try:
-            weight = int(self.request.data['weight'])
-            des_weight = int(self.request.data['des_weight'])
-            height = int(self.request.data['height'])
-            age = int(self.request.data['age'])
-            gender = self.get_gender(self.request.data['gender'])
-            activity = self.get_activity(self.request.data['activity'])
-        except:
-            raise exceptions.ValidationError({'detail': 'data is bad'})
+        if self.request.method == 'POST':
+            try:
+                weight = int(self.request.data['weight'])
+                des_weight = int(self.request.data['des_weight'])
+                height = int(self.request.data['height'])
+                age = int(self.request.data['age'])
+                gender = self.get_gender(self.request.data['gender'])
+                activity = self.get_activity(self.request.data['activity'])
+            except:
+                raise exceptions.ValidationError({'detail': 'data is bad'})
+        elif self.request.method == 'PUT':
+            weight = self.request.data.get('weight')
+            des_weight = self.request.data.get('des_weight')
+            height = self.request.data.get('height')
+            age = self.request.data.get('age')
+            gender = self.get_gender(instance.gender)
+            activity = self.request.data.get('activity')
+
+            if not weight:
+                weight = instance.weight
+            else:
+                try:
+                    weight = int(weight)
+                except:
+                    raise exceptions.ValidationError({'detail': 'data is bad'})
+
+            if not des_weight:
+                des_weight = instance.des_weight
+            else:
+                try:
+                    des_weight = int(des_weight)
+                except:
+                    raise exceptions.ValidationError({'detail': 'data is bad'})
+
+            if not height:
+                height = instance.height
+            else:
+                try:
+                    height = int(height)
+                except:
+                    raise exceptions.ValidationError({'detail': 'data is bad'})
+
+            if not age:
+                age = instance.age
+            else:
+                try:
+                    age = int(age)
+                except:
+                    raise exceptions.ValidationError({'detail': 'data is bad'})
+
+            if not activity:
+                activity = instance.activity
+
+            activity = self.get_activity(activity)
 
         if not (weight > 0 and des_weight > 0 and height > 0 and age > 0):
             raise exceptions.ValidationError({'detail': 'data is bad'})
