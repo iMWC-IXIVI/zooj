@@ -1,9 +1,10 @@
+import MainApplication from "./MainApplication/MainApplication";
 
 
 export default function Main(){
     return(
-        <div>
-            Hello
-        </div>
+        <>
+         <MainApplication />
+        </>
     )
 }

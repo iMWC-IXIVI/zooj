@@ -187,6 +187,7 @@ export default function SvgSelector({name}) {
           />
         </svg>
       );
+   
 
     default:
       return <h1>Ошибка</h1>;
