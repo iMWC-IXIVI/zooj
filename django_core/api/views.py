@@ -1,7 +1,3 @@
-# TODO: ПЕРЕДЕЛАТЬ ПРИВЕТСТВЕННОЕ ПИСЬМО В КЛАССЕ SendMailAPI
-# TODO: ПРОВЕРКА ПОЛЯ ID В МЕТОДЕ PUT PROFILE
-# TODO: ПРОТЕСТИРОВАТЬ HEADERS
-
 import jwt
 
 from django.core.mail import EmailMultiAlternatives
@@ -15,6 +11,8 @@ from inform.serializers import AnonInfoSerializer, InformationSerializer
 from .models import CustomUser, Code
 from .serializers import UserSerializer, CodeSerializer
 from .utils import registration_token
+
+'''Предствление для отправки кода на почту'''
 
 
 class SendMailAPI(views.APIView):
