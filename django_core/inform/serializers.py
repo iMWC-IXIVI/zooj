@@ -44,6 +44,7 @@ class InformationSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         instance.age = validated_data.get('age', instance.age)
         instance.weight = validated_data.get('weight', instance.weight)
+        instance.des_weight = validated_data.get('des_weight', instance.des_weight)
         instance.height = validated_data.get('height', instance.height)
         instance.activity = validated_data.get('activity', instance.activity)
         instance.calorie = validated_data.get('calorie', instance.calorie)

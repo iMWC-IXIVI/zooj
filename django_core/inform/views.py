@@ -220,15 +220,35 @@ class InformationView(views.APIView):
 
             if not weight:
                 weight = instance.weight
+            else:
+                try:
+                    weight = int(weight)
+                except:
+                    raise exceptions.ValidationError({'detail': 'data is bad'})
 
             if not des_weight:
                 des_weight = instance.des_weight
+            else:
+                try:
+                    des_weight = int(des_weight)
+                except:
+                    raise exceptions.ValidationError({'detail': 'data is bad'})
 
             if not height:
                 height = instance.height
+            else:
+                try:
+                    height = int(height)
+                except:
+                    raise exceptions.ValidationError({'detail': 'data is bad'})
 
             if not age:
                 age = instance.age
+            else:
+                try:
+                    age = int(age)
+                except:
+                    raise exceptions.ValidationError({'detail': 'data is bad'})
 
             if not activity:
                 activity = instance.activity
