@@ -39,4 +39,8 @@ type Dish struct {
 	Image       string       `json:"image"`
 	Kind        int          `json:"kind"`
 	Weight      int          `json:"weight"`
+	Provider    string       `json:"provider"`
+	Link        string       `json:"link"`
+	LinkImage   string       `json:"link_image"`
+	Price       float64      `json:"price"`
 }
