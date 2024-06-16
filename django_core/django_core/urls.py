@@ -8,5 +8,5 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('api/', include('inform.urls')),
     path('api/', include('favorite.urls')),
-    path('swagger-ui/', TemplateView.as_view(template_name='swagger-ui.html'))
+    path('api/swagger-ui/', TemplateView.as_view(template_name='swagger-ui.html'))
 ]
