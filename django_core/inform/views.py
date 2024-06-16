@@ -1,5 +1,3 @@
-import pdb
-
 import jwt
 
 from django.conf import settings
