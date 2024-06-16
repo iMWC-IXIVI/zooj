@@ -6,8 +6,8 @@ export default function Dish({ dish }) {
   return (
     <div className={classes.dish}>
       <a href={`#dish-popup-${dish.id}`}>
-        <div className={classes.imgWrapper}>
-          <img src={dish.image} alt="some mama" />
+        <div>
+          <img src={dish.image} alt="dishImage" />
         </div>
         <p>{dish.title}</p>
       </a>
@@ -15,12 +15,15 @@ export default function Dish({ dish }) {
       <p>
         {dish.weight} г • {dish.kcal} ккал 
       </p>
-      <Button className="dish-btn" label="Выбрать"></Button>
+      <p>
+        От 230руб.
+      </p>
+      <Button className={classes.dishBtn} label="Выбрать"></Button>
 
       <div id={`dish-popup-${dish.id}`} class={classes.modal}>
         <div className={classes.content}>
           <div className={classes.popupCloser}>
-            <a href="/#" className={classes.closer}>
+            <a href="/readyprogram" className={classes.closer}>
               &times;
             </a>
           </div>

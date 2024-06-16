@@ -3,7 +3,7 @@
 export default function Main(){
     return(
         <div>
-            Hello
+            Main
         </div>
     )
 }

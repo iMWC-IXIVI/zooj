@@ -143,22 +143,22 @@ export default function CatalogIndex() {
   });
 
   return (
-    <div className={classes.CatalogIndex}>
+    <div className={classes.catalogIndex}>
       <div className={classes.categoriesMenu}>{categoriesList}</div>
 
       <div className={classes.tagsMenu}>Исключить: {antiTagsList}</div>
 
-      <div className={breakfast}>
+      <div className={classes.breakfast}>
         <h1>Завтрак</h1>
         <div className={classes.dishList}>{breakfastList}</div>
       </div>
 
-      <div className={lunch}>
+      <div className={classes.lunch}>
         <h1>Обед</h1>
         <div className={classes.dishList}>{lunchList}</div>
       </div>
 
-      <div className={dinner}>
+      <div className={classes.dinner}>
         <h1>Ужин</h1>
         <div className={classes.dishList}>{dinnerList}</div>
       </div>

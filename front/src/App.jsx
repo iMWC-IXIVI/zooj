@@ -13,8 +13,6 @@ import DishMethod from "./components/DishMethod/DishMethod.jsx";
 import WrapperLogin from "./components/Authentication/WrapperLogin/WrapperLogin.jsx";
 import PersonalAccount from "./components/PersonalAccount/PersonalAccount.jsx";
 
-
-
 export default function App() {
   const [uuid] = useState(Auth.checkUUID())
   const [wrapperLogin, setWrapperLogin] = useState(false);

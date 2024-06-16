@@ -1,5 +1,15 @@
 @import "../../scss/variables";
 
+.catalogIndex {
+  h1 {
+    font-family: $font_family_vollkorn;
+    font-size: 26px !important;
+    letter-spacing: 0.6px;
+    line-height: 30px;
+    padding: 62px 0 32px 0 ;
+  }
+}
+
 .categoriesMenu {
   display: flex;
   flex-direction: row;
@@ -9,14 +19,9 @@
 
 .dishList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-}
-
-h1 {
-  font-family: $font_family_vollkorn;
-  font-size: 26px !important;
-  letter-spacing: 0.6px;
-  line-height: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(212px, 1fr));
+  column-gap: 12px;
+  row-gap: 36px;
 }
 
 .tagsMenu {

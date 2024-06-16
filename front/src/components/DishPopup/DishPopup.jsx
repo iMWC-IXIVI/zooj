@@ -37,7 +37,7 @@ export default function DishPopup({ dish }) {
 
   return (
     <div className={classes.dishPopup}>
-      <img src={dish.image} alt="some mama" width="400" />
+      <img src={dish.image} alt="dishImage" width="400" />
       <h2>{dish.title}</h2>
       <ul className={classes.oneLine}>
         <li>
