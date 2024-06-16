@@ -1,4 +1,6 @@
-function DishPopup({ dish }) {
+import classes from "./DishPopup.module.scss";
+
+export default function DishPopup({ dish }) {
   let ingList = [];
 
   dish.ingredients.forEach((ing) => {
@@ -19,7 +21,7 @@ function DishPopup({ dish }) {
     return (
       <>
         <h3>Ингредиенты:</h3>
-        <ul className="no-pad">{ingList}</ul>
+        <ul className={classes.noPad}>{ingList}</ul>
       </>
     );
   }
@@ -28,16 +30,16 @@ function DishPopup({ dish }) {
     return (
       <>
         <h3>Способ приготовления:</h3>
-        <ul className="no-pad">{stepsList}</ul>
+        <ul className={classes.noPad}>{stepsList}</ul>
       </>
     );
   }
 
   return (
-    <div className="dish-popup">
-      <img src={dish.image} alt="some mama" width="400" />
+    <div className={classes.dishPopup}>
+      <img src={dish.image} alt="dishImage" width="400" />
       <h2>{dish.title}</h2>
-      <ul className="one-line">
+      <ul className={classes.oneLine}>
         <li>
           Вес: <strong>{dish.weight}</strong> г
         </li>
@@ -56,15 +58,13 @@ function DishPopup({ dish }) {
       </ul>
 
       <div>
-        <div className="float-left w-50 text-left">
+        <div className={classes.renderIng}>
           {ingList.length > 0 ? renderIngredients(ingList) : null}
         </div>
-        <div className="float-right w-50 text-left">
+        <div className={classes.renderIng}>
           {stepsList.length > 0 ? renderSteps(stepsList) : null}
         </div>
       </div>
     </div>
   );
 }
-
-export default DishPopup;

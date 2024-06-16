@@ -1,5 +1,6 @@
 import classes from "./Header.module.scss";
 import RoundButton from "../Buttons/RoundButton/RoundButton";
+import { Basket } from '../Basket/Basket'
 import SvgSelector from "../SvgSelector";
 import {Link, NavLink} from "react-router-dom";
 
@@ -33,9 +34,10 @@ export default function Header({setWrapperLogin}) {
         <RoundButton>
           <SvgSelector name="favorite" />
         </RoundButton>
-        <RoundButton>
+        {/* <RoundButton>
           <SvgSelector name="basket" />
-        </RoundButton>
+        </RoundButton> */}
+        <Basket/>
         {localStorage.getItem("token") ? (
           <button>
             <Link to="account">Профиль</Link>

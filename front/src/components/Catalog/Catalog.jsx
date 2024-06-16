@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import classes from "./Catalog.module.scss";
+import Dish from "../Dish/Dish";
+import Category from "../Category/Category";
+import AntiTag from "../AntiTag/AntiTag";
 
-import Dish from "./Dish";
-import Category from "./Category";
-import AntiTag from "./AntiTag";
-
-function CatalogIndex() {
-  // const [dishes, setDishes] = useState([]);
+export default function CatalogIndex() {
   const [breakfast, setBreakfast] = useState([]);
   const [lunch, setLunch] = useState([]);
   const [dinner, setDinner] = useState([]);
@@ -144,29 +143,25 @@ function CatalogIndex() {
   });
 
   return (
-    <div className="container">
-      <div className="CatalogIndex">
-        <div id="categoriesMenu">{categoriesList}</div>
+    <div className={classes.catalogIndex}>
+      <div className={classes.categoriesMenu}>{categoriesList}</div>
 
-        <div id="tagsMenu">Исключить: {antiTagsList}</div>
+      <div className={classes.tagsMenu}>Исключить: {antiTagsList}</div>
 
-        <div id="breakfast">
-          <h1>Завтрак</h1>
-          <div className="dish-list">{breakfastList}</div>
-        </div>
+      <div className={classes.breakfast}>
+        <h1>Завтрак</h1>
+        <div className={classes.dishList}>{breakfastList}</div>
+      </div>
 
-        <div id="lunch">
-          <h1>Обед</h1>
-          <div className="dish-list">{lunchList}</div>
-        </div>
+      <div className={classes.lunch}>
+        <h1>Обед</h1>
+        <div className={classes.dishList}>{lunchList}</div>
+      </div>
 
-        <div id="dinner">
-          <h1>Ужин</h1>
-          <div className="dish-list">{dinnerList}</div>
-        </div>
+      <div className={classes.dinner}>
+        <h1>Ужин</h1>
+        <div className={classes.dishList}>{dinnerList}</div>
       </div>
     </div>
   );
 }
-
-export default CatalogIndex;

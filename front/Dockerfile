@@ -51,6 +51,8 @@ WORKDIR /usr/share/nginx/html
 # Remove default nginx static assets
 RUN rm -rf ./*
 
+COPY swagger/swagger.yaml /usr/share/nginx/html/static/swagger.yaml
+
 # Copy static assets from builder stage
 COPY --from=build /app/build .
 

@@ -1,0 +1,32 @@
+@import "../../scss/variables";
+
+.displayFlex{
+  display: flex !important;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.1);
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  .content {
+    position: relative;
+    background: white;
+    border-radius: 4px;
+    max-width: 60%;
+
+    .popupCloser {
+      float: right; width: 30px; 
+      font-size: 1.2rem;
+      text-align: right;
+      margin-right: 3px;
+    }
+  }
+
+}
+.modal:target {
+  display: flex;
+}

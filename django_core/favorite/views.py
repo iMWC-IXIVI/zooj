@@ -20,11 +20,14 @@ class FavoriteAPI(views.APIView):
         for value in data:
             result.append(*value)
 
-        return response.Response({'favorite': result})
+        return response.Response(data={'favorite': result})
 
     def post(self, request):
 
         user = self.get_user(request.headers.get('authorization'))
+
+        if Favorite.objects.filter(user_id=user.pk, dishes=request.data.get('dishes')).exists():
+            raise exceptions.ValidationError({'detail': 'data is bad'})
 
         request.data['user'] = user.pk
 
@@ -50,7 +53,7 @@ class FavoriteAPI(views.APIView):
 
         data.delete()
 
-        return response.Response({'message': 'success'})
+        return response.Response(data={'message': 'success'})
 
     @staticmethod
     def get_user(token):
@@ -61,6 +64,6 @@ class FavoriteAPI(views.APIView):
                                     algorithms=['HS256', ])
             user = CustomUser.objects.get(pk=jwt_decode['user_id'])
         except:
-            raise exceptions.AuthenticationFailed()
+            raise exceptions.AuthenticationFailed({'detail': 'authorization error'})
 
         return user
