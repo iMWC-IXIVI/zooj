@@ -1,0 +1,51 @@
+@import "../../../../../scss/variables";
+
+
+.gender_form {
+    height: 196px;
+    width: 480px;
+    background-color: $color_neutral_0;
+    padding: 26px 24px;
+    border-radius: 32px;
+
+    p{
+        font-size: 16px;
+        font-weight: 500;
+        color: $color_black_40;
+        margin-bottom: 24px;
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+
+    h3 {
+        font-size: 32px;
+        font-weight: 600;
+    }
+
+    .number_form {
+        width: 64px;
+        height: 32px;
+        background-color: #F6F6F6;
+        border-radius: 24px;
+        color: $color_green_80;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
+    }
+}
+
+.form{
+    button{
+        border: 1px solid $color_green_80;
+        background-color: $color_green_30;
+        height: 40px;
+    }
+
+
+}

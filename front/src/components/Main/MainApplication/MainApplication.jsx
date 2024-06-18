@@ -1,11 +1,14 @@
 import classes from "./MainApplication.module.scss";
-import OneForm from "./OneForm/OneForm";
+import SpecifyGenderForm from "./SpecifyGenderForm/SpecifyGender";
+
+
 
 
 export default function MainApplication() {
   return (
     <div className={classes.main_form}>
-      <OneForm />
+        <SpecifyGenderForm />
+        
     </div>
   );
 }

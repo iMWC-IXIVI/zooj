@@ -8,7 +8,7 @@ export default function ApplicationForm() {
 
   const onSubmit = (data) => {
     console.log(data);
-  }
+  };
 
   return (
     <div className={classes.container_form}>
@@ -17,6 +17,7 @@ export default function ApplicationForm() {
           className={classes.form}
           onSubmit={methods.handleSubmit(onSubmit)}
         >
+          <h3>Анкета</h3>
           <InputTextBox
             label={"Возраст"}
             placeholder={"0 лет"}
@@ -38,12 +39,16 @@ export default function ApplicationForm() {
             placeholder={"0 кг"}
             registerName={"desired_weight"}
           />
-          <InputTextBox
-            label={"День рождения"}
-            registerName={"birthday"}
-            type={"date"}
-          />
-          
+          <label className={classes.label}>Активность</label>
+          <select className={classes.input}>
+            <option disabled selected>Как часто занимаетесь спортом</option>
+            <option >Минимальная (не тренируюсь)</option>
+            <option>Низкая (1-2 раза в неделю)</option>
+            <option>Средняя (3-4 раза в неделю)</option>
+            <option>Высокая (5-6 раз в неделю)</option>
+            <option>Предельная (7 раз в неделю)</option>
+          </select>
+
           <SubmitButton>Сохранить</SubmitButton>
         </form>
       </FormProvider>

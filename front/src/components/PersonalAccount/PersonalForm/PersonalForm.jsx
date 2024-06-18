@@ -12,11 +12,13 @@ export default function PersonalForm() {
 
   return (
     <div className={classes.container_form}>
+      
       <FormProvider {...methods}>
         <form
           className={classes.form}
           onSubmit={methods.handleSubmit(onSubmit)}
         >
+          <h3>Личные данные</h3>
           <InputTextBox
             label={"ФИО"}
             placeholder={"ФИО"}

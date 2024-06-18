@@ -1,0 +1,22 @@
+@import "../../../../scss/variables";
+
+.gender_container {
+    background-color: $color_green_80;
+    border-radius: 30px;
+    height: 100%;
+    padding: 50px;
+}
+
+.text_info {
+    color: $color_neutral_0;
+
+    h3 {
+        font-size: 60px;
+        margin-bottom: 24px;
+        text-transform: uppercase;
+    }
+
+    p {
+        font-size: 16px;
+    }
+}
