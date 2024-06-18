@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"encoding/json"
 	"errors"
 	"goauth/internal/entity"
 	"goauth/internal/repo"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
@@ -35,8 +37,14 @@ func (h *Handler) GetDishes(c echo.Context) error {
 
 	categoryIDs := parseCategoryIDs(c)
 	antiTagIDs := parseAntiTags(c)
+	onlyFavorites := parseFavorites(c)
 
-	dishes, err := h.repo.GetDishes(page, pageSize, categoryIDs, antiTagIDs)
+	var favIDs []int
+	if onlyFavorites {
+		favIDs = getFavorites(c)
+	}
+
+	dishes, err := h.repo.GetDishes(page, pageSize, categoryIDs, antiTagIDs, favIDs)
 	if err != nil {
 		return err
 	}
@@ -50,6 +58,59 @@ func (h *Handler) GetDishes(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, GetDishesResponse{Dishes: dishes, AntiTags: antiTags})
+}
+
+type favData struct {
+	Favorite []int `json:"favorite"`
+}
+
+func getFavorites(c echo.Context) []int {
+	token := c.Get("Token")
+	if token == "" {
+		return []int{}
+	}
+
+	client := &http.Client{}
+
+	url := "http://django-core:8000/api/favorite/"
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		log.Printf("failed to build get user request with %v\n", err)
+		return []int{}
+	}
+
+	req.Header.Add("Authorization", token.(string))
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Printf("failed to do a request with err %v\n", err)
+		return []int{}
+	}
+
+	if resp.StatusCode == 200 {
+		bytes, err := io.ReadAll(resp.Body)
+
+		log.Printf("response is %v\n", string(bytes))
+
+		fData := favData{}
+		err = json.Unmarshal(bytes, &fData)
+		if err != nil {
+			log.Printf("failed to unmarshal auth response with %v\n", err)
+		}
+		return fData.Favorite
+	}
+
+	return []int{}
+}
+
+func parseFavorites(c echo.Context) bool {
+	onlyFavs := c.QueryParam("favorites")
+	log.Printf("favorites: %v\n", onlyFavs)
+	if onlyFavs == "true" {
+		return true
+	}
+
+	return false
 }
 
 func parseCategoryIDs(c echo.Context) []int {

@@ -76,6 +76,7 @@ func UserInfo(next echo.HandlerFunc) echo.HandlerFunc {
 
 			c.Set("User", userData.User)
 			c.Set("Anketa", userData.Anketa)
+			c.Set("Token", token)
 
 		}
 		return next(c)
