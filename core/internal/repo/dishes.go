@@ -33,7 +33,7 @@ func (r *Repo) GetDish(id int) (entity.Dish, error) {
 	return dish, nil
 }
 
-func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int) ([]entity.Dish, error) {
+func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int, ids []int) ([]entity.Dish, error) {
 	dishes := make([]entity.Dish, 0)
 
 	offset := (page - 1) * pageSize
@@ -41,10 +41,6 @@ func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int) ([]e
 	sql := `select id, title, kcal, proteins, fats, carbos, image, coalesce(kind, 0), coalesce(weight, 400), 
 			provider, link, link_image, price from dishes`
 	args := []any{pageSize, offset}
-
-	if len(categoryIDs) > 0 || len(tagIDs) > 0 {
-		sql += " where "
-	}
 
 	wheres := []string{}
 
@@ -58,6 +54,16 @@ func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int) ([]e
 		key := len(args) + 1
 		wheres = append(wheres, " not exists (select 1 from dishes_tags where dish_id = dishes.id and tag_id = any($"+strconv.Itoa(key)+"))")
 		args = append(args, tagIDs)
+	}
+
+	if len(ids) > 0 {
+		key := len(args) + 1
+		wheres = append(wheres, " id = any($"+strconv.Itoa(key)+")")
+		args = append(args, ids)
+	}
+
+	if len(wheres) > 0 {
+		sql += " where "
 	}
 
 	sql += strings.Join(wheres, " and ")
