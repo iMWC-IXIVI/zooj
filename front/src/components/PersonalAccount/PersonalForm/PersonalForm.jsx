@@ -3,16 +3,21 @@ import classes from "../PersonalAccount.module.scss";
 import InputTextBox from "../../Inputs/InputTextBox/InputTextBox";
 import SubmitButton from "../../Buttons/SubmitButton/SubmitButton";
 
-export default function PersonalForm() {
-  const methods = useForm();
+export default function PersonalForm({userData}) {
+
+  if(!userData.user.phone){
+    userData.user.phone = "+7"
+  }
+
+  const methods = useForm({defaultValues:userData.user});
 
   const onSubmit = (data) => {
     console.log(data);
   };
+  console.log(methods.formState.isDirty);
 
   return (
     <div className={classes.container_form}>
-      
       <FormProvider {...methods}>
         <form
           className={classes.form}
@@ -22,12 +27,12 @@ export default function PersonalForm() {
           <InputTextBox
             label={"ФИО"}
             placeholder={"ФИО"}
-            registerName={"name"}
+            registerName={"username"}
           />
           <InputTextBox
             label={"Телефон"}
             placeholder={"Телефон"}
-            registerName={"number"}
+            registerName={"phone"}
             defaultValue={"+7"}
           />
           <InputTextBox
@@ -46,7 +51,7 @@ export default function PersonalForm() {
             registerName={"birthday"}
             type={"date"}
           />
-          <SubmitButton>Сохранить</SubmitButton>
+          <SubmitButton disabled={!methods.formState.isDirty} >Сохранить</SubmitButton>
         </form>
       </FormProvider>
     </div>
