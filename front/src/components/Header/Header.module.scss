@@ -2,16 +2,6 @@
 @import "../../scss/round_button";
 
 
-.button {
-  height: 56px;
-  width: 56px;
-  background-color: $color_neutral_10;
-  margin-right: 9px;
-
-  &:hover {
-    cursor: pointer;
-  }
-
 .header {
   display: flex;
   align-items: center;
@@ -62,6 +52,7 @@
 .buttons {
   display: flex;
   align-items: center;
+
   .lk {
     margin-right: 0px;
     background-color: $color_green_80;
@@ -78,4 +69,14 @@
     justify-content: center;
   }
 }
+
+.button {
+  height: 56px;
+  width: 56px;
+  background-color: $color_neutral_10;
+  margin-right: 9px;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
