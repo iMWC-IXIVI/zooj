@@ -4,19 +4,15 @@ import InputTextBox from "../../Inputs/InputTextBox/InputTextBox";
 import SubmitButton from "../../Buttons/SubmitButton/SubmitButton";
 
 export default function ApplicationForm({userData}) {
-  const defaultForm = {};
-  defaultForm.age = userData.anketa?.age;
-  defaultForm.weight = userData.anketa?.weight;
-  defaultForm.height = userData.anketa?.height;
-  defaultForm["des_weight"] = userData.anketa["des_weight"];
-  defaultForm.activity = userData.anketa.activity;
+  const defaultForm = Object.keys(userData["anketa"]).map((key)=> console.log(key));
+ 
 
-  const methods = useForm({defaultValues: defaultForm});
+  const methods = useForm();
 
   const onSubmit = (data) => {
     console.log(data);
   };
-  console.log(methods.formState.isDirty);
+  console.log(defaultForm);
 
   return (
     <div className={classes.container_form}>

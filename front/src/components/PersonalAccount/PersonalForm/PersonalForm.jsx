@@ -2,6 +2,7 @@ import {FormProvider, useForm} from "react-hook-form";
 import classes from "../PersonalAccount.module.scss";
 import InputTextBox from "../../Inputs/InputTextBox/InputTextBox";
 import SubmitButton from "../../Buttons/SubmitButton/SubmitButton";
+import AccountApi from "../../../services/PersonalAccount";
 
 export default function PersonalForm({userData}) {
 
@@ -12,7 +13,7 @@ export default function PersonalForm({userData}) {
   const methods = useForm({defaultValues:userData.user});
 
   const onSubmit = (data) => {
-    console.log(data);
+    AccountApi.updateUser(data).then((res)=> {console.log(res)})
   };
   console.log(methods.formState.isDirty);
 
