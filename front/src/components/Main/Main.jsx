@@ -1,9 +1,9 @@
-// import classes from "./Main.module.scss";
+import MainApplication from "./MainApplication/MainApplication";
 
 export default function Main(){
     return(
-        <div>
-            Main
-        </div>
+        <>
+         <MainApplication />
+        </>
     )
 }

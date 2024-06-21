@@ -16,6 +16,32 @@ export default function SvgSelector({name}) {
         </svg>
       );
 
+    case "user":
+      return (
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12.0001 11.9999C14.5314 11.9999 16.5834 9.94789 16.5834 7.41659C16.5834 4.88528 14.5314 2.83325 12.0001 2.83325C9.46878 2.83325 7.41675 4.88528 7.41675 7.41659C7.41675 9.94789 9.46878 11.9999 12.0001 11.9999Z"
+            stroke="#008231"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M19.8741 21.1667C19.8741 17.6192 16.3449 14.75 11.9999 14.75C7.6549 14.75 4.12573 17.6192 4.12573 21.1667"
+            stroke="#008231"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      );
+
     case "favorite":
       return (
         <svg

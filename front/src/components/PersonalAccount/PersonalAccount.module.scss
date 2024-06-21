@@ -1,11 +1,17 @@
 @import "../../scss/variables";
+@import "../Inputs/InputTextBox/InputTextBox.module.scss";
 
-.personal_account{
-
-}
 .container_main{
     display: flex;
     justify-content: space-around;
+    margin-bottom: 212px;
+
+    h3{
+        font-size: 32px;
+        font-weight: 600px;
+        color: $color_neutral_80;
+        margin-bottom: 48px;
+    }
 }
 
 
@@ -18,5 +24,20 @@
 .form{
     display: flex;
     flex-direction: column;
+    width: 406px;
+
+    input {
+        margin-bottom: 24px;
+    }
+
+    select{
+        margin-bottom: 24px;
+        font-size: 20px;
+    }
+
+    button{
+        margin-top: 24px;
+    }
+
 
 }
