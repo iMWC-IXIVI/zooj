@@ -1,32 +1,67 @@
 @import "../../scss/variables";
 
-.displayFlex{
+.displayFlex {
   display: flex !important;
+}
+
+.displayNone {
+  display: none !important;
 }
 
 .modal {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.1);
-  display: none;
-  align-items: center;
-  justify-content: center;
+  justify-content: end;
+  overflow: scroll;
+  z-index: 3;
 
   .content {
     position: relative;
-    background: white;
+    background: $color_neutral_0;
     border-radius: 4px;
-    max-width: 60%;
+    width: 43%;
+    min-height: 100%;
+    height: fit-content;
+
+    .dish {
+      display: flex;
+      gap: 20px;
+
+      .dishDescription {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+    }
+
+    h1{
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 48px;
+    }
+
+    ul {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .price {
+      font-size: 24px;
+      font-weight: 600;
+      color: $color_green_80;
+    }
 
     .popupCloser {
-      float: right; width: 30px; 
+      float: right; 
       font-size: 1.2rem;
       text-align: right;
       margin-right: 3px;
     }
+
+    .kpfc {
+      background-color: $color_neutral_10;
+    }
   }
 
-}
-.modal:target {
-  display: flex;
 }

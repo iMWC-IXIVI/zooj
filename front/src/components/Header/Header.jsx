@@ -34,9 +34,6 @@ export default function Header({setWrapperLogin}) {
         <RoundButton>
           <SvgSelector name="favorite" />
         </RoundButton>
-        {/* <RoundButton>
-          <SvgSelector name="basket" />
-        </RoundButton> */}
         <Basket/>
         {localStorage.getItem("token") ? (
           <button>

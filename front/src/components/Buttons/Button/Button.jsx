@@ -1,6 +1,9 @@
-import classNames from "classnames";
+import classes from "./Button.module.scss";
 
-export default function Button({ className, label, active, onClick }) {
-  const classes = classNames("btn", className, active);
-  return <button className={classes} onClick={onClick}>{label}</button>;
+export default function Button({ children, disabled, onClick }) {
+  return (
+    <button className={classes.btn} onClick={onClick}>
+      {children}
+    </button>
+  );
 }

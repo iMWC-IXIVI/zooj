@@ -1,5 +1,5 @@
-import { GetAnonymous } from "./anonymous";
 import { GetToken } from './token'
+import Auth from './Authentication';
 
 export async function LoadBasket() {
   let url = "/api/v1/basket"
@@ -8,7 +8,7 @@ export async function LoadBasket() {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "anonymous-uuid": GetAnonymous(),
+      "anonymous-uuid": Auth.checkUUID(),
       "Authorization": GetToken(), 
     }
   });
@@ -23,7 +23,7 @@ export async function AddToCart(id) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "anonymous-uuid": GetAnonymous(),
+        "anonymous-uuid": Auth.checkUUID(),
         "Authorization": GetToken()
       },
     });
@@ -38,7 +38,7 @@ export async function RemoveFromCart(id) {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      "anonymous-uuid": GetAnonymous(),
+      "anonymous-uuid": Auth.checkUUID(),
       "Authorization": GetToken()
     },
   });

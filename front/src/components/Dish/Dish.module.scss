@@ -1,5 +1,13 @@
 @import "../../scss/variables";
 
+.displayFlex {
+  display: flex !important;
+}
+
+.displayNone {
+  display: none !important;
+}
+
 .dish {
   font-size: $font_size_l;
   display: flex;
@@ -8,7 +16,7 @@
   max-width: 212px;
   min-height: 350px;
   
-  .dishBtn {
+  button{
     background-color: $color_green_10;
     border: 1px solid $color_green_80;
     color: $color_green_80;
@@ -19,6 +27,21 @@
   a {
     text-decoration: none; 
   }  
+
+  .title {
+    line-height: 20px;
+    font-weight: 600;
+  }
+
+  .weight {
+    line-height: 15px;
+    color: $color_black_50;
+  }
+
+  .price {
+    font-weight: 600;
+    font-size: 18px;
+  }
 
   .modal {
     position: fixed;
@@ -42,9 +65,6 @@
       }
     }
 
-  }
-  .modal:target {
-    display: flex;
   }
 }
 

@@ -1,35 +1,46 @@
+import { useState } from "react";
 import DishPopup from "../DishPopup/DishPopup";
 import Button from "../Buttons/Button/Button";
 import { AddToCart } from '../../services/basket'
 import classes from "./Dish.module.scss";
+import SvgSelector from "../SvgSelector";
 
 export default function Dish({ dish }) {
+  const [visible, setVisible] = useState(false)
+  function showPopup() {
+    setVisible(true);
+  }
+  function hidePopup() {
+    setVisible(false);
+  }
+
   function addToCart() {
     AddToCart(dish.id)
   }
+  
   return (
     <div className={classes.dish}>
-      <a href={`#dish-popup-${dish.id}`}>
+      <a href={`#dish-popup-${dish.id}`} onClick={showPopup}>
         <div>
           <img src={dish.image} alt="dishImage" />
         </div>
-        <p>{dish.title}</p>
+        <p className={classes.title}>{dish.title}</p>
       </a>
 
-      <p>
+      <p className={classes.weight}>
         {dish.weight} г • {dish.kcal} ккал 
       </p>
-      <p>
-        От 230руб.
+      <p className={classes.price}>
+         {dish.price} руб.
       </p>
-      <Button className={classes.dishBtn} onClick={addToCart} label="Выбрать"> </Button>
+      <Button className={classes.add} onClick={addToCart}>Выбрать</Button>
 
-      <div id={`dish-popup-${dish.id}`} class={classes.modal}>
+      <div id={`dish-popup-${dish.id}`} className={ (classes.modal ) + " " + (visible ? (classes.displayFlex) : (classes.displayNone)) }>
         <div className={classes.content}>
           <div className={classes.popupCloser}>
-            <a href="/readyprogram" className={classes.closer}>
-              &times;
-            </a>
+            <button onClick={hidePopup}>
+              <SvgSelector name="close" />
+            </button>
           </div>
 
           <DishPopup dish={dish} />
