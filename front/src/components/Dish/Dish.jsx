@@ -1,6 +1,5 @@
 import { useState } from "react";
 import DishPopup from "../DishPopup/DishPopup";
-import Button from "../Buttons/Button/Button";
 import { AddToCart } from '../../services/basket'
 import classes from "./Dish.module.scss";
 import SvgSelector from "../SvgSelector";
@@ -33,12 +32,12 @@ export default function Dish({ dish }) {
       <p className={classes.price}>
          {dish.price} руб.
       </p>
-      <Button className={classes.add} onClick={addToCart}>Выбрать</Button>
+      <button className={classes.button} onClick={addToCart}>Выбрать</button>
 
       <div id={`dish-popup-${dish.id}`} className={ (classes.modal ) + " " + (visible ? (classes.displayFlex) : (classes.displayNone)) }>
         <div className={classes.content}>
           <div className={classes.popupCloser}>
-            <button onClick={hidePopup}>
+            <button  onClick={hidePopup}>
               <SvgSelector name="close" />
             </button>
           </div>

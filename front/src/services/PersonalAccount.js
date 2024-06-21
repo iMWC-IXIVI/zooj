@@ -11,7 +11,7 @@ class PersonalAccount {
   async updateUser(data) {
     return await $api.put(
       API_URL + "/api/get-user/",
-      {data: data},
+      data,
       {
         headers: {authorization: localStorage.getItem("token")},
       }
@@ -21,7 +21,7 @@ class PersonalAccount {
   async setUserForm(data) {
     return await $api.post(
       API_URL + "/api/info/",
-      {data: data},
+      data,
       {
         headers: {authorization: localStorage.getItem("token")},
       }
@@ -31,7 +31,7 @@ class PersonalAccount {
   async updateUserFrom(data) {
     return await $api.put(
       API_URL + "/api/info/",
-      {data: data},
+      data,
       {
         headers: {authorization: localStorage.getItem("token")},
       }

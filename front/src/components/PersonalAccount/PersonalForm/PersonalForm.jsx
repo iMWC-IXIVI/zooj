@@ -13,9 +13,9 @@ export default function PersonalForm({userData}) {
   const methods = useForm({defaultValues:userData.user});
 
   const onSubmit = (data) => {
-    AccountApi.updateUser(data).then((res)=> {console.log(res)})
+    delete data.id
+    AccountApi.updateUser(data)
   };
-  console.log(methods.formState.isDirty);
 
   return (
     <div className={classes.container_form}>

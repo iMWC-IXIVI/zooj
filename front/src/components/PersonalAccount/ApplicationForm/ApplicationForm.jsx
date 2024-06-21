@@ -2,17 +2,38 @@ import {FormProvider, useForm} from "react-hook-form";
 import classes from "../PersonalAccount.module.scss";
 import InputTextBox from "../../Inputs/InputTextBox/InputTextBox";
 import SubmitButton from "../../Buttons/SubmitButton/SubmitButton";
+import AccountApi from "../../../services/PersonalAccount";
 
 export default function ApplicationForm({userData}) {
-  const defaultForm = Object.keys(userData["anketa"]).map((key)=> console.log(key));
- 
+  function anketaData(obj) {
+    const defData = ["gender",
+      "age",
+      "weight",
+      "des_weight",
+      "height",
+      "activity",]
+      if(obj === null){
+        let res = {}
+        for(let key of defData){
+          res[key] = ""
+        }
+      return res
+    }
+    for (let key in obj) {
+          if(!defData.includes(key)){
+            delete obj[key]
+          }
+    }
+    return obj
+  }
+  userData = anketaData(userData.anketa);
 
-  const methods = useForm();
+  const methods = useForm({defaultValues: userData});
 
   const onSubmit = (data) => {
-    console.log(data);
+    AccountApi.updateUserFrom(data).then(res => console.log(res))
   };
-  console.log(defaultForm);
+
 
   return (
     <div className={classes.container_form}>
@@ -42,10 +63,17 @@ export default function ApplicationForm({userData}) {
             placeholder={"00 кг"}
             registerName={"des_weight"}
           />
+          <label className={classes.label}>Пол</label>
+          <select className={classes.input} {...methods.register("gender")} >
+              <option value={""} disabled selected>Выберете орентицию</option>
+              <option value={"М"}>Мужской</option>
+              <option value={"Ж"}>Женский</option>
+          </select>
+
 
           <label className={classes.label}>Активность</label>
           <select className={classes.input} {...methods.register("activity")}>
-            <option value="0">Как часто занимаетесь спортом</option>
+            <option value="" disabled selected>Как часто занимаетесь спортом</option>
             <option value="1">Минимальная (не тренируюсь)</option>
             <option value="2">Низкая (1-2 раза в неделю)</option>
             <option value="3">Средняя (3-4 раза в неделю)</option>

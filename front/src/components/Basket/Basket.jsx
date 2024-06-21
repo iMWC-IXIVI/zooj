@@ -1,5 +1,4 @@
 import { LoadBasket, RemoveFromCart } from "../../services/basket";
-import RoundButton from "../Buttons/RoundButton/RoundButton";
 import SvgSelector from "../SvgSelector";
 import { useState } from "react";
 import classes from "./Basket.module.scss";
@@ -81,9 +80,9 @@ export function Basket() {
 
   return (
     <>
-      <RoundButton onClick={showBasket}>
+      <button className={classes.btn_round} onClick={showBasket}>
         <SvgSelector name="basket" />
-      </RoundButton>
+      </button>
 
       <div
         id="basket"
