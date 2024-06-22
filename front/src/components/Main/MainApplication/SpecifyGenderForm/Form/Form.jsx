@@ -1,9 +1,8 @@
-import { FormProvider, useForm } from "react-hook-form";
 import classes from "./Form.module.scss";
-// import Button from "../../../../Buttons/Button/Button";
 
-export default function Form() {
-    const methods = useForm()
+
+export default function Form({setGender}) {
+  
     return(
         <div className={classes.gender_form}>
             <div className={classes.header}>
@@ -11,14 +10,12 @@ export default function Form() {
             <div className={classes.number_form}>1/3</div>
             </div>
             <p>Это поможет нам правильно подобрать рацион</p>
-            <FormProvider {...methods} >
+     
                 <form className={classes.form}>
-                    <button>Мужчина</button>
+                    <button className={classes.btn} onClick={()=>{setGender("М")}}>Мужчина</button>
 
-                    <button>Женщина</button>
+                    <button className={classes.btn} onClick={()=>{setGender("Ж")}}>Женщина</button>
                 </form>
-            </FormProvider>
-
         </div>
     )
 }

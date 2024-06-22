@@ -5,35 +5,43 @@ import SubmitButton from "../../Buttons/SubmitButton/SubmitButton";
 import AccountApi from "../../../services/PersonalAccount";
 
 export default function ApplicationForm({userData}) {
+  let flagApi = true;
+
   function anketaData(obj) {
-    const defData = ["gender",
+    const defData = [
+      "gender",
       "age",
       "weight",
       "des_weight",
       "height",
-      "activity",]
-      if(obj === null){
-        let res = {}
-        for(let key of defData){
-          res[key] = ""
-        }
-      return res
+      "activity",
+    ];
+    if (obj === null) {
+      flagApi = false;
+      let res = {};
+      for (let key of defData) {
+        res[key] = "";
+      }
+      return res;
     }
     for (let key in obj) {
-          if(!defData.includes(key)){
-            delete obj[key]
-          }
+      if (!defData.includes(key)) {
+        delete obj[key];
+      }
     }
-    return obj
+    return obj;
   }
   userData = anketaData(userData.anketa);
 
   const methods = useForm({defaultValues: userData});
 
   const onSubmit = (data) => {
-    AccountApi.updateUserFrom(data).then(res => console.log(res))
+    if (flagApi) {
+      AccountApi.updateUserFrom(data).then((res) => console.log(res));
+    } else {
+      AccountApi.setUserForm(data).then((res) => console.log(res));
+    }
   };
-
 
   return (
     <div className={classes.container_form}>
@@ -42,7 +50,7 @@ export default function ApplicationForm({userData}) {
           className={classes.form}
           onSubmit={methods.handleSubmit(onSubmit)}
         >
-          <h3>Личные данные</h3>
+          <h3>Анкета</h3>
           <InputTextBox
             label={"Возраст"}
             placeholder={"00 лет"}
@@ -64,16 +72,19 @@ export default function ApplicationForm({userData}) {
             registerName={"des_weight"}
           />
           <label className={classes.label}>Пол</label>
-          <select className={classes.input} {...methods.register("gender")} >
-              <option value={""} disabled selected>Выберете орентицию</option>
-              <option value={"М"}>Мужской</option>
-              <option value={"Ж"}>Женский</option>
+          <select className={classes.input} {...methods.register("gender")}>
+            <option value={""} disabled selected>
+              Выберете орентицию
+            </option>
+            <option value={"М"}>Мужской</option>
+            <option value={"Ж"}>Женский</option>
           </select>
-
 
           <label className={classes.label}>Активность</label>
           <select className={classes.input} {...methods.register("activity")}>
-            <option value="" disabled selected>Как часто занимаетесь спортом</option>
+            <option value="" disabled selected>
+              Как часто занимаетесь спортом
+            </option>
             <option value="1">Минимальная (не тренируюсь)</option>
             <option value="2">Низкая (1-2 раза в неделю)</option>
             <option value="3">Средняя (3-4 раза в неделю)</option>
