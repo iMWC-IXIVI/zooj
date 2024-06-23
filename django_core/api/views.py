@@ -44,9 +44,15 @@ class SendMailAPI(views.APIView):
         serializer.save()
 
         html_content = ('<h1>Здравствуйте!</h1>'
-                        f'<p>Ваш код для авторизации: {token}</p>')
+                        f'<p>Мы получили запрос на отправку разового кода для авторизпции Вашего аккаунта,</p>'
+                        f'<p></p>'
+                        f'Ваш код для авторизации: {token}</p>'
+                        f'<p>Если вы не запрашивали данный код, можете просто проигнорировать это сообщение.'
+                        f'<p></p>'
+                        f'Возможно Вашу электронную почту кто-то ввел по ошибке</p>')
 
-        msg = EmailMultiAlternatives(to=[email, ])
+        msg = EmailMultiAlternatives(subject='Разовый код',
+                                     to=[email, ])
         msg.attach_alternative(content=html_content,
                                mimetype='text/html')
         msg.send()
