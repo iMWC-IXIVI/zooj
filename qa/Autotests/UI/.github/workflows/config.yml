@@ -1,0 +1,44 @@
+name: UI Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment-target:
+        description: Choose target
+        required: true
+        default: All_tests
+        type: choice
+        options:
+          - All_tests
+          - Smoke_tests
+
+
+jobs:
+  ui-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Docker build
+        run: pwd ; cd ..\..\.. ; docker compose up --build; pwd
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install Chrome
+        run: sudo apt-get install google-chrome-stable
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: All_tests
+        if: "github.event.inputs.deployment_target == 'All_tests'"
+        run: pytest
+
+      - name: Smoke_tests
+        if: "github.event.inputs.deployment_target == 'Smoke_tests'"
+        run: pytest -m smoke
