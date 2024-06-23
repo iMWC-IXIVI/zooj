@@ -5,7 +5,7 @@ type BasketItem struct {
 	DishID    int64   `json:"dish_id"`
 	Title     string  `json:"title"`
 	Kcal      int     `json:"kcal"`
-	Proteins  float32 `json:"properties"`
+	Proteins  float32 `json:"proteins"`
 	Fats      float32 `json:"fats"`
 	Carbos    float32 `json:"carbos"`
 	Image     string  `json:"image"`
