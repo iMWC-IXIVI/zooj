@@ -1,0 +1,33 @@
+@import "../../scss/variables";
+
+.dish {
+  font-size: $font_size_l;
+  display: block;
+  justify-content: space-between;
+  max-width: 212px;
+  min-height: 350px;
+  
+  .dishBtn {
+    background-color: $color_green_10;
+    border: 1px solid $color_green_80;
+    color: $color_green_80;
+    border-radius: 50px;
+    padding: 8px;
+  }
+}
+
+.rightHalfDish {
+  float: right;
+}
+
+.leftHalfDish {
+  float: left;
+}
+
+.rightHalfDish p {
+  max-width: 100px;
+}
+
+.leftHalfDish p {
+  max-width: 100px;
+}

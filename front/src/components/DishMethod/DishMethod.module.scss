@@ -1,0 +1,20 @@
+.halfdishIndex {
+    padding-top: 15px;
+    column-gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(424px, 1fr));
+    row-gap: 36px;
+}
+
+.currentDish {
+    float: left;
+    min-width: 300px;
+}
+
+.currentDish h2 {
+    padding-top: 30px;
+}
+
+.halfDishes {
+}
+
