@@ -11,7 +11,7 @@
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.6);
   justify-content: end;
   overflow: scroll;
   z-index: 3;
@@ -24,18 +24,52 @@
     min-height: 100%;
     height: fit-content;
 
+    .logo{
+      margin: 20px 0;
+    }
+
     .dish {
       display: flex;
       gap: 20px;
 
-      .dishDescription {
+      .article {
         display: flex;
-        flex-direction: column;
         justify-content: space-between;
+        width: 100%;
+
+        .btns {
+          display: flex;
+          flex-direction: column-reverse;
+          justify-content: space-between;
+
+          a {
+            align-self: end;
+            border: 1px solid $color_green_80;
+            color: $color_green_80;
+            background-color: $color_green_10;
+            padding: 10px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+          }
+
+          button {
+            align-self: end;
+          }
+        }
+
+        .description {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+        h2 {
+          font-size: 16px;
+        }
+        }
       }
     }
 
-    h1{
+    h1 {
       font-size: 32px;
       font-weight: 600;
       line-height: 48px;
@@ -44,26 +78,40 @@
     ul {
       display: flex;
       gap: 10px;
+      color: #8e948a;
+
+      li {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
     }
-    
+
     .price {
       font-size: 24px;
       font-weight: 600;
       color: $color_green_80;
     }
-
-    .popupCloser {
-      float: right; 
-      font-size: 1.2rem;
-      text-align: right;
-      margin-right: 3px;
-    }
-
+    
     .kpfc {
       background-color: $color_neutral_10;
+
+      .container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 100%;
+        justify-content: space-between;
+        padding: 26px 0 30px;
+        gap: 10px;
+      }
     }
   }
+}
 
+.container {
+  max-width: 92%;
+  margin: 24px auto;
 }
 
 .btn_round {

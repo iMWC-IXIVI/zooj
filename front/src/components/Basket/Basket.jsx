@@ -42,37 +42,43 @@ export function Basket() {
     }
 
     itemsList.push(
-      <div>
+      <div className={classes.container}>
         {showProviderLogo && (
           <>
-            <img src={item.link_image} alt="лого" width="100" />
+            <img className={classes.logo} src={item.link_image} alt="лого" width="100" />
             <br />
           </>
         )}
         <div className={classes.dish}>
           <img src={item.image} width="130" alt="блюдо" />
-          <div className={classes.dishDescription}>
-            <h2>{item.title}</h2>
-            <ul>
-              <li>
-                <strong>{item.weight}</strong> г
-              </li>
-              <li>•</li>
-              <li>
-                <strong>{item.kcal}</strong> ккал
-              </li>
-              <li>•</li>
-              <li>⭐ 5.0</li>
-            </ul>
-
-            <p className={classes.price}>{item.price} руб.</p>
-            <a href={item.link} target="_blank" rel="noreferrer">
-              Заказать
-            </a>
+          <div className={classes.article}>
+            <div className={classes.description}>
+              <h2>{item.title}</h2>
+              <ul>
+                <li>
+                  <strong>{item.weight}</strong> г
+                </li>
+                <li>•</li>
+                <li>
+                  <strong>{item.kcal}</strong> ккал
+                </li>
+                <li>•</li>
+                <li>
+                  <SvgSelector name="rating"/>
+                   5.0
+                </li>
+              </ul>
+              <p className={classes.price}>{item.price} руб.</p>
+            </div>
+            <div className={classes.btns}>
+              <a href={item.link} target="_blank" rel="noreferrer">
+                Заказать
+              </a>
+              <Button onClick={() => Remove(item.dish_id)}>
+                <SvgSelector name="delete" />
+              </Button>
+            </div>
           </div>
-          <Button onClick={() => Remove(item.dish_id)}>
-            <SvgSelector name="delete" />
-          </Button>
         </div>
       </div>
     );
@@ -86,47 +92,48 @@ export function Basket() {
 
       <div
         id="basket"
-        className={
-          classes.modal +
-          " " +
-          (visible ? classes.displayFlex : classes.displayNone)
-        }
+        className={ classes.modal + " " + (visible ? classes.displayFlex : classes.displayNone) }
       >
         <div className={classes.content}>
-          <div className={classes.popupCloser}>
+          <div className={classes.container}>
             <CloseButton onClick={hideBasket} />
+            <h1>Ваша корзина</h1>
           </div>
-
-          <h1>Ваша корзина</h1>
           <div className={classes.kpfc}>
-            <ProgressBar
-              title="РСК"
-              id="Kcal"
-              color="#EFBB58"
-              curValue={basket.kcal.actual}
-              maxValue={basket.kcal.expected + 1500}
-            />
-            <ProgressBar
-              title="Жиры"
-              id="Fats"
-              color="#FF7841"
-              curValue={basket.fats.actual}
-              maxValue={basket.fats.expected + 80}
-            />
-            <ProgressBar
-              title="Углеводы"
-              id="Carbos"
-              color="#FFDA22"
-              curValue={basket.carbos.actual}
-              maxValue={basket.carbos.expected + 70}
-            />
-            <ProgressBar
-              title="Белки"
-              id="Proteins"
-              color="#63A3DD"
-              curValue={basket.proteins.actual}
-              maxValue={basket.proteins.expected + 100}
-            />
+            <div className={classes.container}>
+              <ProgressBar
+                title="РСК"
+                add="ккал"
+                id="Kcal"
+                color="#EFBB58"
+                curValue={basket.kcal.actual}
+                maxValue={basket.kcal.expected + 1500}
+              />
+              <ProgressBar
+                title="Жиры"
+                add="г"
+                id="Fats"
+                color="#FF7841"
+                curValue={basket.fats.actual}
+                maxValue={basket.fats.expected + 80}
+              />
+              <ProgressBar
+                title="Белки"
+                add="г"
+                id="Proteins"
+                color="#63A3DD"
+                curValue={basket.proteins.actual}
+                maxValue={basket.proteins.expected + 100}
+              />
+              <ProgressBar
+                title="Углеводы"
+                add="г"
+                id="Carbos"
+                color="#FFDA22"
+                curValue={basket.carbos.actual}
+                maxValue={basket.carbos.expected + 70}
+              />
+            </div>
           </div>
           {itemsList}
         </div>

@@ -1,8 +1,8 @@
 import classes from "./ProgressBar.module.scss";
 
-export default function ProgressBar({ color, id, curValue, title, maxValue }) {
+export default function ProgressBar({ add, color, id, curValue, title, maxValue }) {
   let max = maxValue;
-  let cur = curValue;
+  let cur = Math.round(curValue);
   let progrw = (cur / max) * 100;
 
   const progrstyle = {
@@ -13,7 +13,7 @@ export default function ProgressBar({ color, id, curValue, title, maxValue }) {
     <div className={classes.Bar}>
       <div className={classes.labels}>
         <label className={classes.name}>{title}</label>
-        <label className={classes.value}>{curValue} г</label>
+        <label className={classes.value}>{cur} {add}</label>
       </div>
       <div>
         <div className={classes.container}>

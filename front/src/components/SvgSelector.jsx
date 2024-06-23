@@ -1,4 +1,4 @@
-export default function SvgSelector({name}) {
+export default function SvgSelector({ name }) {
   switch (name) {
     case "basket":
       return (
@@ -536,7 +536,52 @@ export default function SvgSelector({name}) {
           />
         </svg>
       );
-
+    case "rating":
+      return (
+        <svg
+          width="25"
+          height="24"
+          viewBox="0 0 25 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M20.9988 10.9359L17.4753 14.0109L18.5308 18.5891C18.645 19.0784 18.4551 19.5885 18.0488 19.884C17.6425 20.1796 17.0987 20.2031 16.6683 19.9438L12.6753 17.5219L8.69097 19.9438C8.26063 20.2031 7.71683 20.1796 7.31049 19.884C6.90416 19.5885 6.71428 19.0784 6.82847 18.5891L7.88237 14.0156L4.35815 10.9359C3.97704 10.6072 3.83022 10.082 3.98563 9.60337C4.14104 9.12469 4.56836 8.78589 5.06987 8.74375L9.71519 8.34141L11.5285 4.01641C11.7221 3.55236 12.1756 3.25016 12.6785 3.25016C13.1813 3.25016 13.6348 3.55236 13.8285 4.01641L15.6472 8.34141L20.291 8.74375C20.7925 8.78589 21.2198 9.12469 21.3752 9.60337C21.5306 10.082 21.3838 10.6072 21.0027 10.9359H20.9988Z"
+            fill="#FFD95B"
+          />
+        </svg>
+      );
+    case "changeMenu":
+      return (
+        <svg
+          width="18"
+          height="16"
+          viewBox="0 0 18 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M7 4H17M1 12H11"
+            stroke="#008231"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <path
+            d="M1 4C1 5.65685 2.34315 7 4 7C5.65685 7 7 5.65685 7 4C7 2.34315 5.65685 1 4 1C2.34315 1 1 2.34315 1 4Z"
+            stroke="#008231"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <path
+            d="M11 12C11 13.6569 12.3431 15 14 15C15.6569 15 17 13.6569 17 12C17 10.3431 15.6569 9 14 9C12.3431 9 11 10.3431 11 12Z"
+            stroke="#008231"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      );
     default:
       return <h1>Ошибка</h1>;
   }

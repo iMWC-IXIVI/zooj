@@ -27,17 +27,7 @@ div.Bar {
     height: 8px;
     border-radius: 8px;
     max-width: 100%;
-
-    // &#Fats {
-    //   background-color: $color_orange_100;
-    // }
-
-    // &#Carbos {
-    //   background-color: $color_blue_100
-    // }
+    transition: width 1s ease-in-out
   }
     
-  
-  
 }
-

@@ -3,6 +3,7 @@ import classes from "./Catalog.module.scss";
 import Dish from "../Dish/Dish";
 import Category from "../Category/Category";
 import AntiTag from "../AntiTag/AntiTag";
+import SvgSelector from "../SvgSelector";
 
 export default function CatalogIndex() {
   const [breakfast, setBreakfast] = useState([]);
@@ -144,9 +145,16 @@ export default function CatalogIndex() {
 
   return (
     <div className={classes.catalogIndex}>
-      <div className={classes.categoriesMenu}>{categoriesList}</div>
 
-      <div className={classes.tagsMenu}>Исключить: {antiTagsList}</div>
+      <div className={classes.categoriesMenu}>
+        <button>
+          Настроить меню
+          <SvgSelector name="changeMenu"/>
+        </button>
+        {categoriesList}
+      </div>
+
+      <div className={classes.tagsMenu + " " + classes.active}>Исключить: {antiTagsList}</div>
 
       <div className={classes.breakfast}>
         <h1>Завтрак</h1>

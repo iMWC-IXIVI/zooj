@@ -15,6 +15,18 @@
   flex-direction: row;
   justify-content: flex-start;
   gap: 10px;
+  font-size: 16px;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background-color: $color_green_10;
+    color: $color_green_80;
+    border: 1px solid $color_green_80;
+    border-radius: 50px;
+  }
 }
 
 .dishList {
@@ -25,13 +37,15 @@
 }
 
 .tagsMenu {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  padding-top: 10px;
+  display: none;
 
   div {
     margin-right: 5px;
     margin-left: 17px;
+  }
+
+  &.active {
+    display: flex;
+    gap: 10px;
   }
 }

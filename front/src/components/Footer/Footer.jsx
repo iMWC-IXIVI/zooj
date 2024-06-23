@@ -16,19 +16,19 @@ export default function Footer() {
           <Link to={"/dishmethod"}>Метод тарелки</Link>
         </div>
         <div className={classes.button_footer}>
-          <Link to="#">
+          <Link to="https://t.me/zozhnik" target="_blank">
             <SvgSelector name={"telegram"} />
           </Link>
 
-          <Link to="#">
+          <Link to="https://vk.com/bestzozhnik" target="_blank">
             <SvgSelector name={"vk"} />
           </Link>
 
-          <Link to="#">
+          <Link to="https://www.youtube.com/channel/UCjv-0_V5dxNkBE7Xf1uoDRg" target="_blank">
             <SvgSelector name={"youtube"} />
           </Link>
 
-          <Link to="#">
+          <Link to="mailto:m@zozhnik.ru" target="_blank">
             <SvgSelector name={"email"} />
           </Link>
         </div>

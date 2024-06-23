@@ -6,10 +6,7 @@ export default function Category({ category, selected, toggleCategory }) {
   }
 
   return (
-    <div
-      className={(classes.category) + " " + (selected ? (classes.green) : (classes.black))}
-      onClick={switchCategory}
-    >
+    <div className={(classes.category) + " " + (selected ? (classes.green) : (classes.black))} onClick={switchCategory}>
       {category.title}
     </div>
   );

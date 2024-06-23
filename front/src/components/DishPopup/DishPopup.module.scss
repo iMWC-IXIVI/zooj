@@ -1,28 +1,22 @@
 @import "../../scss/variables";
 
 .dishPopup {
-  padding: 1em 2em;
+  display: flex;
 
-  .oneLine > {
-    li {
-      display: inline;
-      padding-right: 20px;
+  .description {
+    margin: 0 20px;
+
+    h2 {
+      font-size: 24px;
     }
+
+    ul {
+      margin-top: 10px;
+    }
+    
   }
   
-  .renderIng{
-    width: 50%;
-    text-align: left;
-    float: right;
-
-    :first-child{
-      float: left
-    }
+  img {
+    width: 100%;
   }
 }
-
-.noPad {
-  padding-inline-start: 0px;
-  margin-right: 20px;
-}
-
