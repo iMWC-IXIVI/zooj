@@ -38,18 +38,23 @@ func (h *Handler) GetDishes(c echo.Context) error {
 	categoryIDs := parseCategoryIDs(c)
 	antiTagIDs := parseAntiTags(c)
 	onlyFavorites := parseFavorites(c)
+	halfDishes := parseHalfDishes(c)
 
 	var favIDs []int
 	if onlyFavorites {
 		favIDs = getFavorites(c)
 	}
 
-	dishes, err := h.repo.GetDishes(page, pageSize, categoryIDs, antiTagIDs, favIDs)
+	dishes, err := h.repo.GetDishes(page, pageSize, categoryIDs, antiTagIDs, favIDs, halfDishes)
 	if err != nil {
 		return err
 	}
 	for index, dish := range dishes {
 		dishes[index].Image = "/api/v1/images/" + strconv.Itoa(dish.ID)
+
+		for idx, halfDish := range dish.HalfDishes {
+			dish.HalfDishes[idx].Image = "/api/v1/images/" + strconv.Itoa(dish.ID) + "?half_dish_id=" + strconv.Itoa(halfDish.ID)
+		}
 	}
 
 	antiTags, err := h.repo.GetAntiTags()
@@ -105,12 +110,12 @@ func getFavorites(c echo.Context) []int {
 
 func parseFavorites(c echo.Context) bool {
 	onlyFavs := c.QueryParam("favorites")
-	log.Printf("favorites: %v\n", onlyFavs)
-	if onlyFavs == "true" {
-		return true
-	}
+	return onlyFavs == "true"
+}
 
-	return false
+func parseHalfDishes(c echo.Context) bool {
+	halfDishes := c.QueryParam("half_dishes")
+	return halfDishes == "true"
 }
 
 func parseCategoryIDs(c echo.Context) []int {
@@ -157,6 +162,21 @@ func (h *Handler) GetDishImage(c echo.Context) error {
 	dish, err := h.repo.GetDish(dishID)
 	if err != nil {
 		return err
+	}
+
+	strHalfDishID := c.QueryParam("half_dish_id")
+	if strHalfDishID != "" {
+		halfDishID, err := strconv.Atoi(strHalfDishID)
+		if err != nil {
+			return err
+		}
+
+		for _, hd := range dish.HalfDishes {
+			if hd.ID == halfDishID {
+				path := "./images/" + hd.Image
+				return c.File(path)
+			}
+		}
 	}
 
 	path := "./images/" + dish.Image

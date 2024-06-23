@@ -24,16 +24,44 @@ func (r *Repo) GetDish(id int) (entity.Dish, error) {
 	sql := "select id, title, kcal, proteins, fats, carbos, image, kind from dishes where id = $1"
 	row := r.db.QueryRow(context.Background(), sql, id)
 
-	dish := entity.Dish{}
+	dish := entity.Dish{
+		HalfDishes: make([]entity.HalfDish, 0),
+	}
 	err := row.Scan(&dish.ID, &dish.Title, &dish.Kcal, &dish.Proteins, &dish.Fats, &dish.Carbos, &dish.Image, &dish.Kind)
 	if err != nil {
 		return dish, err
 	}
 
+	sql = "select id, dish_id, title, weight, kcal, proteins, fats, carbos, image, price, position from half_dishes where dish_id = $1"
+	rows, err := r.db.Query(context.Background(), sql, dish.ID)
+	if err != nil {
+		log.Printf("failed to load half dishes with %v\n", err)
+		return dish, err
+	}
+
+	for rows.Next() {
+		hd := entity.HalfDish{}
+		var position bool
+		err := rows.Scan(&hd.ID, &hd.DishID, &hd.Title, &hd.Weight, &hd.Kcal, &hd.Proteins, &hd.Fats, &hd.Carbos, &hd.Image, &hd.Price, &position)
+		if err != nil {
+			log.Printf("failed to scan half dishes")
+		}
+
+		if position {
+			hd.Left = true
+			hd.Right = false
+		} else {
+			hd.Left = false
+			hd.Right = true
+		}
+
+		dish.HalfDishes = append(dish.HalfDishes, hd)
+	}
+
 	return dish, nil
 }
 
-func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int, ids []int) ([]entity.Dish, error) {
+func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int, ids []int, halfDishes bool) ([]entity.Dish, error) {
 	dishes := make([]entity.Dish, 0)
 
 	offset := (page - 1) * pageSize
@@ -62,15 +90,16 @@ func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int, ids 
 		args = append(args, ids)
 	}
 
+	if halfDishes {
+		wheres = append(wheres, " exists (select 1 from half_dishes where dish_id = dishes.id)")
+	}
+
 	if len(wheres) > 0 {
 		sql += " where "
 	}
 
 	sql += strings.Join(wheres, " and ")
-
 	sql += " order by id LIMIT $1 OFFSET $2"
-
-	log.Printf("SQL IS: %v\n", sql)
 
 	rows, err := r.db.Query(context.Background(), sql, args...)
 	if err != nil {
@@ -84,6 +113,7 @@ func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int, ids 
 			Ingredients: make([]entity.Ingredient, 0),
 			Steps:       make([]entity.Step, 0),
 			Categories:  make([]entity.Category, 0),
+			HalfDishes:  make([]entity.HalfDish, 0),
 		}
 		err := rows.Scan(&dish.ID, &dish.Title, &dish.Kcal, &dish.Proteins, &dish.Fats,
 			&dish.Carbos, &dish.Image, &dish.Kind, &dish.Weight, &dish.Provider, &dish.Link, &dish.LinkImage, &dish.Price)
@@ -120,6 +150,36 @@ func (r *Repo) GetDishes(page int, pageSize int, categoryIDs, tagIDs []int, ids 
 		for _, ingredient := range ingredients {
 			if ingredient.DishID == dish.ID {
 				dishes[index].Ingredients = append(dishes[index].Ingredients, ingredient)
+			}
+		}
+	}
+
+	sql = "select id, dish_id, title, weight, kcal, proteins, fats, carbos, image, price, position from half_dishes where dish_id = any($1)"
+	rows, err = r.db.Query(context.Background(), sql, dishIDs)
+	if err != nil {
+		log.Printf("failed to load half dishes with %v\n", err)
+		return make([]entity.Dish, 0), err
+	}
+
+	for rows.Next() {
+		hd := entity.HalfDish{}
+		var position bool
+		err := rows.Scan(&hd.ID, &hd.DishID, &hd.Title, &hd.Weight, &hd.Kcal, &hd.Proteins, &hd.Fats, &hd.Carbos, &hd.Image, &hd.Price, &position)
+		if err != nil {
+			log.Printf("failed to scan half dishes")
+		}
+
+		if position {
+			hd.Left = true
+			hd.Right = false
+		} else {
+			hd.Left = false
+			hd.Right = true
+		}
+
+		for index, dish := range dishes {
+			if dish.ID == hd.DishID {
+				dishes[index].HalfDishes = append(dishes[index].HalfDishes, hd)
 			}
 		}
 	}
