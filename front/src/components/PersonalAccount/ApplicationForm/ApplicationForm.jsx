@@ -74,7 +74,7 @@ export default function ApplicationForm({userData}) {
           <label className={classes.label}>Пол</label>
           <select className={classes.input} {...methods.register("gender")}>
             <option value={""} disabled selected>
-              Выберете орентицию
+              Ваш пол
             </option>
             <option value={"М"}>Мужской</option>
             <option value={"Ж"}>Женский</option>
