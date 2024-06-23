@@ -1,12 +1,20 @@
 @import "../../scss/variables";
 
+.displayFlex {
+  display: flex !important;
+}
+
+.displayNone {
+  display: none !important;
+}
+
 .catalogIndex {
-  h1 {
+  h1.catalogTitle {
     font-family: $font_family_vollkorn;
-    font-size: 26px !important;
+    font-size: 26px;
     letter-spacing: 0.6px;
     line-height: 30px;
-    padding: 62px 0 32px 0 ;
+    padding: 62px 0 32px 0;
   }
 }
 
@@ -15,6 +23,19 @@
   flex-direction: row;
   justify-content: flex-start;
   gap: 10px;
+  font-size: 16px;
+  margin-top: 32px;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background-color: $color_green_10;
+    color: $color_green_80;
+    border: 1px solid $color_green_80;
+    border-radius: 50px;
+  }
 }
 
 .dishList {
@@ -24,14 +45,43 @@
   row-gap: 36px;
 }
 
-.tagsMenu {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  padding-top: 10px;
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  z-index: 2;
 
-  div {
-    margin-right: 5px;
-    margin-left: 17px;
+  .content {
+    background: white;
+    width: 40%;
+    padding: 1.5em;
+
+    .start {
+      display: flex;
+      justify-content: space-between;
+
+      h1.popupTitle {
+        font-size: 30px;
+        font-weight: $font_weight_xxl;
+        font-family: $font_family_inter;
+
+        &:nth-child(1) {
+          padding-top: 32px;
+        }
+      }
+    }
+    
+    h2 {
+      margin: 24px 0;
+      font-size: 22px;
+      font-weight: 500;
+    }
+
+    .tagsMenu {
+      display: flex;
+      flex-direction: column;
+
+    }
   }
 }

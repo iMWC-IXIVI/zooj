@@ -1,5 +1,13 @@
 @import "../../scss/variables";
 
+.displayFlex {
+  display: flex !important;
+}
+
+.displayNone {
+  display: none !important;
+}
+
 .dish {
   font-size: $font_size_l;
   display: flex;
@@ -7,44 +15,71 @@
   justify-content: space-between;
   max-width: 212px;
   min-height: 350px;
-  
-  .dishBtn {
+
+  .button {
     background-color: $color_green_10;
     border: 1px solid $color_green_80;
     color: $color_green_80;
     border-radius: 50px;
     padding: 8px;
+    cursor: pointer;
   }
 
   a {
-    text-decoration: none; 
-  }  
+    text-decoration: none;
+
+    div {
+      position: relative;
+
+      .favorite {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+      }
+
+      .rating {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        bottom: 12px;
+        left: 12px;
+      }
+    }
+  }
+
+  .title {
+    line-height: 20px;
+    font-weight: 600;
+    height: 60px;
+  }
+
+  .weight {
+    line-height: 15px;
+    color: $color_black_50;
+  }
+
+  .price {
+    font-weight: 600;
+    font-size: 18px;
+  }
 
   .modal {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.6);
     display: none;
     align-items: center;
     justify-content: center;
+    z-index: 2;
 
     .content {
-      position: relative;
       background: white;
-      border-radius: 4px;
+      border-radius: 15px;
       max-width: 60%;
+      padding: 1.5em;
 
-      .popupCloser {
-        float: right; width: 30px; 
-        font-size: 1.2rem;
-        text-align: right;
-        margin-right: 3px;
-      }
+      
     }
-
-  }
-  .modal:target {
-    display: flex;
   }
 }
-

@@ -3,6 +3,8 @@ import classes from "./Catalog.module.scss";
 import Dish from "../Dish/Dish";
 import Category from "../Category/Category";
 import AntiTag from "../AntiTag/AntiTag";
+import SvgSelector from "../SvgSelector";
+import CloseButton from "../Buttons/CloseButton/CloseButton";
 
 export default function CatalogIndex() {
   const [breakfast, setBreakfast] = useState([]);
@@ -14,7 +16,13 @@ export default function CatalogIndex() {
 
   const [antiTags, setAntiTags] = useState([]);
   const [antiTagsFilter, setAntiTagsFilter] = useState([]);
-
+  const [visible, setVisible] = useState(false);
+  function showPopup() {
+    setVisible(true);
+  }
+  function hidePopup() {
+    setVisible(false);
+  }
   useEffect(() => {
     let url = "http://localhost/api/v1/catalog";
 
@@ -142,24 +150,44 @@ export default function CatalogIndex() {
     );
   });
 
+  
   return (
     <div className={classes.catalogIndex}>
-      <div className={classes.categoriesMenu}>{categoriesList}</div>
 
-      <div className={classes.tagsMenu}>Исключить: {antiTagsList}</div>
+      <div className={classes.categoriesMenu}>
+        <button onClick={showPopup}>
+          Настроить меню
+          <SvgSelector name="changeMenu"/>
+        </button>
+        {categoriesList}
+      </div>
+
+      <div className={classes.modal + " " +(visible ? classes.displayFlex : classes.displayNone)}>
+        <div className={classes.content}>
+          <div className={classes.start}>
+            <h1 className={classes.popupTitle}>Настройка меню</h1>
+            <CloseButton onClick={hidePopup} />
+          </div>
+          <div className={classes.tagsMenu}>
+            <h2>Исключите аллергены:</h2>
+            {antiTagsList}
+          </div>
+        </div>
+      </div>
+
 
       <div className={classes.breakfast}>
-        <h1>Завтрак</h1>
+        <h1 className={classes.catalogTitle}>Завтрак</h1>
         <div className={classes.dishList}>{breakfastList}</div>
       </div>
 
       <div className={classes.lunch}>
-        <h1>Обед</h1>
+        <h1 className={classes.catalogTitle}>Обед</h1>
         <div className={classes.dishList}>{lunchList}</div>
       </div>
 
       <div className={classes.dinner}>
-        <h1>Ужин</h1>
+        <h1 className={classes.catalogTitle}>Ужин</h1>
         <div className={classes.dishList}>{dinnerList}</div>
       </div>
     </div>

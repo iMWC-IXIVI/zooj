@@ -1,6 +1,5 @@
 import classes from "./Header.module.scss";
-import RoundButton from "../Buttons/RoundButton/RoundButton";
-import { Basket } from '../Basket/Basket'
+import {Basket} from "../Basket/Basket";
 import SvgSelector from "../SvgSelector";
 import {Link, NavLink} from "react-router-dom";
 
@@ -30,20 +29,34 @@ export default function Header({setWrapperLogin}) {
           Метод тарелки
         </NavLink>
       </div>
+
       <div className={classes.buttons}>
-        <RoundButton>
+        <button className={classes.btn_round}>
           <SvgSelector name="favorite" />
-        </RoundButton>
-        {/* <RoundButton>
-          <SvgSelector name="basket" />
-        </RoundButton> */}
-        <Basket/>
+        </button>
+
+        <Basket />
+
         {localStorage.getItem("token") ? (
-          <button>
-            <Link to="account">Профиль</Link>
+          <Link className={classes.user_lk} to="/account">
+            <SvgSelector name="user" />
+          </Link>
+        ) : null}
+
+        {localStorage.getItem("token") ? (
+          <button
+            className={classes.lk}
+            onClick={() => {
+              setWrapperLogin(null);
+              localStorage.removeItem("token");
+              localStorage.removeItem("uuid");
+            }}
+          >
+            Выйти
           </button>
         ) : (
           <button
+            className={classes.lk}
             onClick={() => {
               setWrapperLogin(true);
             }}

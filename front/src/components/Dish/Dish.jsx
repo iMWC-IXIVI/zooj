@@ -1,38 +1,62 @@
+import { useState } from "react";
 import DishPopup from "../DishPopup/DishPopup";
-import Button from "../Buttons/Button/Button";
-import { AddToCart } from '../../services/basket'
+import { AddToCart } from "../../services/basket";
 import classes from "./Dish.module.scss";
+import SvgSelector from "../SvgSelector";
+import CloseButton from "../Buttons/CloseButton/CloseButton";
 
 export default function Dish({ dish }) {
-  function addToCart() {
-    AddToCart(dish.id)
+  const [visible, setVisible] = useState(false);
+  function showPopup() {
+    setVisible(true);
   }
+  function hidePopup() {
+    setVisible(false);
+  }
+
+  function addToCart() {
+    AddToCart(dish.id);
+  }
+
   return (
     <div className={classes.dish}>
-      <a href={`#dish-popup-${dish.id}`}>
+      <a href={`#dish-popup-${dish.id}`} onClick={showPopup}>
         <div>
           <img src={dish.image} alt="dishImage" />
+          <div className={classes.favorite}>
+            <SvgSelector name="favorite" />
+          </div>
+          <div className={classes.rating}>
+            <SvgSelector name="rating" />
+            5.0
+          </div>
         </div>
-        <p>{dish.title}</p>
+        <p className={classes.title}>{dish.title}</p>
       </a>
 
-      <p>
-        {dish.weight} г • {dish.kcal} ккал 
+      <p className={classes.weight}>
+        {dish.weight} г • {dish.kcal} ккал
       </p>
-      <p>
-        От 230руб.
-      </p>
-      <Button className={classes.dishBtn} onClick={addToCart} label="Выбрать"> </Button>
+      <p className={classes.price}>{dish.price} руб.</p>
+      <button className={classes.button} onClick={addToCart}>
+        Выбрать
+      </button>
 
-      <div id={`dish-popup-${dish.id}`} class={classes.modal}>
+      <div
+        id={`dish-popup-${dish.id}`}
+        className={
+          classes.modal +
+          " " +
+          (visible ? classes.displayFlex : classes.displayNone)
+        }
+      >
         <div className={classes.content}>
-          <div className={classes.popupCloser}>
-            <a href="/readyprogram" className={classes.closer}>
-              &times;
-            </a>
-          </div>
-
-          <DishPopup dish={dish} />
+          <CloseButton onClick={hidePopup} />
+          <DishPopup dish={dish}>
+            <button className={classes.button} onClick={addToCart}>
+            Выбрать
+            </button>
+          </DishPopup>
         </div>
       </div>
     </div>

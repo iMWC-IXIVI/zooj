@@ -1,0 +1,105 @@
+@import "../../../../scss/variables";
+
+
+.container {
+    
+    position: relative;
+    display: flex;
+
+    .pizdex{
+        z-index: 2;
+        height: 100%;
+        width: 100%;
+        padding: 40px;
+    }
+
+    img{
+        position: absolute;
+        right: 0;
+    }
+}
+
+.img_cont{
+    display: flex;
+    align-items: flex-end;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+
+
+    h3 {
+        font-size: 32px;
+        font-weight: 600;
+    }
+
+    .header_info {
+        display: flex;
+        align-items: center;
+
+        .num {
+            background-color: $color_neutral_10;
+            padding: 12px 24px;
+            border-radius: 24px;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        .active {
+            font-size: 16px;
+            color: $color_green_80;
+            background-color: $color_green_30;
+            border-radius: 24px;
+            padding: 12px 24px;
+        }
+    }
+}
+
+.info_message{
+    font-size: 20px;
+    color: #444444;
+    margin-bottom: 80px;
+}
+
+
+.box_input{
+    margin-bottom: 28px;
+    display: flex;
+    gap: 40px;
+
+}
+
+.input{
+    font-size: 26px;
+    border: 1px solid $color_neutral_60;
+    border-radius: 56px;
+    padding: 15px 20px;
+}
+
+
+
+.buttons{
+    display: flex;
+    margin-top: 200px;
+
+    .back{
+        background-color: $color_green_10;
+        border: 1px solid $color_green_80;
+        color: $color_green_80;
+        padding: 10px 60px;
+        border-radius: 30px;
+        margin-right: 12px;
+        cursor: pointer;
+    }
+
+    .next{
+        background-color: $color_green_80;
+        color: $color_neutral_0;
+        padding: 10px 60px;
+        border-radius: 30px;
+        cursor: pointer;
+    }
+}

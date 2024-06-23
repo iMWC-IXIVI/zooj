@@ -26,6 +26,15 @@ class Authentication {
       {headers: {"anonymous-uuid": uuid}}
     );
   }
+
+  async getUser(token) {
+    return await $api.get(
+      API_URL + "/api/get-user/",
+      {},
+      {headers: {authorization: token}}
+    );
+  }
+
 }
 
 const Auth = new Authentication();
