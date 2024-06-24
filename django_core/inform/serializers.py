@@ -51,6 +51,7 @@ class InformationSerializer(serializers.Serializer):
         instance.protein = validated_data.get('protein', instance.protein)
         instance.fats = validated_data.get('fats', instance.fats)
         instance.carbohydrates = validated_data.get('carbohydrates', instance.carbohydrates)
+        instance.gender = validated_data.get('gender', instance.gender)
 
         instance.save()
 
