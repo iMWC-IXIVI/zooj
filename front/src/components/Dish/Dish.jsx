@@ -39,7 +39,7 @@ export default function Dish({ dish }) {
       </p>
       <p className={classes.price}>{dish.price} руб.</p>
       <button className={classes.button} onClick={addToCart}>
-        Выбрать
+        В корзину
       </button>
 
       <div
@@ -52,11 +52,7 @@ export default function Dish({ dish }) {
       >
         <div className={classes.content}>
           <CloseButton onClick={hidePopup} />
-          <DishPopup dish={dish}>
-            <button className={classes.button} onClick={addToCart}>
-            В корзину
-            </button>
-          </DishPopup>
+          <DishPopup dish={dish}/>
         </div>
       </div>
     </div>
