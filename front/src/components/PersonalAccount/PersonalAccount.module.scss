@@ -1,12 +1,12 @@
 @import "../../scss/variables";
 @import "../Inputs/InputTextBox/InputTextBox.module.scss";
 
-.container_main{
+.container_main {
     display: flex;
     justify-content: space-around;
     margin-bottom: 212px;
 
-    h3{
+    h3 {
         font-size: 32px;
         font-weight: 600px;
         color: $color_neutral_80;
@@ -16,12 +16,12 @@
 
 
 // Form
-.container_form{
+.container_form {
     display: flex;
-    
+
 }
 
-.form{
+.form {
     display: flex;
     flex-direction: column;
     width: 406px;
@@ -30,14 +30,36 @@
         margin-bottom: 24px;
     }
 
-    select{
+    select {
         margin-bottom: 24px;
         font-size: 20px;
     }
 
-    button{
+    & button {
         margin-top: 24px;
     }
 
+
+}
+
+.form_user_btn {
+    margin-top: 133px !important;
+    font-size: 16px;
+    border: 1px solid $color_green_80;
+    background-color: $color_green_10;
+    color: $color_green_80;
+    border-radius: 56px;
+    padding: 18px 0;
+
+}
+
+.active {
+
+    background-color: $color_green_80;
+    color: $color_neutral_0;
+
+    &:hover {
+        opacity: 0.9;
+    }
 
 }

@@ -1,4 +1,14 @@
 @import "../../scss/variables";
+@import "../../scss/init";
+// :root{
+//   overflow-y: scroll;
+//   scrollbar-width: none; /* Firefox */
+//   -ms-overflow-style: none;  /* Internet Explorer 10+ */
+// }
+// root::-webkit-scrollbar { /* WebKit */
+//   width: 0;
+//   height: 0;
+// }
 
 .displayFlex {
   display: flex !important;
@@ -13,9 +23,10 @@
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
   justify-content: end;
-  overflow: scroll;
   z-index: 3;
-  overflow-x: hidden;
+  height: 100%;
+  width: 100%; 
+
 
   .content {
     position: relative;
@@ -23,7 +34,8 @@
     border-radius: 4px;
     width: 43%;
     min-height: 100%;
-    height: fit-content;
+    height: 100%;
+    overflow: auto;
 
     .logo{
       margin: 20px 0;

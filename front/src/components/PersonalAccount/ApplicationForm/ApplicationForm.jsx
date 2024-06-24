@@ -22,6 +22,7 @@ export default function ApplicationForm({userData}) {
       for (let key of defData) {
         res[key] = "";
       }
+
       return res;
     }
     for (let key in obj) {
@@ -36,6 +37,12 @@ export default function ApplicationForm({userData}) {
   const methods = useForm({defaultValues: userData});
 
   const onSubmit = (data) => {
+    for (let key in data) {
+      if (typeof data[key] === "number") {
+        data[key] = String(data[key]);
+      }
+    }
+
     if (flagApi) {
       AccountApi.updateUserFrom(data).then((res) => console.log(res));
     } else {
@@ -52,21 +59,25 @@ export default function ApplicationForm({userData}) {
         >
           <h3>Анкета</h3>
           <InputTextBox
+            type={"text"}
             label={"Возраст"}
             placeholder={"00 лет"}
             registerName={"age"}
           />
           <InputTextBox
+            type={"text"}
             label={"Вес (кг)"}
             placeholder={"00 кг"}
             registerName={"weight"}
           />
           <InputTextBox
+            type={"text"}
             label={"Рост (см)"}
             placeholder={"000 см"}
             registerName={"height"}
           />
           <InputTextBox
+            type={"text"}
             label={"Желаемый вес (кг)"}
             placeholder={"00 кг"}
             registerName={"des_weight"}

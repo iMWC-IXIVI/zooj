@@ -1,20 +1,18 @@
 import {FormProvider, useForm} from "react-hook-form";
 import classes from "../PersonalAccount.module.scss";
 import InputTextBox from "../../Inputs/InputTextBox/InputTextBox";
-import SubmitButton from "../../Buttons/SubmitButton/SubmitButton";
 import AccountApi from "../../../services/PersonalAccount";
 
 export default function PersonalForm({userData}) {
-
-  if(!userData.user.phone){
-    userData.user.phone = "+7"
+  if (!userData.user.phone) {
+    userData.user.phone = "+7";
   }
 
-  const methods = useForm({defaultValues:userData.user});
+  const methods = useForm({defaultValues: userData.user});
 
   const onSubmit = (data) => {
-    delete data.id
-    AccountApi.updateUser(data)
+    delete data.id;
+    AccountApi.updateUser(data);
   };
 
   return (
@@ -52,7 +50,12 @@ export default function PersonalForm({userData}) {
             registerName={"birthday"}
             type={"date"}
           />
-          <SubmitButton disabled={!methods.formState.isDirty} >Сохранить</SubmitButton>
+          <button type="submit"
+            disabled={!methods.formState.isDirty}
+            className={`${classes.form_user_btn} ${methods.formState.isDirty? classes.active: null}`}
+          >
+            Сохранить
+          </button>
         </form>
       </FormProvider>
     </div>
