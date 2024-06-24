@@ -54,7 +54,7 @@ export default function Dish({ dish }) {
           <CloseButton onClick={hidePopup} />
           <DishPopup dish={dish}>
             <button className={classes.button} onClick={addToCart}>
-            Выбрать
+            В корзину
             </button>
           </DishPopup>
         </div>
