@@ -12,8 +12,6 @@
   h1.catalogTitle {
     font-family: $font_family_vollkorn;
     font-size: 26px;
-    letter-spacing: 0.6px;
-    line-height: 30px;
     padding: 62px 0 32px 0;
   }
 }
@@ -54,7 +52,7 @@
 
   .content {
     background: white;
-    width: 40%;
+    width:28%;
     padding: 1.5em;
 
     .start {
@@ -66,9 +64,6 @@
         font-weight: $font_weight_xxl;
         font-family: $font_family_inter;
 
-        &:nth-child(1) {
-          padding-top: 32px;
-        }
       }
     }
     
