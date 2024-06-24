@@ -1,137 +1,141 @@
 @import "../../../../scss/variables";
 
 .container {
-    height: 760px;
-    padding: 40px;
+  height: 760px;
+  padding: 40px;
 }
 
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 102px;
+
+  h3 {
+    font-size: 32px;
+    font-weight: 600;
+  }
+
+  .header_info {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 102px;
 
-    h3 {
-        font-size: 32px;
-        font-weight: 600;
+    .num {
+      background-color: $color_neutral_10;
+      padding: 12px 24px;
+      border-radius: 24px;
+      margin-right: 12px;
+      font-size: 16px;
     }
 
-    .header_info {
-        display: flex;
-        align-items: center;
-
-        .num {
-            background-color: $color_neutral_10;
-            padding: 12px 24px;
-            border-radius: 24px;
-            margin-right: 12px;
-            font-size: 16px;
-        }
-
-        .active {
-            font-size: 16px;
-            color: $color_green_80;
-            background-color: $color_green_30;
-            border-radius: 24px;
-            padding: 12px 24px;
-        }
+    .active {
+      font-size: 16px;
+      color: $color_green_80;
+      background-color: $color_green_30;
+      border-radius: 24px;
+      padding: 12px 24px;
     }
+  }
 }
 
 .box_card {
-    display: flex;
-    margin-bottom: 102px;
+  display: flex;
+  margin-bottom: 102px;
 
-    .active_card{
-        border: 3px solid $color_green_80;
+  .active_card {
+    border: 3px solid $color_green_80;
+  }
+
+  .card {
+    height: 360px;
+    width: 257px;
+    border-radius: 20px;
+    padding: 23px;
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+
+    svg {
+      margin-bottom: 20px;
     }
 
-    .card {
-        height: 360px;
-        width: 257px;
-        border-radius: 20px;
-        padding: 25px;
-
-        svg {
-            margin-bottom: 20px;
-        }
-
-        .title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .message {
-            font-size: 16px;
-        }
+    .title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 4px;
     }
 
-
-
-    .one_card {
-        margin-right: 12px;
-        background-color: #FFEECC;
-
-        .title {
-            color: #C98400;
-        }
+    .message {
+      font-size: 16px;
     }
+  }
 
-    .two_card {
-        margin-right: 12px;
-        background-color: #CCE3F8;
+  .one_card {
+    margin-right: 12px;
+    background-color: #ffeecc;
 
-        .title {
-            color: #0D79DB;
-        }
+    .title {
+      color: #c98400;
     }
+  }
 
-    .three_card {
-        margin-right: 12px;
-        background-color: #FFD1BD;
+  .two_card {
+    margin-right: 12px;
+    background-color: #cce3f8;
 
-        .title {
-            color: #DE612E;
-        }
+    .title {
+      color: #0d79db;
     }
+  }
 
-    .four_card {
-        margin-right: 12px;
-        background-color: #FFF5C5;
+  .three_card {
+    margin-right: 12px;
+    background-color: #ffd1bd;
 
-        .title {
-            color: #C3A50E;
-        }
+    .title {
+      color: #de612e;
     }
+  }
 
-    .five_card{
-        background-color: #CBF0CB;
-        .title{
-            color: #008231;
-        }
+  .four_card {
+    margin-right: 12px;
+    background-color: #fff5c5;
+
+    .title {
+      color: #c3a50e;
     }
+  }
+
+  .five_card {
+    background-color: #cbf0cb;
+    .title {
+      color: #008231;
+    }
+  }
 }
 
-.buttons{
-    display: flex;
+.buttons {
+  display: flex;
 
-    .back{
-        background-color: $color_green_10;
-        border: 1px solid $color_green_80;
-        color: $color_green_80;
-        padding: 10px 60px;
-        border-radius: 30px;
-        margin-right: 12px;
-        cursor: pointer;
-    }
+  .back {
+    background-color: $color_green_10;
+    border: 1px solid $color_green_80;
+    color: $color_green_80;
+    padding: 10px 60px;
+    border-radius: 30px;
+    margin-right: 12px;
+    cursor: pointer;
+  }
 
-    .next{
-        background-color: $color_green_80;
-        color: $color_neutral_0;
-        padding: 10px 60px;
-        border-radius: 30px;
-        cursor: pointer;
-    }
+  .next {
+    background-color: $color_green_80;
+    color: $color_neutral_0;
+    padding: 10px 60px;
+    border-radius: 30px;
+    cursor: pointer;
+  }
 }
-

@@ -15,6 +15,7 @@
   justify-content: end;
   overflow: scroll;
   z-index: 3;
+  overflow-x: hidden;
 
   .content {
     position: relative;

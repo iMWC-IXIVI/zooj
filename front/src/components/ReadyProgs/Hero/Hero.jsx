@@ -1,5 +1,5 @@
 import classes from "./Hero.module.scss"
-
+import heroImg from "../../../images/ReadyProgramHeroImg.png"
 export default function Hero() {
     return(
     <div className={classes.hero}>
@@ -19,6 +19,7 @@ export default function Hero() {
           </p>
         </div>
       </div>
+      <img src={heroImg} alt="plate" />
     </div>
     )
 }
