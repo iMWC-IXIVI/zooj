@@ -175,21 +175,27 @@ export default function CatalogIndex() {
         </div>
       </div>
 
+      { breakfastList.length > 0 && (
+        <div className={classes.breakfast}>
+          <h1 className={classes.catalogTitle}>Завтрак</h1>
+          <div className={classes.dishList}>{breakfastList}</div>
+        </div>  
+      )}
 
-      <div className={classes.breakfast}>
-        <h1 className={classes.catalogTitle}>Завтрак</h1>
-        <div className={classes.dishList}>{breakfastList}</div>
-      </div>
-
-      <div className={classes.lunch}>
+      { lunchList.length > 0 && (
+        <div className={classes.lunch}>
         <h1 className={classes.catalogTitle}>Обед</h1>
         <div className={classes.dishList}>{lunchList}</div>
       </div>
+      )}
 
-      <div className={classes.dinner}>
-        <h1 className={classes.catalogTitle}>Ужин</h1>
-        <div className={classes.dishList}>{dinnerList}</div>
-      </div>
+      { dinnerList.length > 0 && (
+        <div className={classes.dinner}>
+          <h1 className={classes.catalogTitle}>Ужин</h1>
+          <div className={classes.dishList}>{dinnerList}</div>
+        </div>
+      )} 
+    
     </div>
-  );
+  )
 }
