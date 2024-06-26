@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import classes from "./DishMethod.module.scss";
 import HalfDish from "../HalfDish/HalfDish";
+import Hero from "./Hero/Hero";
 
 export default function DishMethod() {
   const [dishes, setDishes] = useState([]);
@@ -51,11 +52,10 @@ export default function DishMethod() {
 
   return (
     <div>
+      <Hero/>
       <div className={classes.breakfast}>
         <div className={classes.currentDish}>
-          <h1>Метод тарелки</h1>
           <HalfDish dish={currentDish} />
-
 
           <h2>Ваша тарелка</h2>
           <div>РСК: {(currentRightDish.kcal || 0) + (currentLeftDish.kcal || 0)} </div>
