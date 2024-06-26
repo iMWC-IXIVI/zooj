@@ -150,19 +150,23 @@ export default function CatalogIndex() {
     );
   });
 
-  
   return (
     <div className={classes.catalogIndex}>
-
       <div className={classes.categoriesMenu}>
         <button onClick={showPopup}>
           Настроить меню
-          <SvgSelector name="changeMenu"/>
+          <SvgSelector name="changeMenu" />
         </button>
         {categoriesList}
       </div>
 
-      <div className={classes.modal + " " +(visible ? classes.displayFlex : classes.displayNone)}>
+      <div
+        className={
+          classes.modal +
+          " " +
+          (visible ? classes.displayFlex : classes.displayNone)
+        }
+      >
         <div className={classes.content}>
           <div className={classes.start}>
             <h1 className={classes.popupTitle}>Настройка меню</h1>
@@ -175,25 +179,26 @@ export default function CatalogIndex() {
         </div>
       </div>
 
-      { breakfastList.length > 0 && (
+      {breakfastList.length > 0 && (
         <div className={classes.breakfast}>
           <h1 className={classes.catalogTitle}>Завтрак</h1>
           <div className={classes.dishList}>{breakfastList}</div>
-        </div>  
+        </div>
       )}
 
-      { lunchList.length > 0 && (
+      {lunchList.length > 0 && (
         <div className={classes.lunch}>
-        <h1 className={classes.catalogTitle}>Обед</h1>
-        <div className={classes.dishList}>{lunchList}</div>
-      </div>
+          <h1 className={classes.catalogTitle}>Обед</h1>
+          <div className={classes.dishList}>{lunchList}</div>
+        </div>
       )}
 
-      <div className={classes.dinner}>
-        <h1 className={classes.catalogTitle}>Ужин</h1>
-        <div className={classes.dishList}>
-          {dinnerList}</div>
-      </div>
+      {dinnerList.lenght > 0 && (
+        <div className={classes.dinner}>
+          <h1 className={classes.catalogTitle}>Ужин</h1>
+          <div className={classes.dishList}>{dinnerList}</div>
+        </div>
+      )}
     </div>
-  )
+  );
 }
