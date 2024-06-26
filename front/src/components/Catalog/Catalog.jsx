@@ -5,6 +5,8 @@ import Category from "../Category/Category";
 import AntiTag from "../AntiTag/AntiTag";
 import SvgSelector from "../SvgSelector";
 import CloseButton from "../Buttons/CloseButton/CloseButton";
+import getplate from "../../images/takeyourplate.jpg"
+import {NavLink} from "react-router-dom";
 
 export default function CatalogIndex() {
   const [breakfast, setBreakfast] = useState([]);
@@ -188,7 +190,11 @@ export default function CatalogIndex() {
 
       <div className={classes.dinner}>
         <h1 className={classes.catalogTitle}>Ужин</h1>
-        <div className={classes.dishList}>{dinnerList}</div>
+        <div className={classes.dishList}>
+          <NavLink to="/dishmethod" >
+          <img src={getplate} alt="getplate" width="212px"/>
+          </NavLink>
+          {dinnerList}</div>
       </div>
     </div>
   );

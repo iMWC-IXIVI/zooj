@@ -13,9 +13,9 @@ export default function HalfDish({ dish, setRightDish, setLeftDish, leftDishId, 
           className={(leftDishId && leftDish.id !== leftDishId ? 'opacity-30 halfDish' : 'halfDish')}
           width="100px" onClick={() => setLeftDish({...leftDish})
           }/>
-        <p>{leftDish.title}</p>
-        <p>{leftDish.weight} г • {leftDish.kcal} ккал </p>
-        <p>{leftDish.price} руб.</p>
+        <p className={classes.title}>{leftDish.title}</p>
+        <p className={classes.weight}>{leftDish.weight} г <br/> {leftDish.kcal} ккал </p>
+        <p className={classes.price}>{leftDish.price} руб.</p>
       </div>
     )
   }
@@ -27,9 +27,9 @@ export default function HalfDish({ dish, setRightDish, setLeftDish, leftDishId, 
           src={rightDish.image} alt="dishImage" width="100px" 
           className={(rightDishId && rightDish.id !== rightDishId ? 'opacity-30 halfDish' : 'halfDish')}
           onClick={() => setRightDish({...rightDish})}/>
-        <p>{rightDish.title}</p>
-        <p>{rightDish.weight} г • {rightDish.kcal} ккал</p>
-        <p>{rightDish.price} руб.</p>
+        <p className={classes.title}>{rightDish.title}</p>
+        <p className={classes.weight}>{rightDish.weight} г <br/> {rightDish.kcal} ккал</p>
+        <p className={classes.price}>{rightDish.price} руб.</p>
       </div>
     )
   }
