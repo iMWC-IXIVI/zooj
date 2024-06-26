@@ -107,7 +107,7 @@ export function Basket() {
                 id="Kcal"
                 color="#EFBB58"
                 curValue={basket.kcal.actual}
-                maxValue={basket.kcal.expected + 1500}
+                maxValue={2000}
               />
               <ProgressBar
                 title="Жиры"
@@ -115,7 +115,7 @@ export function Basket() {
                 id="Fats"
                 color="#FF7841"
                 curValue={basket.fats.actual}
-                maxValue={basket.fats.expected + 80}
+                maxValue={100}
               />
               <ProgressBar
                 title="Белки"
@@ -123,7 +123,7 @@ export function Basket() {
                 id="Proteins"
                 color="#63A3DD"
                 curValue={basket.proteins.actual}
-                maxValue={basket.proteins.expected + 100}
+                maxValue={120}
               />
               <ProgressBar
                 title="Углеводы"
@@ -131,7 +131,7 @@ export function Basket() {
                 id="Carbos"
                 color="#FFDA22"
                 curValue={basket.carbos.actual}
-                maxValue={basket.carbos.expected + 70}
+                maxValue={100}
               />
             </div>
           </div>

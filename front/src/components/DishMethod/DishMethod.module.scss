@@ -1,20 +1,37 @@
 .halfdishIndex {
-    padding-top: 15px;
-    column-gap: 12px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(424px, 1fr));
-    row-gap: 36px;
+  padding-top: 5px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
 }
 
 .currentDish {
-    float: left;
-    min-width: 300px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 16px;
+  img {
+    width: 170px !important;
+  }
+
+  div {
+    h2 {
+      font-size: 26px;
+      font-weight: 600;
+      margin: 20px -22px;
+    }
+  }
 }
 
-.currentDish h2 {
-    padding-top: 30px;
+.bar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+  gap: 10px;
+  background-color: #f0f0f0;
+  border-radius: 50px;
+  padding: 26px 30px 30px;
+  width: 1300px;
 }
-
-.halfDishes {
-}
-

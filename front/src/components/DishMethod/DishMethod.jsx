@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import classes from "./DishMethod.module.scss";
 import HalfDish from "../HalfDish/HalfDish";
 import Hero from "./Hero/Hero";
+import ProgressBar from "../ProgressBar/ProgressBar";
 
 export default function DishMethod() {
   const [dishes, setDishes] = useState([]);
@@ -9,7 +10,7 @@ export default function DishMethod() {
   useEffect(() => {
     let url = "http://localhost/api/v1/catalog";
 
-    let params = ['half_dishes=true'];
+    let params = ["half_dishes=true"];
 
     if (params.length > 0) {
       url = url + "?" + params.join("&");
@@ -21,7 +22,7 @@ export default function DishMethod() {
         let dishes = [];
 
         data.dishes.forEach((dish) => {
-          dishes.push(dish)
+          dishes.push(dish);
         });
 
         setDishes(dishes);
@@ -31,38 +32,80 @@ export default function DishMethod() {
       });
   }, []);
 
-  const [currentDish, setCurrentDish] = useState({half_dishes: []})
-  const [currentLeftDish, setCurrentLeftDish] = useState({})
-  const [currentRightDish, setCurrentRightDish] = useState({})
+  const [currentDish, setCurrentDish] = useState({ half_dishes: [] });
+  const [currentLeftDish, setCurrentLeftDish] = useState({});
+  const [currentRightDish, setCurrentRightDish] = useState({});
 
-  const setLeftDish = function(halfDish) {
-    setCurrentDish({half_dishes: [{...halfDish}, {...currentRightDish}]})
-    setCurrentLeftDish(halfDish)
-  }
+  const setLeftDish = function (halfDish) {
+    setCurrentDish({ half_dishes: [{ ...halfDish }, { ...currentRightDish }] });
+    setCurrentLeftDish(halfDish);
+  };
 
-  const setRightDish = function(halfDish) {
-    setCurrentDish({half_dishes: [{...currentLeftDish}, {...halfDish}]})
-    setCurrentRightDish(halfDish)
-  }
-  
+  const setRightDish = function (halfDish) {
+    setCurrentDish({ half_dishes: [{ ...currentLeftDish }, { ...halfDish }] });
+    setCurrentRightDish(halfDish);
+  };
+
   let dishesList = [];
-  dishes.forEach((dish) => dishesList.push(
-    <HalfDish dish={dish} setLeftDish={setLeftDish} setRightDish={setRightDish} leftDishId={currentLeftDish.id} rightDishId={currentRightDish.id} />
-  ));
+  dishes.forEach((dish) =>
+    dishesList.push(
+      <HalfDish
+        dish={dish}
+        setLeftDish={setLeftDish}
+        setRightDish={setRightDish}
+        leftDishId={currentLeftDish.id}
+        rightDishId={currentRightDish.id}
+      />
+    )
+  );
 
   return (
     <div>
-      <Hero/>
+      <Hero />
       <div className={classes.breakfast}>
         <div className={classes.currentDish}>
           <HalfDish dish={currentDish} />
 
-          <h2>Ваша тарелка</h2>
-          <div>РСК: {(currentRightDish.kcal || 0) + (currentLeftDish.kcal || 0)} </div>
-          <div>Белки: {(currentRightDish.proteins || 0) + (currentLeftDish.proteins || 0)} </div>
-          <div>Жиры: {(currentRightDish.fats || 0) + (currentLeftDish.fats || 0)} </div>
-          <div>Углеводы: {(currentRightDish.carbos || 0) + (currentLeftDish.carbos || 0)} </div>
+          <div>
+            <h2>Ваша тарелка</h2>
+            <div className={classes.bar}>
+              <ProgressBar
+                title="РСК"
+                add="ккал"
+                id="Kcal"
+                color="#EFBB58"
+                curValue={
+                  (currentRightDish.kcal || 0) + (currentLeftDish.kcal || 0)
+                }
+                maxValue={2000}
+              />
+              <ProgressBar
+                title="Жиры"
+                add="г"
+                id="Fats"
+                color="#FF7841"
+                curValue={(currentRightDish.fats || 0) + (currentLeftDish.fats || 0)}
+                maxValue={100}
+              />
+              <ProgressBar
+                title="Белки"
+                add="г"
+                id="Proteins"
+                color="#63A3DD"
+                curValue={(currentRightDish.proteins || 0) + (currentLeftDish.proteins || 0)}
+                maxValue={120}
+              />
+              <ProgressBar
+                title="Углеводы"
+                add="г"
+                id="Carbos"
+                color="#FFDA22"
+                curValue={(currentRightDish.carbos || 0) + (currentLeftDish.carbos || 0)}
+                maxValue={100}
+              />
+            </div>
           
+          </div>
         </div>
         <div className={classes.halfDishes}>
           <div className={classes.halfdishIndex}>{dishesList}</div>

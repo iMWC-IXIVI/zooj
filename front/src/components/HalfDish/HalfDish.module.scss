@@ -2,36 +2,31 @@
 
 .dish {
   font-size: $font_size_l;
-  display: block;
-  justify-content: space-between;
-  max-width: 212px;
-  min-height: 350px;
-  
-  .dishBtn {
-    background-color: $color_green_10;
-    border: 1px solid $color_green_80;
-    color: $color_green_80;
-    border-radius: 50px;
-    padding: 8px;
+  display: flex; 
+  justify-content: center;
+  gap: 20px; 
+
+  &:nth-of-type(4) {
+    margin-left: -75px;
   }
 }
 
-.rightHalfDish {
-  float: right;
+.rightHalfDish, .leftHalfDish {
+  display: flex;
+  cursor: pointer;
+
+  img {
+    width: 120px;
+  }
+  div.info {
+    align-self: center;
+    max-width: 150px;
+  }
 }
 
 .leftHalfDish {
-  float: left;
+  flex-direction: row-reverse;
 }
-
-.rightHalfDish p {
-  max-width: 100px;
-}
-
-.leftHalfDish p {
-  max-width: 100px;
-}
-
 
 .title {
   font-size: 18px;
