@@ -23,6 +23,12 @@
     border-radius: 50px;
     padding: 8px;
     cursor: pointer;
+    
+
+    &:hover {
+      background-color: $color_green_30;
+      transition: background-color ease-in-out .2s;
+    }
   }
 
   a {
@@ -82,8 +88,6 @@
       border-radius: 15px;
       max-width: 60%;
       padding: 1.5em;
-
-      
     }
   }
 }
