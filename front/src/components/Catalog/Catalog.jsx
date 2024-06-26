@@ -193,12 +193,10 @@ export default function CatalogIndex() {
         </div>
       )}
 
-      {dinnerList.lenght > 0 && (
-        <div className={classes.dinner}>
-          <h1 className={classes.catalogTitle}>Ужин</h1>
-          <div className={classes.dishList}>{dinnerList}</div>
-        </div>
-      )}
+      <div className={classes.dinner}>
+        <h1 className={classes.catalogTitle}>Ужин</h1>
+        <div className={classes.dishList}>{dinnerList}</div>
+      </div>
     </div>
   );
 }
